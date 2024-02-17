@@ -10,11 +10,13 @@ export default function NoteScreen() {
       <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: '#000'}}/>
       <SafeAreaView edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: MyColors.appBackground}}>
 
-        <View style={styles.container}>
-          {/* HEADER */}
-          <View style={headerStyles.headerBackground}>
+        {/* HEADER */}
+        <View style={headerStyles.headerBackground}>
             <Text style={headerStyles.headerText}>Notatnik</Text>
-          </View>
+        </View>
+
+        <View style={styles.container}>
+          
 
           <Text>Notatnik</Text>
           <StatusBar style="auto" />

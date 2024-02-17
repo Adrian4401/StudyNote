@@ -2,11 +2,10 @@ import { MyColors } from "../colors"
 
 export const headerStyles = {
     headerBackground: {
-        position: 'absolute',
+        position: 'relative',
         top: 0,
-        left: 0,
-        right: 0,
-        height: 60,
+        width: '100%',
+        height: 50,
         backgroundColor: '#000',
         borderBottomLeftRadius: 30,
         borderBottomRightRadius: 30,

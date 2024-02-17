@@ -10,11 +10,13 @@ export default function SubjectScreen() {
       <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: '#000'}}/>
       <SafeAreaView edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: MyColors.appBackground}}>
 
+        {/* HEADER */}
+        <View style={headerStyles.headerBackground}>
+          <Text style={headerStyles.headerText}>Przedmioty</Text>
+        </View>
+
         <View style={styles.container}>
-          {/* HEADER */}
-          <View style={headerStyles.headerBackground}>
-            <Text style={headerStyles.headerText}>Przedmioty</Text>
-          </View>
+          
 
           <Text>Przedmioty</Text>
           <StatusBar style="auto" />

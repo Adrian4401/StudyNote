@@ -42,7 +42,6 @@ const screenOptions = {
     right: 10,
     left: 10,
     height: 70,
-    elevation: 0,
     backgroundColor: '#000',
     borderRadius: 20,
     borderTopColor: 'transparent'
@@ -60,7 +59,7 @@ export default function App() {
             tabBarIcon: ({focused}) => {
               return(
                 <View style={{alignItems: 'center', justifyContent: 'center', top: 15}}>
-                  <Ionicons name="calendar-clear" size={24} color={focused ? '#BCB3B3' : '#736D6D'} />
+                  <Ionicons name="calendar-clear" size={24} color={focused ? '#fff' : '#736D6D'} />
                 </View>
               )
             }
@@ -73,7 +72,7 @@ export default function App() {
             tabBarIcon: ({focused}) => {
               return(
                 <View style={{alignItems: 'center', justifyContent: 'center', top: 15}}>
-                  <FontAwesome name="sticky-note" size={24} color={focused ? '#BCB3B3' : '#736D6D'} />
+                  <FontAwesome name="sticky-note" size={24} color={focused ? '#fff' : '#736D6D'} />
                 </View>
               )
             }
@@ -100,7 +99,7 @@ export default function App() {
             tabBarIcon: ({focused}) => {
               return(
                 <View style={{alignItems: 'center', justifyContent: 'center', top: 15}}>
-                  <FontAwesome5 name="book" size={24} color={focused ? '#BCB3B3' : '#736D6D'} />
+                  <FontAwesome5 name="book" size={24} color={focused ? '#fff' : '#736D6D'} />
                 </View>
               )
             }
@@ -113,7 +112,7 @@ export default function App() {
             tabBarIcon: ({focused}) => {
               return(
                 <View style={{alignItems: 'center', justifyContent: 'center', top: 15}}>
-                  <Ionicons name="options" size={24} color={focused ? '#BCB3B3' : '#736D6D'} />
+                  <Ionicons name="options" size={24} color={focused ? '#fff' : '#736D6D'} />
                 </View>
               )
             }

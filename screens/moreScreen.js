@@ -10,12 +10,12 @@ export default function MoreScreen() {
       <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: '#000'}}/>
       <SafeAreaView edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: MyColors.appBackground}}>
 
-        <View style={styles.container}>
-          {/* HEADER */}
-          <View style={headerStyles.headerBackground}>
+        {/* HEADER */}
+        <View style={headerStyles.headerBackground}>
             <Text style={headerStyles.headerText}>Więcej</Text>
           </View>
 
+        <View style={styles.container}>
           <Text>Więcej</Text>
           <StatusBar style="auto" />
         </View>
