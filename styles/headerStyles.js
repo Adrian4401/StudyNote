@@ -6,7 +6,7 @@ export const headerStyles = {
         top: 0,
         left: 0,
         right: 0,
-        height: 100,
+        height: 60,
         backgroundColor: '#000',
         borderBottomLeftRadius: 30,
         borderBottomRightRadius: 30,
@@ -17,7 +17,6 @@ export const headerStyles = {
         color: MyColors.appOrange,
         textAlign: 'center',
         fontSize: 30,
-        top: 20,
         textTransform: 'uppercase'
       }
 }
