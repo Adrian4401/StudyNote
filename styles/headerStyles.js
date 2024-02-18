@@ -11,12 +11,11 @@ export const headerStyles = {
         borderBottomRightRadius: 30,
         justifyContent: 'center',
         alignItems: 'center'
-      },
-      headerText: {
-        color: MyColors.appOrange,
-        textAlign: 'center',
-        fontSize: 30,
-        textTransform: 'uppercase'
-      }
+    },
+    headerText: {
+      color: MyColors.appOrange,
+      textAlign: 'center',
+      fontSize: 30,
+      textTransform: 'uppercase'
+    }
 }
-
