@@ -20,10 +20,10 @@ const CustomTabBarButton = ({children, onPress}) => (
   >
     <View
       style={{
-        width: 70,
-        height: 70,
+        width: 60,
+        height: 60,
         top: 15,
-        borderRadius: 30,
+        borderRadius: 25,
         backgroundColor: MyColors.appOrange
       }}
     >
@@ -40,7 +40,7 @@ const screenOptions = {
     bottom: 25,
     right: 10,
     left: 10,
-    height: 70,
+    height: 60,
     backgroundColor: '#000',
     borderRadius: 20,
     borderTopColor: 'transparent'

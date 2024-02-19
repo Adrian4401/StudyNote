@@ -166,15 +166,14 @@ const styles = StyleSheet.create({
   },
   eventNameView: {
     width: '100%',
-    padding: 10,
+    padding: 5,
     backgroundColor: MyColors.eventBlue,
-    borderRadius: 20,
+    borderRadius: 15,
     alignItems: 'center'
   },
   eventNameText: {
     fontSize: 25,
     textTransform: 'uppercase',
     color: '#fff'
-  },
-
+  }
 });
