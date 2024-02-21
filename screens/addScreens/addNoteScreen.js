@@ -1,9 +1,14 @@
-import { StyleSheet, Text, View, SafeAreaView, ScrollView, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, ScrollView, StatusBar, Button } from 'react-native';
+
 import { MyColors } from '../../colors';
+
 import { headerStyles } from '../../styles/headerStyles';
 import { globalStyles } from '../../styles/globalStyles';
 
+import { GoBackButton, MakeButton } from '../../components/customButtons';
+
 export default function AddNoteScreen() {
+
     return (
         <>
             <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: '#000'}}/>
@@ -20,13 +25,14 @@ export default function AddNoteScreen() {
                 <ScrollView>
                     <View style={styles.container}>
 
-                        <Text style={{fontSize: 30, color: '#fff'}}>to</Text>
+                        <Text style={{fontSize: 30, color: '#fff'}}>Dodawanie notatek</Text>
 
                     </View>
                 </ScrollView>
 
-                <View style={{backgroundColor: 'red'}}>
-                    <Button title="Wróć"onPress={() => navigation.goBack()} />
+                <View style={globalStyles.bottomButtonsView}>
+                    <GoBackButton />
+                    <MakeButton />
                 </View>
 
             </SafeAreaView>

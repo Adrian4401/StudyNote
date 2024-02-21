@@ -1,13 +1,16 @@
-import { StyleSheet, Text, View, SafeAreaView, StatusBar, Button, ScrollView } from 'react-native';
+import { useState } from 'react';
+import { StyleSheet, Text, View, SafeAreaView, StatusBar, ScrollView, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
+import DropDownPicker from 'react-native-dropdown-picker';
+
 import { MyColors } from '../colors';
+
 import { headerStyles } from '../styles/headerStyles';
 import { globalStyles } from '../styles/globalStyles';
 import { dropdownStyles } from '../styles/dropdownStyles'
-import { Dropdown } from 'react-native-element-dropdown';
-import { useState } from 'react';
 
-import { Ionicons } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
+import { Ionicons, FontAwesome5, Feather, MaterialIcons } from '@expo/vector-icons';
 
 const subjectsList = [
   { label: 'Wszystkie przedmioty', value: '0' },
@@ -24,21 +27,25 @@ const timeList = [
 ];
 
 export default function NoteScreen() {
-  // const [value, setValue] = useState(null);
-  const [subjectValue, setSubjectValue] = useState('0');
-  const [timeValue, setTimeValue] = useState('0');
-  const [isFocus, setIsFocus] = useState(false);
 
-  // const renderLabel = () => {
-  //   if (value || isFocus) {
-  //     return (
-  //       <Text style={[styles.label, isFocus && { color: MyColors.appOrange }]}>
-  //         Dropdown label
-  //       </Text>
-  //     );
-  //   }
-  //   return null;
-  // };
+  const navigation = useNavigation();
+
+  const [openSubjects, setOpenSubjects] = useState(false);
+  const [valueSubjects, setValueSubjects] = useState(null);
+  const [openNewest, setOpenNewest] = useState(false);
+  const [valueNewest, setValueNewest] = useState(null);
+  const [subjects, setSubjects] = useState([
+    {label: 'Wizualizacja 3D', value: '0'},
+    {label: 'Sztuczna Inteligencja', value: '1'},
+    {label: 'Programowanie komponentowe', value: '2'},
+    {label: 'Dynamiczne witryny internetowe', value: '3'}
+  ]);
+  const [newest, setNewest] = useState([
+    {label: 'Najnowsze', value: '0'},
+    {label: 'Najstarsze', value: '1'},
+    {label: 'Ostatni tydzień', value: '1'}
+  ]);
+
 
   return (
     <>
@@ -58,71 +65,72 @@ export default function NoteScreen() {
           <View style={styles.container}>
             
             {/* HEADLINE */}
-            <View style={{...globalStyles.headlineView, marginBottom: 10}}>
+            <View style={globalStyles.headlineViewWithIcon}>
               <Text style={globalStyles.headlineText}>Twoje notatki</Text>
+              <TouchableOpacity onPress={() => navigation.navigate('AddNoteScreen')}>
+                <Feather name="plus" size={26} color="#fff" />
+              </TouchableOpacity>
             </View>
 
-            <View style={{width: '100%', marginBottom: 30}}>
-              {/* {renderLabel()} */}
-              <Dropdown
-                style={[dropdownStyles.dropdown, isFocus && { borderColor: 'blue' }]}
-                placeholderStyle={dropdownStyles.placeholderStyle}
-                selectedTextStyle={dropdownStyles.selectedTextStyle}
-                inputSearchStyle={dropdownStyles.inputSearchStyle}
-                iconStyle={dropdownStyles.iconStyle}
-                data={subjectsList}
-                // search
-                maxHeight={300}
-                labelField="label"
-                valueField="value"
-                placeholder={!isFocus ? subjectsList.find(item => item.value === '0').label : 'Wybierz'}
-                searchPlaceholder="Search..."
-                value={subjectValue}
-                onFocus={() => setIsFocus(true)}
-                onBlur={() => setIsFocus(false)}
-                onChange={item => {
-                  setSubjectValue(item.value);
-                  setIsFocus(false);
+            <View style={{width: '100%', marginBottom: 30, zIndex: 1}}>
+
+              <DropDownPicker
+                open={openSubjects}
+                value={valueSubjects}
+                items={subjects}
+                setOpen={setOpenSubjects}
+                setValue={setValueSubjects}
+                setItems={setSubjects}
+                ScrollView={false}
+                zIndex={10000}
+                style={{
+                  backgroundColor: MyColors.appDark,
+                  borderWidth: 1,
+                  borderColor: MyColors.appOrange,
+                  marginBottom: 10
                 }}
-                // renderLeftIcon={() => (
-                //   <AntDesign
-                //     style={styles.icon}
-                //     color={isFocus ? 'blue' : 'black'}
-                //     name="Safety"
-                //     size={20}
-                //   />
-                // )}
+                dropDownContainerStyle={{
+                  backgroundColor: MyColors.appDark,
+                  borderWidth: 1,
+                  borderColor: MyColors.appOrange
+                }}
+                textStyle={{
+                  color: MyColors.appLightGray
+                }}
+                arrowIconContainerStyle={{
+                  backgroundColor: MyColors.appOrange,
+                  borderRadius: 5
+                }}
               />
 
-              <Dropdown
-                style={[dropdownStyles.dropdown, isFocus && { borderColor: 'blue' }]}
-                placeholderStyle={dropdownStyles.placeholderStyle}
-                selectedTextStyle={dropdownStyles.selectedTextStyle}
-                inputSearchStyle={dropdownStyles.inputSearchStyle}
-                iconStyle={dropdownStyles.iconStyle}
-                data={timeList}
-                // search
-                maxHeight={300}
-                labelField="label"
-                valueField="value"
-                placeholder={!isFocus ? timeList.find(item => item.value === '0').label : 'Wybierz'}
-                searchPlaceholder="Search..."
-                value={timeValue}
-                onFocus={() => setIsFocus(true)}
-                onBlur={() => setIsFocus(false)}
-                onChange={item => {
-                  setTimeValue(item.value);
-                  setIsFocus(false);
+              <DropDownPicker
+                open={openNewest}
+                value={valueNewest}
+                items={newest}
+                setOpen={setOpenNewest}
+                setValue={setValueNewest}
+                setItems={setNewest}
+                ScrollView={false}
+                style={{
+                  backgroundColor: MyColors.appDark,
+                  borderWidth: 1,
+                  borderColor: MyColors.appOrange
                 }}
-                // renderLeftIcon={() => (
-                //   <AntDesign
-                //     style={styles.icon}
-                //     color={isFocus ? 'blue' : 'black'}
-                //     name="Safety"
-                //     size={20}
-                //   />
-                // )}
+                dropDownContainerStyle={{
+                  backgroundColor: MyColors.appDark,
+                  borderWidth: 1,
+                  borderColor: MyColors.appOrange
+                }}
+                textStyle={{
+                  color: MyColors.appLightGray
+                }}
+                arrowIconContainerStyle={{
+                  backgroundColor: MyColors.appOrange,
+                  borderRadius: 5
+                }}
               />
+
+             
             </View>
 
             {/* NOTE */}
@@ -173,10 +181,10 @@ export default function NoteScreen() {
             </View>
 
 
-
-
           </View>
         </ScrollView>
+
+        <View style={{width: '100%',height: 40}} />
 
       </SafeAreaView>
     </>

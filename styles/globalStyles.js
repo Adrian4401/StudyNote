@@ -5,8 +5,15 @@ export const globalStyles = {
         width: '100%',
         marginTop: 10
     },
+    headlineViewWithIcon: {
+        width: '100%',
+        marginTop: 10,
+        marginBottom: 20,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
     headlineText: {
-        fontSize: 20,
+        fontSize: 24,
         textTransform: 'uppercase',
         color: '#fff',
         marginBottom: 10
@@ -38,5 +45,11 @@ export const globalStyles = {
         fontSize: 20,
         color: '#fff',
         paddingHorizontal: 10
+    },
+    bottomButtonsView: {
+        width: '100%',
+        paddingHorizontal: 30,
+        flexDirection: 'row',
+        justifyContent: 'space-between'
     }
 }

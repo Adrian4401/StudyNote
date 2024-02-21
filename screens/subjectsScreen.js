@@ -1,10 +1,16 @@
-import { StyleSheet, Text, View, SafeAreaView, StatusBar, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, StatusBar, ScrollView, TouchableOpacity } from 'react-native';
 import { MyColors } from '../colors';
 import { headerStyles } from '../styles/headerStyles';
 import { globalStyles } from '../styles/globalStyles';
+import { useNavigation } from '@react-navigation/native';
+
+import { Feather } from '@expo/vector-icons';
 
 
 export default function SubjectScreen() {
+
+  const navigation = useNavigation();
+
   return (
     <>
       <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: '#000'}}/>
@@ -23,8 +29,11 @@ export default function SubjectScreen() {
           <View style={styles.container}>
             
             {/* HEADLINE */}
-            <View style={globalStyles.headlineView}>
+            <View style={{...globalStyles.headlineViewWithIcon, marginBottom: 10}}>
               <Text style={globalStyles.headlineText}>Twoje przedmioty</Text>
+              <TouchableOpacity onPress={() => navigation.navigate('AddSubjectScreen')}>
+                <Feather name="plus" size={26} color="#fff" />
+              </TouchableOpacity>
             </View>
 
             <View style={globalStyles.eventView}>
@@ -45,6 +54,8 @@ export default function SubjectScreen() {
             
           </View>
         </ScrollView>
+
+        <View style={{width: '100%',height: 40}} />
 
       </SafeAreaView>
     </>

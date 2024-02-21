@@ -1,8 +1,13 @@
-import { StyleSheet, Text, View, SafeAreaView, ScrollView, StatusBar, Button } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, ScrollView, StatusBar, Button, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 import { MyColors } from '../../colors';
+
 import { headerStyles } from '../../styles/headerStyles';
 import { globalStyles } from '../../styles/globalStyles';
-import { useNavigation } from '@react-navigation/native';
+
+import { GoBackButton, MakeButton } from '../../components/customButtons';
+
 
 export default function AddEventScreen() {
     const navigation = useNavigation();
@@ -23,14 +28,17 @@ export default function AddEventScreen() {
                 <ScrollView>
                     <View style={styles.container}>
 
-                        <Text style={{fontSize: 30, color: '#fff'}}>Miłosz</Text>
+                        <Text style={{fontSize: 30, color: '#fff'}}>Dodawanie wydarzeń</Text>
 
                     </View>
                 </ScrollView>
 
-                <View style={{backgroundColor: 'red'}}>
-                    <Button title="Wróć"onPress={() => navigation.goBack()} />
-                </View>
+
+            <View style={globalStyles.bottomButtonsView}>
+                <GoBackButton />
+                <MakeButton />
+            </View>
+
 
             </SafeAreaView>
         </>

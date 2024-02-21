@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { NavigationContainer, useIsFocused, useNavigation, useNavigationState, useRoute } from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -52,35 +52,12 @@ const screenOptions = {
   }
 }
 
+
+
+
 function MainTabNavigator() {
   
   const navigation = useNavigation();
-
-  const handleTabChange = (screenName) => {
-    navigation.navigate(screenName, {screen : screenName});
-    console.log(screenName);
-    ChangeScreen(screenName);
-  };
-
-  function ChangeScreen(screenName) {
-    if(screenName=='Calendar') {
-      navigation.navigate('AddEventScreen')
-    } else if(screenName=='Note') {
-      navigation.navigate('AddNoteScreen')
-    } else if(screenName=='Subject') {
-      navigation.navigate('AddSubjectScreen')
-    }
-  }
-
-  // function ChangeScreen(screenName) {
-  //   if(screenName==='Calendar') {
-  //     return AddEventScreen;
-  //   } else if(screenName==='Note') {
-  //     return AddNoteScreen;
-  //   } else if(screenName==='Subject') {
-  //     return AddSubjectScreen;
-  //   }
-  // }
 
   return (
     <Tab.Navigator screenOptions={screenOptions} initialRouteName='Calendar'>
@@ -96,9 +73,6 @@ function MainTabNavigator() {
             )
           }
         }}
-        listeners={{
-          tabPress: () => handleTabChange('Calendar')
-        }}
       />
       <Tab.Screen 
         name='Note' 
@@ -112,9 +86,6 @@ function MainTabNavigator() {
             )
           }
         }}
-        listeners={{
-          tabPress: () => handleTabChange('Note')
-        }}
       />
       <Tab.Screen 
         name='Add' 
@@ -126,7 +97,7 @@ function MainTabNavigator() {
             )
           },
           tabBarButton: (props) => (
-            <CustomTabBarButton {...props} navigation={navigation} onPress={() => ChangeScreen()}/>
+            <CustomTabBarButton {...props} navigation={navigation} onPress={() => navigation.navigate('AddEventScreen')}/>
           )
         }}
       />
@@ -142,9 +113,6 @@ function MainTabNavigator() {
             )
           }
         }}
-        listeners={{
-          tabPress: () => handleTabChange('Subject')
-        }}
       />
       <Tab.Screen 
         name='More' 
@@ -158,13 +126,14 @@ function MainTabNavigator() {
             )
           }
         }}
-        listeners={{
-          tabPress: () => handleTabChange('More')
-        }}
       />
     </Tab.Navigator>
+
   );
 }
+
+
+
 
 export default function App() {
   return (

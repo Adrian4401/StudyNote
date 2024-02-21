@@ -32,7 +32,7 @@ export default function CalendarScreen() {
                 <FontAwesome name="user-circle-o" size={24} color={MyColors.appOrange} />
                 <Text style={styles.headlineUserText}>Adrian</Text>
               </View>
-              <Text style={{...globalStyles.headlineText, marginBottom: 0, marginTop: 10}}>Twoje nadchodzące wydarzenia</Text>
+              <Text style={{...globalStyles.headlineText, marginBottom: 0, marginTop: 10}}>Twoje bliższe terminy</Text>
               <Text style={globalStyles.littleText}>najbliższe 7 dni</Text>
             </View>
 
@@ -136,6 +136,8 @@ export default function CalendarScreen() {
 
           </View>
         </ScrollView>
+
+        <View style={{width: '100%',height: 40}} />
 
       </SafeAreaView>
     </>

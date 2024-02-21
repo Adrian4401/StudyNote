@@ -2,9 +2,9 @@ import CalendarScreen from "./CalendarScreen";
 import NoteScreen from "./NoteScreen";
 import SubjectScreen from "./SubjectsScreen";
 import MoreScreen from "./MoreScreen";
-import AddEventScreen from "./addScreens/addEventScreen";
-import AddNoteScreen from "./addScreens/addNoteScreen";
-import AddSubjectScreen from "./addScreens/addSubjectScreen";
+import AddEventScreen from "./addScreens/AddEventScreen";
+import AddNoteScreen from "./addScreens/AddNoteScreen";
+import AddSubjectScreen from "./addScreens/AddSubjectScreen";
 
 
 export {
