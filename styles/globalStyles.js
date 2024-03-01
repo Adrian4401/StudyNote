@@ -28,7 +28,7 @@ export const globalStyles = {
         backgroundColor: MyColors.appDark,
         borderRadius: 20,
         padding: 10,
-        marginVertical: 10
+        marginVertical: 5
     },
     eventSubjectView: {
         flexDirection: 'row',

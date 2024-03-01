@@ -3,8 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { MyColors } from '../colors';
 
-import { MaterialIcons } from '@expo/vector-icons';
-import { Feather } from '@expo/vector-icons';
+import { MaterialIcons, Feather, FontAwesome5 } from '@expo/vector-icons';
 
 export const GoBackButton = () => {
 
@@ -12,31 +11,28 @@ export const GoBackButton = () => {
 
     return (
         <TouchableOpacity style={styles.goBackButton} onPress={() => navigation.goBack()} >
-            <MaterialIcons name="arrow-back-ios-new" size={25} color="#fff" />
+            <MaterialIcons name="arrow-back-ios-new" size={25} color="#fff" style={{marginRight: 5}} />
             <Text style={styles.goBackText}>Wróć</Text>
          </TouchableOpacity>
     )
 }
 
-export const MakeButton = () => {
+export const MakeButton = ({onPress}) => {
     return (
-        <TouchableOpacity style={styles.makeButton} onPress={() => navigation.goBack()} >
-            <Feather name="plus" size={28} color="#fff" />
-            <Text style={styles.makeText}>Dodaj</Text>
+        <TouchableOpacity style={styles.makeButton} onPress={onPress} >
+            {/* <Feather name="plus" size={40} color="#fff" /> */}
+            <FontAwesome5 name="plus" size={40} color="#fff" />
+            {/* <Text style={styles.makeText}>Dodaj</Text> */}
         </TouchableOpacity>
     )
 }
 
 const styles = StyleSheet.create ({
     goBackButton: {
-        width: '45%',
         flexDirection: 'row',
-        backgroundColor: '#000',
         alignItems: 'center',
         paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 20,
-        justifyContent: 'space-between'
+        marginBottom: 20
     },
     goBackText: {
         color: '#fff',
@@ -44,14 +40,12 @@ const styles = StyleSheet.create ({
         paddingRight: 5
     },
     makeButton: {
-        width: '45%',
+        width: '100%',
         flexDirection: 'row',
         backgroundColor: MyColors.appOrange,
-        alignItems: 'center',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
+        paddingVertical: 5,
         borderRadius: 20,
-        justifyContent: 'space-between'
+        justifyContent: 'center'
     },
     makeText: {
         color: '#fff',

@@ -1,18 +1,21 @@
-import React from 'react';
+import { React, useEffect } from 'react';
 import { Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import { Ionicons } from '@expo/vector-icons';
-import { FontAwesome } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
+import * as SQLite from 'expo-sqlite';
+
+import { Ionicons, FontAwesome, FontAwesome5 } from '@expo/vector-icons';
+
 import { MyColors } from './colors';
 
 import { CalendarScreen, NoteScreen, SubjectScreen, MoreScreen, AddEventScreen, AddNoteScreen, AddSubjectScreen } from './screens';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
+
+
 
 
 const CustomTabBarButton = ({children, onPress}) => (
@@ -136,6 +139,20 @@ function MainTabNavigator() {
 
 
 export default function App() {
+
+  const db = SQLite.openDatabase('studynote.db');
+
+  useEffect(() => {
+    db.transaction(tx => 
+      tx.executeSql(
+        'CREATE TABLE IF NOT EXISTS subjects (subject_id INTEGER PRIMARY KEY AUTOINCREMENT, subject_name TEXT)',
+        null,
+        (txObj, resultSet) => console.log('Polaczono z subjects'),
+        (txObj, error) => console.log('Nie udalo sie polaczyc z baza')
+      )
+    );
+  })
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
