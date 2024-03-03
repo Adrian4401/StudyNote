@@ -67,7 +67,7 @@ export default function CalendarScreen() {
 
               <View style={globalStyles.eventSubjectView}>
                 <FontAwesome5 name="book" size={20} color="#fff" />
-                <Text style={globalStyles.subjectText}>Programowanie komponentowe</Text>
+                <Text style={globalStyles.subjectText}>Programowanie komponentowe - wykład</Text>
               </View>
 
               <View>

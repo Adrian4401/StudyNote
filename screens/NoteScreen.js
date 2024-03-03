@@ -1,31 +1,57 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, StatusBar, ScrollView, TouchableOpacity, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
 import DropDownPicker from 'react-native-dropdown-picker';
+import * as SQLite from 'expo-sqlite';
+
+import { Ionicons, FontAwesome5, Feather } from '@expo/vector-icons';
 
 import { MyColors } from '../colors';
 
 import { headerStyles } from '../styles/headerStyles';
 import { globalStyles } from '../styles/globalStyles';
-import { dropdownStyles } from '../styles/dropdownStyles'
 
-import { Ionicons, FontAwesome5, Feather, MaterialIcons } from '@expo/vector-icons';
+
 
 export default function NoteScreen() {
 
   const navigation = useNavigation();
 
+  const db = SQLite.openDatabase('studynote.db');
+
+  const [subjects, setSubjects] = useState([]);
+
+  const loadSubjects = () => {
+    db.transaction(tx => {
+        tx.executeSql(
+            'SELECT * FROM subjects', 
+            null,
+            (txObj, resultSet) => {
+                setSubjects(resultSet.rows._array),
+                console.log('wypisywanie przedmiotow')
+            },
+            (txObj, error) => console.log(error)
+        );
+    });
+  }
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      loadSubjects();
+    });
+
+    return unsubscribe;
+  }, [navigation])
+
+  const subjectOptions = subjects.map(subject => {
+    return { label: subject.subject_name, value: subject.subject_id.toString() };
+  });
+
   const [openSubjects, setOpenSubjects] = useState(false);
   const [valueSubjects, setValueSubjects] = useState(null);
   const [openNewest, setOpenNewest] = useState(false);
   const [valueNewest, setValueNewest] = useState(null);
-  const [subjects, setSubjects] = useState([
-    {label: 'Wizualizacja 3D', value: '0'},
-    {label: 'Sztuczna Inteligencja', value: '1'},
-    {label: 'Programowanie komponentowe', value: '2'},
-    {label: 'Dynamiczne witryny internetowe', value: '3'}
-  ]);
+
   const [newest, setNewest] = useState([
     {label: 'Najnowsze', value: '0'},
     {label: 'Najstarsze', value: '1'},
@@ -46,9 +72,10 @@ export default function NoteScreen() {
       return (
         <View style={{width: '100%', marginBottom: 30}}>
           <DropDownPicker
+            placeholder='Wybierz przedmiot'
             open={openSubjects}
             value={valueSubjects}
-            items={subjects}
+            items={subjectOptions}
             setOpen={setOpenSubjects}
             setValue={setValueSubjects}
             setItems={setSubjects}
@@ -207,7 +234,8 @@ const styles = StyleSheet.create({
     backgroundColor: MyColors.appBackground,
     alignItems: 'center',
     paddingHorizontal: 20,
-    paddingBottom: 50
+    paddingBottom: 50,
+    flexDirection: 'column-reverse'
   },
   style: {
     backgroundColor: MyColors.appDark,

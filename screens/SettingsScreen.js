@@ -8,7 +8,7 @@ import { FontAwesome6 } from '@expo/vector-icons';
 import { MaterialIcons } from '@expo/vector-icons';
 
 
-export default function MoreScreen() {
+export default function SettingsScreen() {
   return (
     <>
       <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: '#000'}}/>
@@ -18,7 +18,7 @@ export default function MoreScreen() {
 
         {/* HEADER */}
         <View style={headerStyles.headerBackground}>
-            <Text style={headerStyles.headerText}>Więcej</Text>
+            <Text style={headerStyles.headerText}>Ustawienia</Text>
         </View>
 
 

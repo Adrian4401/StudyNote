@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { MyColors } from '../colors';
 
-import { MaterialIcons, Feather, FontAwesome5 } from '@expo/vector-icons';
+import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
 export const GoBackButton = () => {
 
@@ -20,9 +20,15 @@ export const GoBackButton = () => {
 export const MakeButton = ({onPress}) => {
     return (
         <TouchableOpacity style={styles.makeButton} onPress={onPress} >
-            {/* <Feather name="plus" size={40} color="#fff" /> */}
             <FontAwesome5 name="plus" size={40} color="#fff" />
-            {/* <Text style={styles.makeText}>Dodaj</Text> */}
+        </TouchableOpacity>
+    )
+}
+
+export const EditButton = ({onPress}) => {
+    return (
+        <TouchableOpacity style={styles.makeButton} onPress={onPress} >
+            <MaterialIcons name="edit" size={40} color="white"/>
         </TouchableOpacity>
     )
 }

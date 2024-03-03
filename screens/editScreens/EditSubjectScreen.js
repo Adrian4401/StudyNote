@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, SafeAreaView, ScrollView, StatusBar, Button, TextInput } from 'react-native';
 import { useEffect, useState } from 'react';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 import * as SQLite from 'expo-sqlite';
 
@@ -8,61 +9,25 @@ import { MyColors } from '../../colors';
 import { headerStyles } from '../../styles/headerStyles';
 import { globalStyles } from '../../styles/globalStyles';
 
-import { GoBackButton, MakeButton } from '../../components/customButtons';
+import { EditButton, GoBackButton } from '../../components/customButtons';
 
 
 
-export default function AddSubjectScreen() {
+
+export default function EditSubjectScreen() {
 
     const db = SQLite.openDatabase('studynote.db');
 
-    const [subjects, setSubjects] = useState([]);
-    const [currentSubject, setCurrentSubject] = useState(undefined);
+    const navigation = useNavigation();
+    const route = useRoute();
 
-    const [isLoading, setIsLoading] = useState(true);
+    const [subjects, setSubjects] = useState([]);
+    const [currentSubject, setCurrentSubject] = useState('');
 
     useEffect(() => {
-        // db.transaction(tx => {
-        //     tx.executeSql(
-        //         'CREATE TABLE IF NOT EXISTS subjects (subject_id INTEGER PRIMARY KEY AUTOINCREMENT, subject_name TEXT)',
-        //         null,
-        //         () => console.log('created subjects'),
-        //         (error) => console.log(error)
-        //     );
-        // });
-
-        db.transaction(tx => {
-            tx.executeSql(
-                'SELECT * FROM subjects', 
-                null,
-                (txObj, resultSet) => {
-                    setSubjects(resultSet.rows._array),
-                    console.log('wypisywanie przedmiotow')
-                },
-                (txObj, error) => console.log(error)
-            );
-        });
-
-        setIsLoading(false);
+        const { subjectName } = route.params;
+        setCurrentSubject(subjectName);
     }, []);
-
-    if(isLoading) {
-        return (
-            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                <Text style={{fontSize: 30}}>Loading...</Text>
-            </View>
-        )
-    }
-
-    const showSubjects = () => {
-        return subjects.map((subject, index) => {
-            return(
-                <View key={index} style={globalStyles.eventView}>
-                    <Text style={globalStyles.subjectText}>{subject.subject_name}</Text>
-                </View>
-            )
-        })
-    }
 
     const addSubject = () => {
         if(currentSubject && typeof currentSubject === "string" && currentSubject.trim() !== "") {
@@ -84,19 +49,6 @@ export default function AddSubjectScreen() {
         }
     }
 
-    
-    
-
-    const deleteSubjects = () => {
-        db.transaction(tx => {
-            tx.executeSql(
-                'DROP TABLE IF EXISTS subjects',
-                null,
-                (txObj, resultSet) => console.log('udalo sie usunac'),
-                (txObj, resultSet) => console.log('nie udalo sie usunac')
-            )
-        })
-    }
 
     return (
         <>
@@ -107,7 +59,7 @@ export default function AddSubjectScreen() {
 
                 {/* HEADER */}
                 <View style={headerStyles.headerBackground}>
-                    <Text style={headerStyles.headerText}>Dodaj przedmiot</Text>
+                    <Text style={headerStyles.headerText}>Edytuj przedmiot</Text>
                 </View>
 
                 {/* CONTAINER */}
@@ -137,21 +89,15 @@ export default function AddSubjectScreen() {
                             }}
                         />
                         
-                        <MakeButton onPress={addSubject}/>
+                        <EditButton onPress={addSubject}/>
 
                         <View style={{width: '100%', justifyContent: 'flex-start', marginBottom: 10, marginTop: 40}}>
                             <Text style={globalStyles.littleText}>Twoje przedmioty</Text>
                         </View>
-                        
-
-                        {showSubjects()}
 
                     </View>
                 </ScrollView>
 
-                {/* <View style={globalStyles.bottomButtonsView}>
-                    <Button title='Usun tabele' onPress={deleteSubjects} />
-                </View> */}
 
             </SafeAreaView>
         </>

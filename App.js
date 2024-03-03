@@ -10,7 +10,7 @@ import { Ionicons, FontAwesome, FontAwesome5 } from '@expo/vector-icons';
 
 import { MyColors } from './colors';
 
-import { CalendarScreen, NoteScreen, SubjectScreen, MoreScreen, AddEventScreen, AddNoteScreen, AddSubjectScreen } from './screens';
+import { CalendarScreen, NoteScreen, ManageScreen, SettingsScreen, AddEventScreen, AddNoteScreen, AddSubjectScreen, EditSubjectScreen } from './screens';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -105,26 +105,26 @@ function MainTabNavigator() {
         }}
       />
       <Tab.Screen 
-        name='Subject' 
-        component={SubjectScreen}
+        name='Manage' 
+        component={ManageScreen}
         options={{
           tabBarIcon: ({focused}) => {
             return(
               <View style={{alignItems: 'center', justifyContent: 'center', top: Platform.OS === 'ios' ? 15 : 0}}>
-                <FontAwesome5 name="book" size={24} color={focused ? '#fff' : '#736D6D'} />
+                <Ionicons name="options" size={24} color={focused ? '#fff' : '#736D6D'} />
               </View>
             )
           }
         }}
       />
       <Tab.Screen 
-        name='More' 
-        component={MoreScreen}
+        name='Settings' 
+        component={SettingsScreen}
         options={{
           tabBarIcon: ({focused}) => {
             return(
               <View style={{alignItems: 'center', justifyContent: 'center', top: Platform.OS === 'ios' ? 15 : 0}}>
-                <Ionicons name="options" size={24} color={focused ? '#fff' : '#736D6D'} />
+                <Ionicons name="settings" size={24} color={focused ? '#fff' : '#736D6D'} />
               </View>
             )
           }
@@ -174,6 +174,11 @@ export default function App() {
         <Stack.Screen
           name='AddSubjectScreen'
           component={AddSubjectScreen}
+          options={{headerShown : false}}
+        />
+        <Stack.Screen
+          name='EditSubjectScreen'
+          component={EditSubjectScreen}
           options={{headerShown : false}}
         />
       </Stack.Navigator>
