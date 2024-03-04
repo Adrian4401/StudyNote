@@ -10,6 +10,8 @@ import { globalStyles } from '../../styles/globalStyles';
 
 import { GoBackButton, MakeButton } from '../../components/customButtons';
 
+import { loadSubjects } from '../../database/DBFunctions';
+
 
 
 export default function AddSubjectScreen() {
@@ -19,40 +21,9 @@ export default function AddSubjectScreen() {
     const [subjects, setSubjects] = useState([]);
     const [currentSubject, setCurrentSubject] = useState(undefined);
 
-    const [isLoading, setIsLoading] = useState(true);
-
     useEffect(() => {
-        // db.transaction(tx => {
-        //     tx.executeSql(
-        //         'CREATE TABLE IF NOT EXISTS subjects (subject_id INTEGER PRIMARY KEY AUTOINCREMENT, subject_name TEXT)',
-        //         null,
-        //         () => console.log('created subjects'),
-        //         (error) => console.log(error)
-        //     );
-        // });
-
-        db.transaction(tx => {
-            tx.executeSql(
-                'SELECT * FROM subjects', 
-                null,
-                (txObj, resultSet) => {
-                    setSubjects(resultSet.rows._array),
-                    console.log('wypisywanie przedmiotow')
-                },
-                (txObj, error) => console.log(error)
-            );
-        });
-
-        setIsLoading(false);
+        loadSubjects(setSubjects);
     }, []);
-
-    if(isLoading) {
-        return (
-            <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-                <Text style={{fontSize: 30}}>Loading...</Text>
-            </View>
-        )
-    }
 
     const showSubjects = () => {
         return subjects.map((subject, index) => {
@@ -83,20 +54,7 @@ export default function AddSubjectScreen() {
             console.log('nie mozna dodac pustego przedmiotu')
         }
     }
-
-    
-    
-
-    const deleteSubjects = () => {
-        db.transaction(tx => {
-            tx.executeSql(
-                'DROP TABLE IF EXISTS subjects',
-                null,
-                (txObj, resultSet) => console.log('udalo sie usunac'),
-                (txObj, resultSet) => console.log('nie udalo sie usunac')
-            )
-        })
-    }
+ 
 
     return (
         <>
@@ -133,7 +91,8 @@ export default function AddSubjectScreen() {
                                 borderColor: MyColors.appOrange,
                                 borderRadius: 10,
                                 padding: 10,
-                                marginVertical: 10
+                                marginVertical: 10,
+                                marginTop: 30
                             }}
                         />
                         

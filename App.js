@@ -6,7 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import * as SQLite from 'expo-sqlite';
 
-import { Ionicons, FontAwesome, FontAwesome5 } from '@expo/vector-icons';
+import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
 import { MyColors } from './colors';
 
@@ -145,7 +145,7 @@ export default function App() {
   useEffect(() => {
     db.transaction(tx => 
       tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS subjects (subject_id INTEGER PRIMARY KEY AUTOINCREMENT, subject_name TEXT)',
+        'CREATE TABLE IF NOT EXISTS subjects (subject_id INTEGER PRIMARY KEY AUTOINCREMENT, subject_name TEXT, is_deleted INTEGER DEFAULT 0)',
         null,
         (txObj, resultSet) => console.log('Polaczono z subjects'),
         (txObj, error) => console.log('Nie udalo sie polaczyc z baza')

@@ -10,6 +10,8 @@ import { MyColors } from '../colors';
 import { headerStyles } from '../styles/headerStyles';
 import { globalStyles } from '../styles/globalStyles';
 
+import { loadSubjects } from '../database/DBFunctions';
+
 
 export default function ManageScreen() {
 
@@ -19,23 +21,23 @@ export default function ManageScreen() {
 
   const [subjects, setSubjects] = useState([]);
 
-  const loadSubjects = () => {
-    db.transaction(tx => {
-        tx.executeSql(
-            'SELECT * FROM subjects', 
-            null,
-            (txObj, resultSet) => {
-                setSubjects(resultSet.rows._array),
-                console.log('wypisywanie przedmiotow')
-            },
-            (txObj, error) => console.log(error)
-        );
-    });
-  }
+  // const loadSubjects = () => {
+  //   db.transaction(tx => {
+  //       tx.executeSql(
+  //           'SELECT * FROM subjects WHERE is_deleted = 0', 
+  //           null,
+  //           (txObj, resultSet) => {
+  //               setSubjects(resultSet.rows._array),
+  //               console.log('wypisywanie przedmiotow')
+  //           },
+  //           (txObj, error) => console.log(error)
+  //       );
+  //   });
+  // }
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      loadSubjects();
+      loadSubjects(setSubjects);
     });
 
     return unsubscribe;
@@ -79,9 +81,12 @@ export default function ManageScreen() {
               </TouchableOpacity>
             </View>
 
-            <ScrollView>
-              {showSubjects()}
-            </ScrollView>
+            <View style={{backgroundColor: MyColors.eventBlue, padding: 10, borderRadius: 20, flex: 1}}>
+              <ScrollView>  
+                  {showSubjects()}
+              </ScrollView>
+            </View>
+            
             
           </View>
           <View style={{flex: 1, width: '100%', marginTop: 20}}>
@@ -92,9 +97,11 @@ export default function ManageScreen() {
               </TouchableOpacity>
             </View>
 
-            <ScrollView>
-              {showSubjects()}
-            </ScrollView>
+            <View style={{backgroundColor: MyColors.eventBlue, padding: 10, borderRadius: 20, flex: 1}}>
+              <ScrollView>  
+                  {showSubjects()}
+              </ScrollView>
+            </View>
           </View>
           
           

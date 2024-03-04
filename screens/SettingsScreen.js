@@ -1,14 +1,46 @@
-import { StyleSheet, Text, View, SafeAreaView, StatusBar, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, StatusBar, ScrollView, TouchableOpacity } from 'react-native';
+
 import { MyColors } from '../colors';
+
 import { headerStyles } from '../styles/headerStyles';
 import { globalStyles } from '../styles/globalStyles';
 
-import { FontAwesome } from '@expo/vector-icons';
-import { FontAwesome6 } from '@expo/vector-icons';
-import { MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome, FontAwesome6, MaterialIcons } from '@expo/vector-icons';
+
+import * as SQLite from 'expo-sqlite';
+
+
 
 
 export default function SettingsScreen() {
+
+  const db = SQLite.openDatabase('studynote.db');
+
+  const deleteSubjects = () => {
+    db.transaction(tx => {
+      tx.executeSql(
+          'DELETE FROM subjects',
+          null,
+          (txObj, resultSet) => {
+            console.log('udalo sie usunac dane z subjects')
+          },
+          (txObj, resultSet) => console.log('nie udalo sie usunac danych z subjects')
+      )
+    })
+  }
+  const deleteTableSubjects = () => {
+    db.transaction(tx => {
+      tx.executeSql(
+          'DROP TABLE IF EXISTS subjects',
+          null,
+          (txObj, resultSet) => {
+            console.log('udalo sie usunac tabele subjects')
+          },
+          (txObj, resultSet) => console.log('nie udalo sie usunac tabeli subjects')
+      )
+    })
+  }
+
   return (
     <>
       <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: '#000'}}/>
@@ -31,10 +63,10 @@ export default function SettingsScreen() {
               <Text style={globalStyles.headlineText}>Ustawienia</Text>
             </View>
           
-            <View style={{...globalStyles.eventView, flexDirection: 'row', paddingHorizontal: 20}}>
+            <TouchableOpacity style={{...globalStyles.eventView, flexDirection: 'row', paddingHorizontal: 20}}>
               <FontAwesome name="user" size={24} color={MyColors.appOrange} style={{paddingHorizontal: 5}}/>
               <Text style={globalStyles.subjectText}>Nazwa użytkownika</Text>
-            </View>
+            </TouchableOpacity>
             <View style={{...globalStyles.eventView, flexDirection: 'row', paddingHorizontal: 20}}>
               <FontAwesome name="paint-brush" size={22} color={MyColors.appOrange} style={{paddingHorizontal: 5}}/>
               <Text style={globalStyles.subjectText}>Motyw aplikacji</Text>
@@ -57,10 +89,15 @@ export default function SettingsScreen() {
               <FontAwesome6 name="file-import" size={22} color={MyColors.appOrange} style={{paddingHorizontal: 5}}/>
               <Text style={globalStyles.subjectText}>Importowanie danych</Text>
             </View>
-            <View style={{...globalStyles.eventView, flexDirection: 'row', paddingHorizontal: 20}}>
+            <TouchableOpacity onPress={deleteSubjects} style={{...globalStyles.eventView, flexDirection: 'row', paddingHorizontal: 20}}>
               <MaterialIcons name="delete" size={24} color={MyColors.appOrange} style={{paddingHorizontal: 5}}/>
-              <Text style={globalStyles.subjectText}>Usuwanie danych</Text>
-            </View>
+              <Text style={globalStyles.subjectText}>Usuń przedmioty</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={deleteTableSubjects} style={{...globalStyles.eventView, flexDirection: 'row', paddingHorizontal: 20}}>
+              <MaterialIcons name="delete" size={24} color={MyColors.appOrange} style={{paddingHorizontal: 5}}/>
+              <Text style={globalStyles.subjectText}>Usuń tabelę przedmioty</Text>
+            </TouchableOpacity>
+            
 
           </View>
         </ScrollView>

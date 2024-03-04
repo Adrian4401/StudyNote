@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, SafeAreaView, ScrollView, StatusBar, Button, TextInput } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, ScrollView, StatusBar, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useEffect, useState } from 'react';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
@@ -7,9 +7,12 @@ import * as SQLite from 'expo-sqlite';
 import { MyColors } from '../../colors';
 
 import { headerStyles } from '../../styles/headerStyles';
-import { globalStyles } from '../../styles/globalStyles';
+
+import { MaterialIcons } from '@expo/vector-icons';
 
 import { EditButton, GoBackButton } from '../../components/customButtons';
+
+import { loadSubjects } from '../../database/DBFunctions';
 
 
 
@@ -29,24 +32,54 @@ export default function EditSubjectScreen() {
         setCurrentSubject(subjectName);
     }, []);
 
-    const addSubject = () => {
-        if(currentSubject && typeof currentSubject === "string" && currentSubject.trim() !== "") {
-            db.transaction(tx => {
-                tx.executeSql('INSERT INTO subjects (subject_name) values (?)', [currentSubject],
-                    (txObj, resultSet) => {
-                        let existingSubjects = [...subjects];
-                        existingSubjects.push({subject_id: resultSet.insertId, subject_name: currentSubject});
-                        setSubjects(existingSubjects);
-                        console.log('udalo sie dodac przedmiot');
-                        setCurrentSubject(undefined);
-                    },
-                    (txObj, error) => console.log('nie udalo sie dodac przedmiotu')
-                );
-            });
-        }
-        else {
-            console.log('nie mozna dodac pustego przedmiotu')
-        }
+    const editSubject = (oldSubjectName, newSubjectName) => {
+        db.transaction(tx => {
+            tx.executeSql(
+                'UPDATE subjects SET subject_name = ? WHERE subject_name = ?',
+                [newSubjectName, oldSubjectName],
+                (txObj, resultSet) => {
+                    console.log('Przedmiot został zaktualizowany');
+                    navigation.goBack(); // Wróć do poprzedniego ekranu
+                },
+                (txObj, error) => {
+                    console.log('Nie udało się zaktualizować przedmiotu:', error);
+                }
+            );
+        });
+
+        loadSubjects(setSubjects);
+    };
+
+    const deleteSubject = (oldSubjectName) => {
+        db.transaction(tx => {
+            tx.executeSql(
+                'UPDATE subjects SET is_deleted = 1 WHERE subject_name = ?',
+                [oldSubjectName],
+                (txObj, resultSet) => {
+                    console.log('Przedmiot został usuniety');
+                    navigation.goBack(); // Wróć do poprzedniego ekranu
+                },
+                (txObj, error) => {
+                    console.log('Nie udało się usunac przedmiotu:', error);
+                }
+            );
+        });
+        
+        loadSubjects(setSubjects);
+    }
+
+    const alertDeleteSubject = (oldSubjectName) => {
+        Alert.alert('Usuwanie przedmiotu', 'Czy na pewno usunąć przedmiot?', [
+            {
+                text: 'Anuluj',
+                onPress: () => console.log('Anuluj'),
+                style: 'cancel'
+            },
+            {
+                text: 'Usuń',
+                onPress: () => deleteSubject(oldSubjectName)
+            }
+        ])
     }
 
 
@@ -66,8 +99,11 @@ export default function EditSubjectScreen() {
                 <ScrollView>
                     <View style={styles.container}>
 
-                        <View style={{alignItems: 'flex-start', width: '100%'}}>
+                        <View style={{alignItems: 'center', width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
                             <GoBackButton />
+                            <TouchableOpacity onPress={() => alertDeleteSubject(route.params.subjectName)}>
+                                <MaterialIcons name="delete" size={30} color='white'/>
+                            </TouchableOpacity>
                         </View>
                         
 
@@ -85,15 +121,12 @@ export default function EditSubjectScreen() {
                                 borderColor: MyColors.appOrange,
                                 borderRadius: 10,
                                 padding: 10,
-                                marginVertical: 10
+                                marginVertical: 10,
+                                marginTop: 30
                             }}
                         />
                         
-                        <EditButton onPress={addSubject}/>
-
-                        <View style={{width: '100%', justifyContent: 'flex-start', marginBottom: 10, marginTop: 40}}>
-                            <Text style={globalStyles.littleText}>Twoje przedmioty</Text>
-                        </View>
+                        <EditButton onPress={() => editSubject(route.params.subjectName, currentSubject)}/>
 
                     </View>
                 </ScrollView>
