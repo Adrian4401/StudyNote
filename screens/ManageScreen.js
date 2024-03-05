@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, StatusBar, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import * as SQLite from 'expo-sqlite';
 import { Feather, MaterialIcons } from '@expo/vector-icons';
 
 import { MyColors } from '../colors';
@@ -10,34 +9,21 @@ import { MyColors } from '../colors';
 import { headerStyles } from '../styles/headerStyles';
 import { globalStyles } from '../styles/globalStyles';
 
-import { loadSubjects } from '../database/DBFunctions';
+import { loadSubjects, loadClasses } from '../database/DBFunctions';
 
 
 export default function ManageScreen() {
 
   const navigation = useNavigation();
 
-  const db = SQLite.openDatabase('studynote.db');
-
   const [subjects, setSubjects] = useState([]);
+  const [classes, setClasses] = useState([]);
 
-  // const loadSubjects = () => {
-  //   db.transaction(tx => {
-  //       tx.executeSql(
-  //           'SELECT * FROM subjects WHERE is_deleted = 0', 
-  //           null,
-  //           (txObj, resultSet) => {
-  //               setSubjects(resultSet.rows._array),
-  //               console.log('wypisywanie przedmiotow')
-  //           },
-  //           (txObj, error) => console.log(error)
-  //       );
-  //   });
-  // }
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
       loadSubjects(setSubjects);
+      loadClasses(setClasses);
     });
 
     return unsubscribe;
@@ -49,6 +35,19 @@ export default function ManageScreen() {
             <View key={index} style={styles.itemsView}>
                 <Text style={styles.itemsText}>{subject.subject_name}</Text>
                 <TouchableOpacity onPress={() => navigation.navigate('EditSubjectScreen', { subjectName: subject.subject_name })} style={{flex: 1, alignItems: 'flex-end'}}>
+                  <MaterialIcons name="edit" size={24} color="white"/>
+                </TouchableOpacity>
+            </View>
+        )
+    })
+  }
+
+  const showClasses = () => {
+    return classes.map((myclass, index) => {
+        return(
+            <View key={index} style={styles.itemsView}>
+                <Text style={styles.itemsText}>{myclass.class_name}</Text>
+                <TouchableOpacity onPress={() => navigation.navigate('EditClassScreen', { className: myclass.class_name })} style={{flex: 1, alignItems: 'flex-end'}}>
                   <MaterialIcons name="edit" size={24} color="white"/>
                 </TouchableOpacity>
             </View>
@@ -92,14 +91,14 @@ export default function ManageScreen() {
           <View style={{flex: 1, width: '100%', marginTop: 20}}>
             <View style={{...globalStyles.headlineViewWithIcon, marginBottom: 10}}>
               <Text style={globalStyles.headlineText}>Rodzaj zajęć</Text>
-              <TouchableOpacity onPress={() => navigation.navigate('AddSubjectScreen')}>
+              <TouchableOpacity onPress={() => navigation.navigate('AddClassScreen')}>
                 <Feather name="plus" size={26} color="#fff" />
               </TouchableOpacity>
             </View>
 
             <View style={{backgroundColor: MyColors.eventBlue, padding: 10, borderRadius: 20, flex: 1}}>
               <ScrollView>  
-                  {showSubjects()}
+                  {showClasses()}
               </ScrollView>
             </View>
           </View>

@@ -10,7 +10,7 @@ import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
 import { MyColors } from './colors';
 
-import { CalendarScreen, NoteScreen, ManageScreen, SettingsScreen, AddEventScreen, AddNoteScreen, AddSubjectScreen, EditSubjectScreen } from './screens';
+import { CalendarScreen, NoteScreen, ManageScreen, SettingsScreen, AddEventScreen, AddNoteScreen, AddSubjectScreen, AddClassScreen, EditSubjectScreen, EditClassScreen } from './screens';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -147,8 +147,16 @@ export default function App() {
       tx.executeSql(
         'CREATE TABLE IF NOT EXISTS subjects (subject_id INTEGER PRIMARY KEY AUTOINCREMENT, subject_name TEXT, is_deleted INTEGER DEFAULT 0)',
         null,
-        (txObj, resultSet) => console.log('Polaczono z subjects'),
-        (txObj, error) => console.log('Nie udalo sie polaczyc z baza')
+        (txObj, resultSet) => console.log('Polaczono z tabela SUBJECTS'),
+        (txObj, error) => console.log('Nie udalo sie polaczyc z tabela SUBJECTS')
+      )
+    );
+    db.transaction(tx => 
+      tx.executeSql(
+        'CREATE TABLE IF NOT EXISTS classes (class_id INTEGER PRIMARY KEY AUTOINCREMENT, class_name TEXT, is_deleted INTEGER DEFAULT 0)',
+        null,
+        (txObj, resultSet) => console.log('Polaczono z tabela CLASSES'),
+        (txObj, error) => console.log('Nie udalo sie polaczyc z tabela CLASSES')
       )
     );
   })
@@ -177,8 +185,18 @@ export default function App() {
           options={{headerShown : false}}
         />
         <Stack.Screen
+          name='AddClassScreen'
+          component={AddClassScreen}
+          options={{headerShown : false}}
+        />
+        <Stack.Screen
           name='EditSubjectScreen'
           component={EditSubjectScreen}
+          options={{headerShown : false}}
+        />
+        <Stack.Screen
+          name='EditClassScreen'
+          component={EditClassScreen}
           options={{headerShown : false}}
         />
       </Stack.Navigator>

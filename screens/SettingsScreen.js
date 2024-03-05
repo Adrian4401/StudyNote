@@ -1,14 +1,13 @@
 import { StyleSheet, Text, View, SafeAreaView, StatusBar, ScrollView, TouchableOpacity } from 'react-native';
 
+import * as SQLite from 'expo-sqlite';
+
 import { MyColors } from '../colors';
 
 import { headerStyles } from '../styles/headerStyles';
 import { globalStyles } from '../styles/globalStyles';
 
-import { FontAwesome, FontAwesome6, MaterialIcons } from '@expo/vector-icons';
-
-import * as SQLite from 'expo-sqlite';
-
+import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 
 
 
@@ -22,9 +21,9 @@ export default function SettingsScreen() {
           'DELETE FROM subjects',
           null,
           (txObj, resultSet) => {
-            console.log('udalo sie usunac dane z subjects')
+            console.log('udalo sie usunac dane z SUBJECTS')
           },
-          (txObj, resultSet) => console.log('nie udalo sie usunac danych z subjects')
+          (txObj, resultSet) => console.log('nie udalo sie usunac danych z SUBJECTS')
       )
     })
   }
@@ -34,9 +33,34 @@ export default function SettingsScreen() {
           'DROP TABLE IF EXISTS subjects',
           null,
           (txObj, resultSet) => {
-            console.log('udalo sie usunac tabele subjects')
+            console.log('udalo sie usunac tabele SUBJECTS')
           },
-          (txObj, resultSet) => console.log('nie udalo sie usunac tabeli subjects')
+          (txObj, resultSet) => console.log('nie udalo sie usunac tabeli SUBJECTS')
+      )
+    })
+  }
+
+  const deleteClasses = () => {
+    db.transaction(tx => {
+      tx.executeSql(
+          'DELETE FROM classes',
+          null,
+          (txObj, resultSet) => {
+            console.log('udalo sie usunac dane z CLASSES')
+          },
+          (txObj, resultSet) => console.log('nie udalo sie usunac danych z CLASSES')
+      )
+    })
+  }
+  const deleteTableClasses = () => {
+    db.transaction(tx => {
+      tx.executeSql(
+          'DROP TABLE IF EXISTS classes',
+          null,
+          (txObj, resultSet) => {
+            console.log('udalo sie usunac tabele CLASSES')
+          },
+          (txObj, resultSet) => console.log('nie udalo sie usunac tabeli CLASSES')
       )
     })
   }
@@ -81,14 +105,7 @@ export default function SettingsScreen() {
               <Text style={globalStyles.headlineText}>Dane</Text>
             </View>
 
-            <View style={{...globalStyles.eventView, flexDirection: 'row', paddingHorizontal: 20}}>
-              <FontAwesome6 name="file-export" size={22} color={MyColors.appOrange} style={{paddingHorizontal: 5}}/>
-              <Text style={globalStyles.subjectText}>Eksportowanie danych</Text>
-            </View>
-            <View style={{...globalStyles.eventView, flexDirection: 'row', paddingHorizontal: 20}}>
-              <FontAwesome6 name="file-import" size={22} color={MyColors.appOrange} style={{paddingHorizontal: 5}}/>
-              <Text style={globalStyles.subjectText}>Importowanie danych</Text>
-            </View>
+            
             <TouchableOpacity onPress={deleteSubjects} style={{...globalStyles.eventView, flexDirection: 'row', paddingHorizontal: 20}}>
               <MaterialIcons name="delete" size={24} color={MyColors.appOrange} style={{paddingHorizontal: 5}}/>
               <Text style={globalStyles.subjectText}>Usuń przedmioty</Text>
@@ -96,6 +113,14 @@ export default function SettingsScreen() {
             <TouchableOpacity onPress={deleteTableSubjects} style={{...globalStyles.eventView, flexDirection: 'row', paddingHorizontal: 20}}>
               <MaterialIcons name="delete" size={24} color={MyColors.appOrange} style={{paddingHorizontal: 5}}/>
               <Text style={globalStyles.subjectText}>Usuń tabelę przedmioty</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={deleteClasses} style={{...globalStyles.eventView, flexDirection: 'row', paddingHorizontal: 20}}>
+              <MaterialIcons name="delete" size={24} color={MyColors.appOrange} style={{paddingHorizontal: 5}}/>
+              <Text style={globalStyles.subjectText}>Usuń zajęcia</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={deleteTableClasses} style={{...globalStyles.eventView, flexDirection: 'row', paddingHorizontal: 20}}>
+              <MaterialIcons name="delete" size={24} color={MyColors.appOrange} style={{paddingHorizontal: 5}}/>
+              <Text style={globalStyles.subjectText}>Usuń tabelę zajęć</Text>
             </TouchableOpacity>
             
 

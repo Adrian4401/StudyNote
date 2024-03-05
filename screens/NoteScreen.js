@@ -1,8 +1,7 @@
 import { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, StatusBar, ScrollView, TouchableOpacity, FlatList } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import * as SQLite from 'expo-sqlite';
 
 import { Ionicons, FontAwesome5, Feather } from '@expo/vector-icons';
 
@@ -11,29 +10,15 @@ import { MyColors } from '../colors';
 import { headerStyles } from '../styles/headerStyles';
 import { globalStyles } from '../styles/globalStyles';
 
+import { loadSubjects } from '../database/DBFunctions';
+
 
 
 export default function NoteScreen() {
 
   const navigation = useNavigation();
 
-  const db = SQLite.openDatabase('studynote.db');
-
   const [subjects, setSubjects] = useState([]);
-
-  const loadSubjects = () => {
-    db.transaction(tx => {
-        tx.executeSql(
-            'SELECT * FROM subjects', 
-            null,
-            (txObj, resultSet) => {
-                setSubjects(resultSet.rows._array),
-                console.log('wypisywanie przedmiotow')
-            },
-            (txObj, error) => console.log(error)
-        );
-    });
-  }
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {

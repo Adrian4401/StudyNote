@@ -12,62 +12,60 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import { EditButton, GoBackButton } from '../../components/customButtons';
 
-import { loadSubjects } from '../../database/DBFunctions';
+import { loadClasses } from '../../database/DBFunctions';
 
 
-
-
-export default function EditSubjectScreen() {
+export default function EditClassScreen() {
 
     const db = SQLite.openDatabase('studynote.db');
 
     const navigation = useNavigation();
     const route = useRoute();
 
-    const [subjects, setSubjects] = useState([]);
-    const [currentSubject, setCurrentSubject] = useState('');
+    const [classes, setClasses] = useState([]);
+    const [currentClass, setCurrentClass] = useState('');
 
     useEffect(() => {
-        const { subjectName } = route.params;
-        setCurrentSubject(subjectName);
+        const { className } = route.params;
+        setCurrentClass(className);
     }, []);
 
-    const editSubject = (oldSubjectName, newSubjectName) => {
+    const editSubject = (oldClassName, newClassName) => {
         db.transaction(tx => {
             tx.executeSql(
-                'UPDATE subjects SET subject_name = ? WHERE subject_name = ?',
-                [newSubjectName, oldSubjectName],
+                'UPDATE classes SET class_name = ? WHERE class_name = ?',
+                [newClassName, oldClassName],
                 (txObj, resultSet) => {
-                    loadSubjects(setSubjects);
-                    console.log('Przedmiot został zaktualizowany');
+                    loadClasses(setClasses);
+                    console.log('Zajecie zostalo zaktualizowane');
                     navigation.goBack(); // Wróć do poprzedniego ekranu
                 },
                 (txObj, error) => {
-                    console.log('Nie udało się zaktualizować przedmiotu:', error);
+                    console.log('Nie udalo se zaktualizowac zajecia:', error);
                 }
             );
         });   
     };
 
-    const deleteSubject = (oldSubjectName) => {
+    const deleteClass = (oldClassName) => {
         db.transaction(tx => {
             tx.executeSql(
-                'UPDATE subjects SET is_deleted = 1 WHERE subject_name = ?',
-                [oldSubjectName],
+                'UPDATE classes SET is_deleted = 1 WHERE class_name = ?',
+                [oldClassName],
                 (txObj, resultSet) => {
-                    loadSubjects(setSubjects);
-                    console.log('Przedmiot został usuniety');
+                    loadClasses(setClasses);
+                    console.log('Zajecie zostalo usuniete');
                     navigation.goBack(); // Wróć do poprzedniego ekranu
                 },
                 (txObj, error) => {
-                    console.log('Nie udało się usunac przedmiotu:', error);
+                    console.log('Nie udalo się usunac zajecia:', error);
                 }
             );
         }); 
     }
 
-    const alertDeleteSubject = (oldSubjectName) => {
-        Alert.alert('Usuwanie przedmiotu', 'Czy na pewno usunąć przedmiot?', [
+    const alertDeleteClass = (oldClassName) => {
+        Alert.alert('Usuwanie zajęć', 'Czy na pewno usunąć zajęcie?', [
             {
                 text: 'Anuluj',
                 onPress: () => console.log('Anuluj'),
@@ -75,7 +73,7 @@ export default function EditSubjectScreen() {
             },
             {
                 text: 'Usuń',
-                onPress: () => deleteSubject(oldSubjectName)
+                onPress: () => deleteClass(oldClassName)
             }
         ])
     }
@@ -90,7 +88,7 @@ export default function EditSubjectScreen() {
 
                 {/* HEADER */}
                 <View style={headerStyles.headerBackground}>
-                    <Text style={headerStyles.headerText}>Edytuj przedmiot</Text>
+                    <Text style={headerStyles.headerText}>Edytuj zajęcia</Text>
                 </View>
 
                 {/* CONTAINER */}
@@ -99,16 +97,16 @@ export default function EditSubjectScreen() {
 
                         <View style={{alignItems: 'center', width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
                             <GoBackButton />
-                            <TouchableOpacity onPress={() => alertDeleteSubject(route.params.subjectName)}>
+                            <TouchableOpacity onPress={() => alertDeleteClass(route.params.className)}>
                                 <MaterialIcons name="delete" size={30} color='white'/>
                             </TouchableOpacity>
                         </View>
                         
 
                         <TextInput 
-                            value={currentSubject}
-                            onChangeText={setCurrentSubject}
-                            placeholder='Dodaj przedmiot...'
+                            value={currentClass}
+                            onChangeText={setCurrentClass}
+                            placeholder='Edytuj zajęcia...'
                             placeholderTextColor={MyColors.appLightGray}
                             maxLength={50}
                             style={{
@@ -124,7 +122,7 @@ export default function EditSubjectScreen() {
                             }}
                         />
                         
-                        <EditButton onPress={() => editSubject(route.params.subjectName, currentSubject)}/>
+                        <EditButton onPress={() => editSubject(route.params.className, currentClass)}/>
 
                     </View>
                 </ScrollView>
