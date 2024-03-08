@@ -1,8 +1,9 @@
-import * as SQLite from 'expo-sqlite';
-
-const db = SQLite.openDatabase('studynote.db');
+import { DBConnect } from "./DBConnect";
 
 export const loadSubjects = (setSubjects) => {
+
+  const db = DBConnect();
+
   db.transaction(tx => {
     tx.executeSql(
       'SELECT * FROM subjects WHERE is_deleted = 0', 
@@ -17,6 +18,9 @@ export const loadSubjects = (setSubjects) => {
 };
 
 export const loadClasses = (setClasses) => {
+
+  const db = DBConnect();
+
   db.transaction(tx => {
     tx.executeSql(
       'SELECT * FROM classes WHERE is_deleted = 0', 

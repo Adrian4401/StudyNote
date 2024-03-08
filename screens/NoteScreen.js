@@ -10,7 +10,7 @@ import { MyColors } from '../colors';
 import { headerStyles } from '../styles/headerStyles';
 import { globalStyles } from '../styles/globalStyles';
 
-import { loadSubjects } from '../database/DBFunctions';
+import { loadSubjects } from '../databaseQueries/Select';
 
 
 
@@ -22,7 +22,7 @@ export default function NoteScreen() {
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-      loadSubjects();
+      loadSubjects(setSubjects)
     });
 
     return unsubscribe;
@@ -107,6 +107,8 @@ export default function NoteScreen() {
     }
   };
 
+
+
   return (
     <>
       <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: '#000'}}/>
@@ -118,14 +120,13 @@ export default function NoteScreen() {
         <View style={headerStyles.headerBackground}>
             <Text style={headerStyles.headerText}>Notatnik</Text>
         </View>
-
-
         
 
         {/* CONTAINER */}
         <View style={styles.container}>
           <FlatList
-            inverted data={[
+            inverted 
+            data={[
               { type: 'note' },
               { type: 'note' },
               { type: 'note' },
@@ -135,12 +136,45 @@ export default function NoteScreen() {
             renderItem={renderItem}
             keyExtractor={(item, index) => index.toString()}
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{paddingTop: 20}}
-            style={{paddingBottom: 20}}
+            style={{flexDirection: 'column-reverse'}}
           />
         </View>
         
-        {/* <ScrollView>
+
+      </SafeAreaView>
+    </>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: MyColors.appBackground,
+    alignItems: 'center',
+    paddingHorizontal: 20
+  },
+  style: {
+    backgroundColor: MyColors.appDark,
+    borderWidth: 1,
+    borderColor: MyColors.appOrange
+  },
+  dropDownContainerStyle: {
+    backgroundColor: MyColors.appDark,
+    borderWidth: 1,
+    borderColor: MyColors.appOrange
+  },
+  textStyle: {
+    color: MyColors.appLightGray
+  },
+  arrowIconContainerStyle: {
+    backgroundColor: MyColors.appOrange,
+    borderRadius: 5
+  }
+});
+
+
+
+{/* <ScrollView>
           <View style={styles.container}>
             
             HEADLINE
@@ -207,36 +241,3 @@ export default function NoteScreen() {
         </ScrollView> */}
 
         {/* <View style={{width: '100%',height: 40}} /> */}
-
-      </SafeAreaView>
-    </>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: MyColors.appBackground,
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingBottom: 50,
-    flexDirection: 'column-reverse'
-  },
-  style: {
-    backgroundColor: MyColors.appDark,
-    borderWidth: 1,
-    borderColor: MyColors.appOrange
-  },
-  dropDownContainerStyle: {
-    backgroundColor: MyColors.appDark,
-    borderWidth: 1,
-    borderColor: MyColors.appOrange
-  },
-  textStyle: {
-    color: MyColors.appLightGray
-  },
-  arrowIconContainerStyle: {
-    backgroundColor: MyColors.appOrange,
-    borderRadius: 5
-  }
-});

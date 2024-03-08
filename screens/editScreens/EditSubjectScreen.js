@@ -12,7 +12,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import { EditButton, GoBackButton } from '../../components/customButtons';
 
-import { loadSubjects } from '../../database/DBFunctions';
+import { loadSubjects } from '../../databaseQueries/Select';
 
 
 
@@ -26,17 +26,19 @@ export default function EditSubjectScreen() {
 
     const [subjects, setSubjects] = useState([]);
     const [currentSubject, setCurrentSubject] = useState('');
+    const [subjectID, setSubjectID] = useState('');
 
     useEffect(() => {
-        const { subjectName } = route.params;
+        const { subjectID, subjectName } = route.params;
         setCurrentSubject(subjectName);
+        setSubjectID(subjectID);
     }, []);
 
-    const editSubject = (oldSubjectName, newSubjectName) => {
+    const editSubject = (subjectID, newSubjectName) => {
         db.transaction(tx => {
             tx.executeSql(
-                'UPDATE subjects SET subject_name = ? WHERE subject_name = ?',
-                [newSubjectName, oldSubjectName],
+                'UPDATE subjects SET subject_name = ? WHERE subject_id = ?',
+                [newSubjectName, subjectID],
                 (txObj, resultSet) => {
                     loadSubjects(setSubjects);
                     console.log('Przedmiot został zaktualizowany');
@@ -49,11 +51,11 @@ export default function EditSubjectScreen() {
         });   
     };
 
-    const deleteSubject = (oldSubjectName) => {
+    const deleteSubject = (subjectID) => {
         db.transaction(tx => {
             tx.executeSql(
-                'UPDATE subjects SET is_deleted = 1 WHERE subject_name = ?',
-                [oldSubjectName],
+                'UPDATE subjects SET is_deleted = 1 WHERE subject_id = ?',
+                [subjectID],
                 (txObj, resultSet) => {
                     loadSubjects(setSubjects);
                     console.log('Przedmiot został usuniety');
@@ -66,7 +68,7 @@ export default function EditSubjectScreen() {
         }); 
     }
 
-    const alertDeleteSubject = (oldSubjectName) => {
+    const alertDeleteSubject = (subjectID) => {
         Alert.alert('Usuwanie przedmiotu', 'Czy na pewno usunąć przedmiot?', [
             {
                 text: 'Anuluj',
@@ -75,7 +77,7 @@ export default function EditSubjectScreen() {
             },
             {
                 text: 'Usuń',
-                onPress: () => deleteSubject(oldSubjectName)
+                onPress: () => deleteSubject(subjectID)
             }
         ])
     }
@@ -99,7 +101,7 @@ export default function EditSubjectScreen() {
 
                         <View style={{alignItems: 'center', width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
                             <GoBackButton />
-                            <TouchableOpacity onPress={() => alertDeleteSubject(route.params.subjectName)}>
+                            <TouchableOpacity onPress={() => alertDeleteSubject(route.params.subjectID)}>
                                 <MaterialIcons name="delete" size={30} color='white'/>
                             </TouchableOpacity>
                         </View>
@@ -124,7 +126,7 @@ export default function EditSubjectScreen() {
                             }}
                         />
                         
-                        <EditButton onPress={() => editSubject(route.params.subjectName, currentSubject)}/>
+                        <EditButton onPress={() => editSubject(route.params.subjectID, currentSubject)}/>
 
                     </View>
                 </ScrollView>

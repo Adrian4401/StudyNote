@@ -10,7 +10,7 @@ import { globalStyles } from '../../styles/globalStyles';
 
 import { GoBackButton, MakeButton } from '../../components/customButtons';
 
-import { loadSubjects } from '../../database/DBFunctions';
+import { loadSubjects } from '../../databaseQueries/Select';
 
 
 

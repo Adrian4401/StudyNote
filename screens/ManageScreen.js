@@ -9,10 +9,15 @@ import { MyColors } from '../colors';
 import { headerStyles } from '../styles/headerStyles';
 import { globalStyles } from '../styles/globalStyles';
 
-import { loadSubjects, loadClasses } from '../database/DBFunctions';
+import { loadSubjects, loadClasses } from '../databaseQueries/Select';
 
+import { DBConnect } from '../databaseQueries/DBConnect';
+
+import * as SQLite from 'expo-sqlite';
 
 export default function ManageScreen() {
+
+  const db = SQLite.openDatabase('studynote.db');
 
   const navigation = useNavigation();
 
@@ -34,7 +39,7 @@ export default function ManageScreen() {
         return(
             <View key={index} style={styles.itemsView}>
                 <Text style={styles.itemsText}>{subject.subject_name}</Text>
-                <TouchableOpacity onPress={() => navigation.navigate('EditSubjectScreen', { subjectName: subject.subject_name })} style={{flex: 1, alignItems: 'flex-end'}}>
+                <TouchableOpacity onPress={() => navigation.navigate('EditSubjectScreen', { subjectID: subject.subject_id, subjectName: subject.subject_name })} style={{flex: 1, alignItems: 'flex-end'}}>
                   <MaterialIcons name="edit" size={24} color="white"/>
                 </TouchableOpacity>
             </View>
@@ -47,7 +52,7 @@ export default function ManageScreen() {
         return(
             <View key={index} style={styles.itemsView}>
                 <Text style={styles.itemsText}>{myclass.class_name}</Text>
-                <TouchableOpacity onPress={() => navigation.navigate('EditClassScreen', { className: myclass.class_name })} style={{flex: 1, alignItems: 'flex-end'}}>
+                <TouchableOpacity onPress={() => navigation.navigate('EditClassScreen', { classID: myclass.class_id, className: myclass.class_name })} style={{flex: 1, alignItems: 'flex-end'}}>
                   <MaterialIcons name="edit" size={24} color="white"/>
                 </TouchableOpacity>
             </View>

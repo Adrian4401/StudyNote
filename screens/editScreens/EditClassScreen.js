@@ -12,7 +12,9 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 import { EditButton, GoBackButton } from '../../components/customButtons';
 
-import { loadClasses } from '../../database/DBFunctions';
+import { loadClasses } from '../../databaseQueries/Select';
+import { deleteClass } from '../../databaseQueries/Delete';
+import { editClass } from '../../databaseQueries/Edit';
 
 
 export default function EditClassScreen() {
@@ -24,17 +26,20 @@ export default function EditClassScreen() {
 
     const [classes, setClasses] = useState([]);
     const [currentClass, setCurrentClass] = useState('');
+    const [classID, setClassID] = useState('');
+    const [newClassName, setNewClassName] = useState('');
 
     useEffect(() => {
-        const { className } = route.params;
+        const { classID, className } = route.params;
         setCurrentClass(className);
+        setClassID(classID);
     }, []);
 
-    const editSubject = (oldClassName, newClassName) => {
+    const editClass = (classID, newClassName) => {
         db.transaction(tx => {
             tx.executeSql(
-                'UPDATE classes SET class_name = ? WHERE class_name = ?',
-                [newClassName, oldClassName],
+                'UPDATE classes SET class_name = ? WHERE class_id = ?',
+                [newClassName, classID],
                 (txObj, resultSet) => {
                     loadClasses(setClasses);
                     console.log('Zajecie zostalo zaktualizowane');
@@ -47,11 +52,11 @@ export default function EditClassScreen() {
         });   
     };
 
-    const deleteClass = (oldClassName) => {
+    const deleteClass = (classID) => {
         db.transaction(tx => {
             tx.executeSql(
-                'UPDATE classes SET is_deleted = 1 WHERE class_name = ?',
-                [oldClassName],
+                'UPDATE classes SET is_deleted = 1 WHERE class_id = ?',
+                [classID],
                 (txObj, resultSet) => {
                     loadClasses(setClasses);
                     console.log('Zajecie zostalo usuniete');
@@ -64,7 +69,7 @@ export default function EditClassScreen() {
         }); 
     }
 
-    const alertDeleteClass = (oldClassName) => {
+    const alertDeleteClass = (classID) => {
         Alert.alert('Usuwanie zajęć', 'Czy na pewno usunąć zajęcie?', [
             {
                 text: 'Anuluj',
@@ -73,7 +78,7 @@ export default function EditClassScreen() {
             },
             {
                 text: 'Usuń',
-                onPress: () => deleteClass(oldClassName)
+                onPress: () => deleteClass(classID)
             }
         ])
     }
@@ -97,7 +102,7 @@ export default function EditClassScreen() {
 
                         <View style={{alignItems: 'center', width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
                             <GoBackButton />
-                            <TouchableOpacity onPress={() => alertDeleteClass(route.params.className)}>
+                            <TouchableOpacity onPress={() => alertDeleteClass(route.params.classID)}>
                                 <MaterialIcons name="delete" size={30} color='white'/>
                             </TouchableOpacity>
                         </View>
@@ -122,7 +127,7 @@ export default function EditClassScreen() {
                             }}
                         />
                         
-                        <EditButton onPress={() => editSubject(route.params.className, currentClass)}/>
+                        <EditButton onPress={() => editClass(route.params.classID, currentClass, navigation)}/>
 
                     </View>
                 </ScrollView>
