@@ -1,9 +1,11 @@
 import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
 import { MyColors } from '../colors';
+import { globalStyles } from '../styles/globalStyles';
 
-import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
+
 
 export const GoBackButton = () => {
 
@@ -29,6 +31,15 @@ export const EditButton = ({onPress}) => {
     return (
         <TouchableOpacity style={styles.makeButton} onPress={onPress} >
             <MaterialIcons name="edit" size={40} color="white"/>
+        </TouchableOpacity>
+    )
+}
+
+export const SettingsScreenButton = ({onPress, icon, text}) => {
+    return (
+        <TouchableOpacity onPress={onPress} style={{...globalStyles.eventView, flexDirection: 'row', paddingHorizontal: 20}}>
+            <MaterialIcons name={icon} size={24} color={MyColors.appOrange} style={{paddingHorizontal: 5}}/>
+            <Text style={globalStyles.subjectText}>{text}</Text>
         </TouchableOpacity>
     )
 }

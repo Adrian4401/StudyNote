@@ -46,16 +46,16 @@ export default function NoteScreen() {
   const renderItem = ({ item }) => {
     if (item.type === 'header') {
       return (
-        <View style={globalStyles.headlineViewWithIcon}>
+        <View style={{...globalStyles.headlineViewWithIcon, marginTop: 30}}>
           <Text style={globalStyles.headlineText}>Twoje notatki</Text>
           <TouchableOpacity onPress={() => navigation.navigate('AddNoteScreen')}>
             <Feather name="plus" size={26} color="#fff" />
           </TouchableOpacity>
         </View>
       );
-    } else if (item.type === 'dropdown') {
+    } else if (item.type === 'subjectsDropdown') {
       return (
-        <View style={{width: '100%', marginBottom: 30}}>
+        <View style={{width: '100%'}}>
           <DropDownPicker
             placeholder='Wybierz przedmiot'
             open={openSubjects}
@@ -65,13 +65,16 @@ export default function NoteScreen() {
             setValue={setValueSubjects}
             setItems={setSubjects}
             ScrollView={false}
-            zIndex={10000}
             style={{...styles.style, marginBottom: 10}}
             dropDownContainerStyle={styles.dropDownContainerStyle}
             textStyle={styles.textStyle}
             arrowIconContainerStyle={styles.arrowIconContainerStyle}
           />
-
+        </View>
+      );
+    } else if(item.type === 'newestDropdown') {
+      return(
+        <View style={{width: '100%', marginBottom: 30}}>
           <DropDownPicker
             open={openNewest}
             value={valueNewest}
@@ -86,7 +89,7 @@ export default function NoteScreen() {
             arrowIconContainerStyle={styles.arrowIconContainerStyle}
           />
         </View>
-      );
+      )
     } else if (item.type === 'note') {
       return (
         <View style={{...globalStyles.eventView, padding: 15, borderColor: MyColors.appLightGray, borderWidth: 1, zIndex: 1}}>
@@ -125,18 +128,18 @@ export default function NoteScreen() {
         {/* CONTAINER */}
         <View style={styles.container}>
           <FlatList
-            inverted 
             data={[
               { type: 'note' },
               { type: 'note' },
               { type: 'note' },
-              { type: 'dropdown' },
+              { type: 'newestDropdown' },
+              { type: 'subjectsDropdown' },
               { type: 'header' }
             ]}
             renderItem={renderItem}
             keyExtractor={(item, index) => index.toString()}
             showsVerticalScrollIndicator={false}
-            style={{flexDirection: 'column-reverse'}}
+            contentContainerStyle={{flexDirection: 'column-reverse'}}
           />
         </View>
         

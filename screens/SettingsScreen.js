@@ -1,69 +1,28 @@
 import { StyleSheet, Text, View, SafeAreaView, StatusBar, ScrollView, TouchableOpacity } from 'react-native';
 
 import * as SQLite from 'expo-sqlite';
+import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 
 import { MyColors } from '../colors';
 
 import { headerStyles } from '../styles/headerStyles';
 import { globalStyles } from '../styles/globalStyles';
 
-import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import { SettingsScreenButton } from '../components/customButtons';
+import { 
+  AlertDeleteAllClasses,
+  AlertDeleteAllNotes,
+  AlertDeleteAllSubjects, 
+  AlertDeleteClassesTable, 
+  AlertDeleteNotesTable, 
+  AlertDeleteSubjectsTable 
+} from '../components/AppAlerts';
 
 
 
 export default function SettingsScreen() {
 
   const db = SQLite.openDatabase('studynote.db');
-
-  const deleteSubjects = () => {
-    db.transaction(tx => {
-      tx.executeSql(
-          'DELETE FROM subjects',
-          null,
-          (txObj, resultSet) => {
-            console.log('udalo sie usunac dane z SUBJECTS')
-          },
-          (txObj, resultSet) => console.log('nie udalo sie usunac danych z SUBJECTS')
-      )
-    })
-  }
-  const deleteTableSubjects = () => {
-    db.transaction(tx => {
-      tx.executeSql(
-          'DROP TABLE IF EXISTS subjects',
-          null,
-          (txObj, resultSet) => {
-            console.log('udalo sie usunac tabele SUBJECTS')
-          },
-          (txObj, resultSet) => console.log('nie udalo sie usunac tabeli SUBJECTS')
-      )
-    })
-  }
-
-  const deleteClasses = () => {
-    db.transaction(tx => {
-      tx.executeSql(
-          'DELETE FROM classes',
-          null,
-          (txObj, resultSet) => {
-            console.log('udalo sie usunac dane z CLASSES')
-          },
-          (txObj, resultSet) => console.log('nie udalo sie usunac danych z CLASSES')
-      )
-    })
-  }
-  const deleteTableClasses = () => {
-    db.transaction(tx => {
-      tx.executeSql(
-          'DROP TABLE IF EXISTS classes',
-          null,
-          (txObj, resultSet) => {
-            console.log('udalo sie usunac tabele CLASSES')
-          },
-          (txObj, resultSet) => console.log('nie udalo sie usunac tabeli CLASSES')
-      )
-    })
-  }
 
   return (
     <>
@@ -105,29 +64,25 @@ export default function SettingsScreen() {
               <Text style={globalStyles.headlineText}>Dane</Text>
             </View>
 
-            
-            <TouchableOpacity onPress={deleteSubjects} style={{...globalStyles.eventView, flexDirection: 'row', paddingHorizontal: 20}}>
-              <MaterialIcons name="delete" size={24} color={MyColors.appOrange} style={{paddingHorizontal: 5}}/>
-              <Text style={globalStyles.subjectText}>Usuń przedmioty</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={deleteTableSubjects} style={{...globalStyles.eventView, flexDirection: 'row', paddingHorizontal: 20}}>
-              <MaterialIcons name="delete" size={24} color={MyColors.appOrange} style={{paddingHorizontal: 5}}/>
-              <Text style={globalStyles.subjectText}>Usuń tabelę przedmioty</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={deleteClasses} style={{...globalStyles.eventView, flexDirection: 'row', paddingHorizontal: 20}}>
-              <MaterialIcons name="delete" size={24} color={MyColors.appOrange} style={{paddingHorizontal: 5}}/>
-              <Text style={globalStyles.subjectText}>Usuń zajęcia</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={deleteTableClasses} style={{...globalStyles.eventView, flexDirection: 'row', paddingHorizontal: 20}}>
-              <MaterialIcons name="delete" size={24} color={MyColors.appOrange} style={{paddingHorizontal: 5}}/>
-              <Text style={globalStyles.subjectText}>Usuń tabelę zajęć</Text>
-            </TouchableOpacity>
+            <View style={globalStyles.headlineView}>
+              <Text style={globalStyles.littleText}>Zarządzanie danymi</Text>
+            </View>
+            <SettingsScreenButton onPress={AlertDeleteAllSubjects} icon={"import-export"} text='Eksportowanie danych'/>
+            <SettingsScreenButton onPress={AlertDeleteSubjectsTable} icon={"import-export"} text='Importowanie danych'/>
+
+            <View style={globalStyles.headlineView}>
+              <Text style={globalStyles.littleText}>Usuwanie danych</Text>
+            </View>
+            <SettingsScreenButton onPress={AlertDeleteAllSubjects} icon={"delete"} text='Usuń wszystkie przedmioty'/>
+            <SettingsScreenButton onPress={AlertDeleteSubjectsTable} icon={"delete"} text='Usuń tabelę przedmiotów'/>
+            <SettingsScreenButton onPress={AlertDeleteAllClasses} icon={"delete"} text='Usuń wszystkie zajęcia'/>
+            <SettingsScreenButton onPress={AlertDeleteClassesTable} icon={"delete"} text='Usuń tabelę zajęć'/>
+            <SettingsScreenButton onPress={AlertDeleteAllNotes} icon={"delete"} text='Usuń wszystkie notatki'/>
+            <SettingsScreenButton onPress={AlertDeleteNotesTable} icon={"delete"} text='Usuń tabelę notatek'/>
             
 
           </View>
         </ScrollView>
-
-        <View style={{width: '100%',height: 40}} />
 
       </SafeAreaView>
     </>
