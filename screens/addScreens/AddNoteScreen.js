@@ -12,6 +12,8 @@ import { GoBackButton, MakeButton } from '../../components/customButtons';
 
 import { loadClasses, loadSubjects } from '../../databaseQueries/Select';
 
+import { DBConnect } from '../../databaseQueries/DBConnect';
+
 export default function AddNoteScreen() {
 
     const navigation = useNavigation();
@@ -19,11 +21,12 @@ export default function AddNoteScreen() {
     const [currentTitle, setCurrentTitle] = useState('');
     const [currentNote, setCurrentNote] = useState('');
 
-    const [openSubjects, setOpenSubjects] = useState(false);
-    const [valueSubjects, setValueSubjects] = useState(null);
-    const [openClasses, setOpenClasses] = useState(false);
-    const [valueClasses, setValueClasses] = useState(null);
+    const [notes, setNotes] = useState([]);
 
+    const [openSubjects, setOpenSubjects] = useState(false);
+    const [openClasses, setOpenClasses] = useState(false);
+    const [currentClass, setCurrentClass] = useState(null);
+    const [currentSubject, setCurrentSubject] = useState(null);
     const [subjects, setSubjects] = useState([]);
     const [classes, setClasses] = useState([]);
 
@@ -43,6 +46,37 @@ export default function AddNoteScreen() {
     const classesItems = classes.map(myclass => {
         return { label: myclass.class_name, value: myclass.class_id.toString() };
     })
+
+
+
+    const db = DBConnect();
+
+    const addNote = (currentTitle, currentNote, currentSubject, currentClass) => {
+        console.log('tytul: ' + currentTitle)
+        console.log('notatka: ' + currentNote)
+        console.log('przedmiot: ' + currentSubject)
+        console.log('zajecia: ' + currentClass)
+        db.transaction(tx =>
+            tx.executeSql(
+                'INSERT INTO notes (title, note, subject_id, class_id) values(?,?,?,?)',
+                [currentTitle, currentNote, currentSubject, currentClass],
+                (txObj, resultSet) => {
+                    // let existingNotes = [...notes];
+                    // existingNotes.push({note_id: resultSet.insertId, title: currentTitle, note: currentNote, subject_id: currentSubject, class_id: currentClass});
+                    // setNotes(existingNotes);
+                    console.log('Udalo sie dodac notatke');
+                    // setCurrentTitle(null);
+                    // setCurrentNote(null);
+                    // setCurrentSubject(null);
+                    // setCurrentClass(null);
+                    navigation.goBack();
+                },
+                (txObj, error) => console.log('Nie udalo sie dodac notatki -> ' + error)
+            )
+        )
+    }
+
+
 
 
     const renderItem = ({item}) => {
@@ -79,10 +113,10 @@ export default function AddNoteScreen() {
                 <DropDownPicker
                     placeholder='Wybierz przedmiot'
                     open={openSubjects}
-                    value={valueSubjects}
+                    value={currentSubject}
                     items={subjectItems}
                     setOpen={setOpenSubjects}
-                    setValue={setValueSubjects}
+                    setValue={setCurrentSubject}
                     setItems={setSubjects}
                     ScrollView={false}
                     style={{...styles.style, marginBottom: 10}}
@@ -96,10 +130,10 @@ export default function AddNoteScreen() {
                 <DropDownPicker
                     placeholder='Wybierz zajęcia'
                     open={openClasses}
-                    value={valueClasses}
+                    value={currentClass}
                     items={classesItems}
                     setOpen={setOpenClasses}
-                    setValue={setValueClasses}
+                    setValue={setCurrentClass}
                     setItems={setClasses}
                     ScrollView={false}
                     style={styles.style}
@@ -131,9 +165,7 @@ export default function AddNoteScreen() {
             )
         } else if(item.type === 'addButton') {
             return(
-                // <View style={{width: '100%', marginBottom: 20}}>
-                    <MakeButton />
-                // </View>    
+                <MakeButton onPress={() => addNote(currentTitle, currentNote, currentSubject, currentClass)}/>
             )
         }
     }

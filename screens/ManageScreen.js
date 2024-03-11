@@ -13,11 +13,9 @@ import { loadSubjects, loadClasses } from '../databaseQueries/Select';
 
 import { DBConnect } from '../databaseQueries/DBConnect';
 
-import * as SQLite from 'expo-sqlite';
-
 export default function ManageScreen() {
 
-  const db = SQLite.openDatabase('studynote.db');
+  const db = DBConnect();
 
   const navigation = useNavigation();
 

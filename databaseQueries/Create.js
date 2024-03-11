@@ -39,6 +39,7 @@ export function Create() {
                     'note TEXT,'+
                     'subject_id INTEGER,'+
                     'class_id INTEGER,'+
+                    'is_deleted INTEGER DEFAULT 0,'+
                     'FOREIGN KEY (subject_id) REFERENCES subjects(subject_id),'+
                     'FOREIGN KEY (class_id) REFERENCES classes(class_id))',
                 null,
