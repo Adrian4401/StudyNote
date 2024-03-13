@@ -96,9 +96,9 @@ export default function AddNoteScreen() {
                     placeholder='Dodaj tytuł notatki...'
                     placeholderTextColor={MyColors.appLightGray}
                     maxLength={100}
+                    multiline
                     style={{
                         color: 'white',
-                        width: '100%',
                         fontSize: 25,
                         borderWidth: 2,
                         borderColor: MyColors.appOrange,
@@ -154,6 +154,7 @@ export default function AddNoteScreen() {
                     multiline={true}
                     style={{
                         color: 'white',
+                        flex: 1,
                         fontSize: 18,
                         borderWidth: 2,
                         borderColor: MyColors.appOrange,
@@ -161,7 +162,8 @@ export default function AddNoteScreen() {
                         padding: 10,
                         marginVertical: 50,
                         height: 400,
-                        backgroundColor: MyColors.appGray
+                        backgroundColor: MyColors.appGray,
+                        flexWrap: 'wrap'
                     }}
                 />
             )
@@ -212,8 +214,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: MyColors.appBackground,
         alignItems: 'center',
-        paddingHorizontal: 20,
-        width: '100%'
+        paddingHorizontal: 20
     },
     style: {
         backgroundColor: MyColors.appDark,
