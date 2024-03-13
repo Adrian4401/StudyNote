@@ -6,9 +6,12 @@ import {
     AddEventScreen, 
     AddNoteScreen, 
     AddSubjectScreen, 
-    AddClassScreen, 
+    AddClassScreen,
+
     EditSubjectScreen, 
-    EditClassScreen 
+    EditClassScreen,
+
+    ReadNoteScreen
 } from '../screens';
 
 const Stack = createNativeStackNavigator();
@@ -52,6 +55,11 @@ export function StackNavigation() {
                 <Stack.Screen
                 name='EditClassScreen'
                 component={EditClassScreen}
+                options={{headerShown : false}}
+                />
+                <Stack.Screen
+                name='ReadNoteScreen'
+                component={ReadNoteScreen}
                 options={{headerShown : false}}
                 />
             </Stack.Navigator>

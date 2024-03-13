@@ -14,9 +14,13 @@ import { loadClasses, loadSubjects } from '../../databaseQueries/Select';
 
 import { DBConnect } from '../../databaseQueries/DBConnect';
 
+import Moment from 'moment';
+
 export default function AddNoteScreen() {
 
     const navigation = useNavigation();
+
+    const db = DBConnect();
 
     const [currentTitle, setCurrentTitle] = useState('');
     const [currentNote, setCurrentNote] = useState('');
@@ -49,26 +53,24 @@ export default function AddNoteScreen() {
 
 
 
-    const db = DBConnect();
 
-    const addNote = (currentTitle, currentNote, currentSubject, currentClass) => {
+    Moment.locale('pl');
+    var noteDate = new Date().toLocaleString();
+    var formattedNoteDate = Moment(formattedNoteDate).format('DD.MM.yyyy');
+
+    
+
+    const addNote = (currentTitle, currentNote, currentSubject, currentClass, formattedNoteDate) => {
         console.log('tytul: ' + currentTitle)
         console.log('notatka: ' + currentNote)
         console.log('przedmiot: ' + currentSubject)
         console.log('zajecia: ' + currentClass)
         db.transaction(tx =>
             tx.executeSql(
-                'INSERT INTO notes (title, note, subject_id, class_id) values(?,?,?,?)',
-                [currentTitle, currentNote, currentSubject, currentClass],
+                'INSERT INTO notes (title, note, subject_id, class_id, create_day) values(?,?,?,?,?)',
+                [currentTitle, currentNote, currentSubject, currentClass, formattedNoteDate],
                 (txObj, resultSet) => {
-                    // let existingNotes = [...notes];
-                    // existingNotes.push({note_id: resultSet.insertId, title: currentTitle, note: currentNote, subject_id: currentSubject, class_id: currentClass});
-                    // setNotes(existingNotes);
                     console.log('Udalo sie dodac notatke');
-                    // setCurrentTitle(null);
-                    // setCurrentNote(null);
-                    // setCurrentSubject(null);
-                    // setCurrentClass(null);
                     navigation.goBack();
                 },
                 (txObj, error) => console.log('Nie udalo sie dodac notatki -> ' + error)
@@ -165,7 +167,7 @@ export default function AddNoteScreen() {
             )
         } else if(item.type === 'addButton') {
             return(
-                <MakeButton onPress={() => addNote(currentTitle, currentNote, currentSubject, currentClass)}/>
+                <MakeButton onPress={() => addNote(currentTitle, currentNote, currentSubject, currentClass, formattedNoteDate)}/>
             )
         }
     }

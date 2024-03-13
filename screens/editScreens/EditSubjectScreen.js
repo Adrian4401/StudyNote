@@ -30,6 +30,7 @@ export default function EditSubjectScreen() {
 
     useEffect(() => {
         const { subjectID, subjectName } = route.params;
+        
         setCurrentSubject(subjectName);
         setSubjectID(subjectID);
     }, []);

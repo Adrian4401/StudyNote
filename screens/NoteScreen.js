@@ -20,6 +20,16 @@ export default function NoteScreen() {
 
   const navigation = useNavigation();
 
+  const db = DBConnect();
+
+
+
+
+  const [openSubjects, setOpenSubjects] = useState(false);
+  const [valueSubjects, setValueSubjects] = useState(null);
+  const [openNewest, setOpenNewest] = useState(false);
+  const [valueNewest, setValueNewest] = useState(null);
+
   const [subjectsDropDown, setSubjectsDropDown] = useState([]);
 
   useEffect(() => {
@@ -34,22 +44,16 @@ export default function NoteScreen() {
     return { label: subject.subject_name, value: subject.subject_id.toString() };
   });
 
-  const [openSubjects, setOpenSubjects] = useState(false);
-  const [valueSubjects, setValueSubjects] = useState(null);
-  const [openNewest, setOpenNewest] = useState(false);
-  const [valueNewest, setValueNewest] = useState(null);
 
-  const db = DBConnect();
 
 
   const [data, setData] = useState([]);
-
 
   useEffect(() => {
     const selectNotes = navigation.addListener('focus', () => {
       db.transaction(tx => 
         tx.executeSql(
-          'SELECT notes.title, notes.note, subjects.subject_name, classes.class_name FROM notes RIGHT JOIN subjects ON notes.subject_id = subjects.subject_id RIGHT JOIN classes ON notes.class_id = classes.class_id WHERE notes.note IS NOT NULL;',
+          'SELECT notes.note_id, notes.title, notes.note, notes.create_day, notes.is_deleted, subjects.subject_name, classes.class_name FROM notes RIGHT JOIN subjects ON notes.subject_id = subjects.subject_id RIGHT JOIN classes ON notes.class_id = classes.class_id WHERE notes.note IS NOT NULL AND notes.is_deleted = 0;',
           [],
           (_, {rows}) => {
             const data = rows._array;
@@ -130,7 +134,7 @@ export default function NoteScreen() {
     } else if (item.type === 'note' && data) {
         return data.map((element, index) => {
           return (
-            <TouchableOpacity key={index} style={styles.noteStyle}>
+            <TouchableOpacity key={index} onPress={() => navigation.navigate('ReadNoteScreen', { title: element.title, subject: element.subject_name, myclass: element.class_name, createDay: element.create_day, note: element.note, noteID: element.note_id, isDeleted: element.is_deleted })} style={styles.noteStyle}>
 
               <View>
                 <Text style={globalStyles.headlineText}>{element.title}</Text>
@@ -139,18 +143,17 @@ export default function NoteScreen() {
               <View style={{flex: 1, backgroundColor: MyColors.appLightGray, height: 1}} />
 
               <View style={styles.infoView}>
-                <FontAwesome5 name="book" size={20} color="#fff" style={{flex: 1}}/>
+                <FontAwesome5 name="book" size={18} color="#fff" style={{flex: 1}}/>
                 <Text style={styles.infoText}>{element.subject_name}</Text>
               </View>
 
               <View style={styles.infoView}>
-                <FontAwesome5 name="book" size={20} color="#fff" style={{flex: 1}}/>
+                <FontAwesome5 name="info-circle" size={18} color="#fff" style={{flex: 1}} />
                 <Text style={styles.infoText}>{element.class_name}</Text>
               </View>
 
               <View style={styles.noteDataView}>
-                  <Ionicons name="calendar-clear" size={18} color='#D1D0D0' style={{flex: 1}} />
-                  <Text style={styles.noteDataText}>12.01.2024</Text>
+                  <Text style={styles.noteDataText}>{element.create_day}</Text>
               </View>
 
               {/* <View style={globalStyles.eventSubjectView}>
@@ -212,7 +215,7 @@ const styles = StyleSheet.create({
     backgroundColor: MyColors.appDark,
     borderRadius: 20,
     padding: 15,
-    marginVertical: 5, 
+    marginBottom: 15, 
     borderColor: MyColors.appLightGray, 
     borderWidth: 1
   },
@@ -224,21 +227,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5
   },
   infoText: {
-    fontSize: 20,
+    fontSize: 18,
     color: '#fff',
     flex: 10
   },
   noteDataView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 15,
+    alignItems: 'flex-end',
+    marginTop: 5,
     paddingHorizontal: 5
   },
   noteDataText: {
-    fontSize: 15,
+    fontSize: 12,
     color: MyColors.appLightGray,
     textTransform: 'uppercase',
-    flex: 10
+    flex: 15
   },
   style: {
     backgroundColor: MyColors.appDark,

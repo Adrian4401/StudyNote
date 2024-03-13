@@ -11,16 +11,22 @@ import AddClassScreen from "./addScreens/AddClassScreen";
 import EditSubjectScreen from "./editScreens/EditSubjectScreen";
 import EditClassScreen from "./editScreens/EditClassScreen";
 
+import ReadNoteScreen from "./readScreens/ReadNoteScreen";
+
 
 export {
     CalendarScreen,
     NoteScreen,
     ManageScreen,
     SettingsScreen,
+
     AddEventScreen,
     AddNoteScreen,
     AddSubjectScreen,
     AddClassScreen,
+
     EditSubjectScreen,
-    EditClassScreen
+    EditClassScreen,
+    
+    ReadNoteScreen
 }
