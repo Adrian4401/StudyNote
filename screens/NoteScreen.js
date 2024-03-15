@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, Flat
 import { useNavigation } from '@react-navigation/native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
-import { Ionicons, FontAwesome5, Feather } from '@expo/vector-icons';
+import { FontAwesome5, Feather } from '@expo/vector-icons';
 
 import { MyColors } from '../colors';
 
@@ -22,9 +22,6 @@ export default function NoteScreen() {
 
   const db = DBConnect();
 
-
-
-
   const [openSubjects, setOpenSubjects] = useState(false);
   const [valueSubjects, setValueSubjects] = useState(null);
   const [openNewest, setOpenNewest] = useState(false);
@@ -33,11 +30,11 @@ export default function NoteScreen() {
   const [subjectsDropDown, setSubjectsDropDown] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
+    const loadData = navigation.addListener('focus', () => {
       loadSubjects(setSubjectsDropDown)
     });
 
-    return unsubscribe;
+    return loadData;
   }, [navigation])
 
   const subjectOptions = subjectsDropDown.map(subject => {
@@ -53,17 +50,25 @@ export default function NoteScreen() {
     const selectNotes = navigation.addListener('focus', () => {
       db.transaction(tx => 
         tx.executeSql(
-          'SELECT notes.note_id, notes.title, notes.note, notes.create_day, notes.is_deleted, subjects.subject_name, classes.class_name FROM notes RIGHT JOIN subjects ON notes.subject_id = subjects.subject_id RIGHT JOIN classes ON notes.class_id = classes.class_id WHERE notes.note IS NOT NULL AND notes.is_deleted = 0;',
+          'SELECT '+ 
+            'notes.note_id,'+
+            'notes.title,'+
+            'notes.note,'+
+            'notes.create_day,'+
+            'notes.subject_id,'+
+            'notes.class_id,'+
+            'notes.is_deleted,'+
+            'subjects.subject_name, '+
+            'classes.class_name '+
+          'FROM notes '+
+          'RIGHT JOIN subjects ON notes.subject_id = subjects.subject_id '+
+          'RIGHT JOIN classes ON notes.class_id = classes.class_id '+
+          'WHERE notes.note IS NOT NULL AND notes.is_deleted = 0',
           [],
           (_, {rows}) => {
             const data = rows._array;
             console.log(data);
             setData(data);
-            // data.map(element => {
-            //   console.log(element.title);
-            //   console.log(element.note);
-            //   console.log(element.subject_name);
-            // })
             console.log('Udalo sie wypisac notatki')
           },
           (txObj, error) => console.log('Nie udalo sie wypisac notatek -> ' + error)
@@ -73,6 +78,70 @@ export default function NoteScreen() {
     
     return selectNotes;
   }, [navigation])
+
+
+
+
+  // useEffect(() => {
+  //   console.log(valueSubjects)
+  //   if (valueSubjects === null) {
+  //     db.transaction(tx => 
+  //       tx.executeSql(
+  //         'SELECT '+ 
+  //           'notes.note_id,'+
+  //           'notes.title,'+
+  //           'notes.note,'+
+  //           'notes.create_day,'+
+  //           'notes.subject_id,'+
+  //           'notes.class_id,'+
+  //           'notes.is_deleted,'+
+  //           'subjects.subject_name, '+
+  //           'classes.class_name '+
+  //         'FROM notes '+
+  //         'RIGHT JOIN subjects ON notes.subject_id = subjects.subject_id '+
+  //         'RIGHT JOIN classes ON notes.class_id = classes.class_id '+
+  //         'WHERE notes.note IS NOT NULL AND notes.is_deleted = 0',
+  //         [],
+  //         (_, {rows}) => {
+  //           const data = rows._array;
+  //           console.log(data);
+  //           setData(data);
+  //           console.log('Udalo sie wypisac notatki')
+  //         },
+  //         (txObj, error) => console.log('Nie udalo sie wypisac notatek -> ' + error)
+  //       )  
+  //     )
+  //   } else {
+  //     db.transaction(tx => {
+  //       tx.executeSql(
+  //         'SELECT '+ 
+  //           'notes.note_id,'+
+  //           'notes.title,'+
+  //           'notes.note,'+
+  //           'notes.create_day,'+
+  //           'notes.subject_id,'+
+  //           'notes.class_id,'+
+  //           'notes.is_deleted,'+
+  //           'subjects.subject_name, '+
+  //           'classes.class_name '+
+  //         'FROM notes '+
+  //         'RIGHT JOIN subjects ON notes.subject_id = subjects.subject_id '+
+  //         'RIGHT JOIN classes ON notes.class_id = classes.class_id '+
+  //         'WHERE notes.note IS NOT NULL AND notes.is_deleted = 0'+
+  //         'AND notes.subject_id = ?',
+  //         [valueSubjects],
+  //         (_, {rows}) => {
+  //           const data = rows._array;
+  //           console.log(data);
+  //           setData(data);
+  //           console.log('Udalo sie wypisac notatki')
+  //         },
+  //         (txObj, error) => console.log('Nie udalo sie wypisac notatek -> ' + error)
+  //       );
+  //     });
+  //   }
+  // }, [valueSubjects]);
+  
 
 
 
@@ -134,7 +203,7 @@ export default function NoteScreen() {
     } else if (item.type === 'note' && data) {
         return data.map((element, index) => {
           return (
-            <TouchableOpacity key={index} onPress={() => navigation.navigate('ReadNoteScreen', { title: element.title, subject: element.subject_name, myclass: element.class_name, createDay: element.create_day, note: element.note, noteID: element.note_id, isDeleted: element.is_deleted })} style={styles.noteStyle}>
+            <TouchableOpacity key={index} onPress={() => navigation.navigate('ReadNoteScreen', { noteID: element.note_id })} style={styles.noteStyle}>
 
               <View>
                 <Text style={globalStyles.headlineText}>{element.title}</Text>

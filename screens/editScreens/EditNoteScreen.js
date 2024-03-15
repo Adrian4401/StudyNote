@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, ScrollView, StatusBar, TextInput, FlatList } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { MyColors } from '../../colors';
 
 import { headerStyles } from '../../styles/headerStyles';
 import { globalStyles } from '../../styles/globalStyles';
 
-import { GoBackButton, MakeButton } from '../../components/customButtons';
+import { EditButton, GoBackButton } from '../../components/customButtons';
 
 import { loadClasses, loadSubjects } from '../../databaseQueries/Select';
 
@@ -16,16 +16,18 @@ import { DBConnect } from '../../databaseQueries/DBConnect';
 
 import Moment from 'moment';
 
-export default function AddNoteScreen() {
+export default function EditNoteScreen() {
 
     const navigation = useNavigation();
+
+    const route = useRoute();
 
     const db = DBConnect();
 
     const [currentTitle, setCurrentTitle] = useState('');
     const [currentNote, setCurrentNote] = useState('');
 
-    const [notes, setNotes] = useState([]);
+    const [data, setData] = useState([]);
 
     const [openSubjects, setOpenSubjects] = useState(false);
     const [openClasses, setOpenClasses] = useState(false);
@@ -33,13 +35,46 @@ export default function AddNoteScreen() {
     const [currentSubject, setCurrentSubject] = useState(null);
     const [subjects, setSubjects] = useState([]);
     const [classes, setClasses] = useState([]);
+    const [noteID, setNoteID] = useState(null);
+    const [defaultSubject, setDefaultSubject] = useState(null);
 
     useEffect(() => {
+        const { noteID } = route.params;
+        setNoteID(noteID)
+
         const loadData = navigation.addListener('focus', () => {
             loadSubjects(setSubjects),
-            loadClasses(setClasses)
+            loadClasses(setClasses),
+
+            db.transaction(tx => 
+                tx.executeSql(
+                  'SELECT '+ 
+                    'notes.note_id,'+
+                    'notes.title,'+
+                    'notes.note,'+
+                    'notes.create_day,'+
+                    'notes.subject_id,'+
+                    'notes.class_id,'+
+                    'notes.is_deleted,'+
+                    'subjects.subject_name, '+
+                    'classes.class_name '+
+                  'FROM notes '+
+                  'RIGHT JOIN subjects ON notes.subject_id = subjects.subject_id '+
+                  'RIGHT JOIN classes ON notes.class_id = classes.class_id '+
+                  'WHERE notes.note IS NOT NULL AND notes.is_deleted = 0 '+
+                  'AND note_id = ?',
+                  [noteID],
+                  (_, {rows}) => {
+                    const note = rows.item(0);
+                    setCurrentTitle(note.title);
+                    setCurrentNote(note.note);
+                    setCurrentNote(note.subject_id);
+                  },
+                  (txObj, error) => console.log('Nie udalo sie wypisac notatek -> ' + error)
+                )  
+            )
         })
-        
+
         return loadData;
     }, [navigation])
 
@@ -60,20 +95,16 @@ export default function AddNoteScreen() {
 
     
 
-    const addNote = (currentTitle, currentNote, currentSubject, currentClass, formattedNoteDate) => {
-        console.log('tytul: ' + currentTitle)
-        console.log('notatka: ' + currentNote)
-        console.log('przedmiot: ' + currentSubject)
-        console.log('zajecia: ' + currentClass)
+    const editNote = (currentTitle, currentNote, currentSubject, currentClass) => {
         db.transaction(tx =>
             tx.executeSql(
-                'INSERT INTO notes (title, note, subject_id, class_id, create_day) values(?,?,?,?,?)',
-                [currentTitle, currentNote, currentSubject, currentClass, formattedNoteDate],
+                'UPDATE notes SET title = ?, note = ?, subject_id = ?, class_id = ? WHERE note_id = ?',
+                [currentTitle, currentNote, currentSubject, currentClass, noteID],
                 (txObj, resultSet) => {
-                    console.log('Udalo sie dodac notatke');
+                    console.log('Udalo sie zaktualizowac notatke');
                     navigation.goBack();
                 },
-                (txObj, error) => console.log('Nie udalo sie dodac notatki -> ' + error)
+                (txObj, error) => console.log('Nie udalo sie zaktualizowac notatki -> ' + error)
             )
         )
     }
@@ -90,8 +121,8 @@ export default function AddNoteScreen() {
             )
         } else if(item.type === 'titleTextInput') {
             return(
-                <TextInput 
-                    value={currentTitle}
+                <TextInput
+                    value={currentTitle.toString()}
                     onChangeText={setCurrentTitle}
                     placeholder='Dodaj tytuł notatki...'
                     placeholderTextColor={MyColors.appLightGray}
@@ -147,7 +178,7 @@ export default function AddNoteScreen() {
         } else if(item.type === 'noteTextInput') {
             return(
                 <TextInput 
-                    value={currentNote}
+                    value={currentNote.toString()}
                     onChangeText={setCurrentNote}
                     placeholder='Dodaj notatkę...'
                     placeholderTextColor={MyColors.appLightGray}
@@ -169,7 +200,7 @@ export default function AddNoteScreen() {
             )
         } else if(item.type === 'addButton') {
             return(
-                <MakeButton onPress={() => addNote(currentTitle, currentNote, currentSubject, currentClass, formattedNoteDate)}/>
+                <EditButton onPress={() => editNote(currentTitle, currentNote, currentSubject, currentClass)} />
             )
         }
     }
@@ -184,7 +215,7 @@ export default function AddNoteScreen() {
 
                 {/* HEADER */}
                 <View style={headerStyles.headerBackground}>
-                    <Text style={headerStyles.headerText}>Dodaj notatkę</Text>
+                    <Text style={headerStyles.headerText}>Edytuj notatkę</Text>
                 </View>
 
                 <View style={styles.container}>

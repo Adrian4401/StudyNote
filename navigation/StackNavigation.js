@@ -10,6 +10,7 @@ import {
 
     EditSubjectScreen, 
     EditClassScreen,
+    EditNoteScreen,
 
     ReadNoteScreen
 } from '../screens';
@@ -60,6 +61,11 @@ export function StackNavigation() {
                 <Stack.Screen
                 name='ReadNoteScreen'
                 component={ReadNoteScreen}
+                options={{headerShown : false}}
+                />
+                <Stack.Screen
+                name='EditNoteScreen'
+                component={EditNoteScreen}
                 options={{headerShown : false}}
                 />
             </Stack.Navigator>

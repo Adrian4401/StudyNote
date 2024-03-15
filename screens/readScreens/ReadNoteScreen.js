@@ -29,16 +29,43 @@ export default function ReadNoteScreen() {
     const [isDeleted, setIsDeleted] = useState(null);
 
     useEffect(() => {
-        const { title, subject, myclass, createDay, note, noteID, isDeleted } = route.params;
+        const { noteID } = route.params;
+        setNoteID(noteID)
 
-        setTitle(title);
-        setSubject(subject);
-        setMyclass(myclass);
-        setCreateDay(createDay);
-        setNote(note);
-        setNoteID(noteID);
-        setIsDeleted(isDeleted);
-    })
+        const loadData = navigation.addListener('focus', () => {
+            db.transaction(tx => 
+                tx.executeSql(
+                'SELECT '+ 
+                    'notes.note_id,'+
+                    'notes.title,'+
+                    'notes.note,'+
+                    'notes.create_day,'+
+                    'notes.subject_id,'+
+                    'notes.class_id,'+
+                    'notes.is_deleted,'+
+                    'subjects.subject_name, '+
+                    'classes.class_name '+
+                'FROM notes '+
+                'RIGHT JOIN subjects ON notes.subject_id = subjects.subject_id '+
+                'RIGHT JOIN classes ON notes.class_id = classes.class_id '+
+                'WHERE notes.note IS NOT NULL AND notes.is_deleted = 0 '+
+                'AND note_id = ?',
+                [noteID],
+                (_, {rows}) => {
+                    const note = rows.item(0);
+                    setTitle(note.title);
+                    setNote(note.note);
+                    setSubject(note.subject_name);
+                    setMyclass(note.class_name);
+                    setCreateDay(note.create_day);
+                },
+                (txObj, error) => console.log('Nie udalo sie wypisac notatek -> ' + error)
+                )  
+            )
+        })
+
+        return loadData;
+    }, [navigation])
 
     const db = DBConnect();
 
@@ -92,7 +119,7 @@ export default function ReadNoteScreen() {
                                 <TouchableOpacity onPress={() => alertDeleteNote(noteID)}>
                                     <MaterialIcons name="delete" size={30} color='white'/>
                                 </TouchableOpacity>
-                                <TouchableOpacity>
+                                <TouchableOpacity onPress={() => navigation.navigate('EditNoteScreen', { noteID: noteID })}>
                                     <MaterialIcons name="edit" size={30} color="white"/>
                                 </TouchableOpacity>
                             </View>

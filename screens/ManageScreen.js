@@ -24,12 +24,12 @@ export default function ManageScreen() {
 
 
   useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
+    const loadData = navigation.addListener('focus', () => {
       loadSubjects(setSubjects);
       loadClasses(setClasses);
     });
 
-    return unsubscribe;
+    return loadData;
   }, [navigation])
 
   const showSubjects = () => {
