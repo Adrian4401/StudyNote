@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 
 import * as SQLite from 'expo-sqlite';
 
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+
 import { MyColors } from '../../colors';
 
 import { headerStyles } from '../../styles/headerStyles';
@@ -25,6 +27,23 @@ export default function AddClassScreen() {
         loadClasses(setClasses);
     }, []);
 
+    const showBottomClassesInfo = () => {
+        if(classes && classes.length > 0){
+            return(
+                <View style={{width: '100%', justifyContent: 'flex-start', marginBottom: 10, marginTop: 40}}>
+                    <Text style={globalStyles.littleText}>Twoje zajęcia</Text>
+                </View>
+            )
+        } else {
+            return(
+                <View style={{width: '100%', alignItems: 'center', marginTop: 100}}>
+                    <Text style={globalStyles.littleText}>Nie masz jeszcze żadnych zajęć.</Text>
+                    <MaterialCommunityIcons name="emoticon-sad" size={100} color={MyColors.appLightGray} style={{marginTop: 20}}/>
+                </View>
+            )
+        }
+    }
+    
     const showClasses = () => {
         return classes.map((myclass, index) => {
             return(
@@ -35,14 +54,16 @@ export default function AddClassScreen() {
         })
     }
 
-    const addClass = () => {
+    const addClass = (currentClass) => {
         if(currentClass && typeof currentClass === "string" && currentClass.trim() !== "") {
             db.transaction(tx => {
-                tx.executeSql('INSERT INTO classes (class_name) values (?)', [currentClass],
+                tx.executeSql(
+                    'INSERT INTO classes (class_name) values (?)', 
+                    [currentClass],
                     (txObj, resultSet) => {
                         let existingClasses = [...classes];
-                        existingClasses.push({class_id: resultSet.insertId, class_name: currentClass});
                         setClasses(existingClasses);
+                        existingClasses.push({class_id: resultSet.insertId, class_name: currentClass});
                         console.log('udalo sie dodac zajecia');
                         setCurrentClass(undefined);
                     },
@@ -96,11 +117,9 @@ export default function AddClassScreen() {
                             }}
                         />
                         
-                        <MakeButton onPress={addClass}/>
+                        <MakeButton onPress={() => addClass(currentClass)}/>
 
-                        <View style={{width: '100%', justifyContent: 'flex-start', marginBottom: 10, marginTop: 40}}>
-                            <Text style={globalStyles.littleText}>Twoje zajęcia</Text>
-                        </View>
+                        {showBottomClassesInfo()}
                         
 
                         {showClasses()}

@@ -65,10 +65,11 @@ export default function EditNoteScreen() {
                   'AND note_id = ?',
                   [noteID],
                   (_, {rows}) => {
-                    const note = rows.item(0);
-                    setCurrentTitle(note.title);
-                    setCurrentNote(note.note);
-                    setCurrentNote(note.subject_id);
+                    const row = rows.item(0);
+                    setCurrentTitle(row.title);
+                    setCurrentNote(row.note);
+                    setCurrentSubject(row.subject_id);
+                    console.log('Udalo sie wypisac notatke')
                   },
                   (txObj, error) => console.log('Nie udalo sie wypisac notatek -> ' + error)
                 )  
@@ -78,13 +79,27 @@ export default function EditNoteScreen() {
         return loadData;
     }, [navigation])
 
-    const subjectItems = subjects.map(subject => {
-        return { label: subject.subject_name, value: subject.subject_id.toString() };
-    });
+    useEffect(() => {
+        console.log('ID przedmiotu: ' + currentSubject);
+    }, [currentSubject]);
 
-    const classesItems = classes.map(myclass => {
-        return { label: myclass.class_name, value: myclass.class_id.toString() };
-    })
+    // const subjectItems = subjects.map(subject => {
+    //     return { label: subject.subject_name, value: subject.subject_id.toString() };
+    // });
+
+    const subjectItems = subjects.map(subject => ({
+        label: subject.subject_name,
+        value: subject.subject_id.toString(),
+    }));
+
+    // const classesItems = classes.map(myclass => {
+    //     return { label: myclass.class_name, value: myclass.class_id.toString() };
+    // })
+
+    const classesItems = classes.map(myclass => ({
+        label: myclass.class_name,
+        value: myclass.class_id.toString(),
+    }));
 
 
 

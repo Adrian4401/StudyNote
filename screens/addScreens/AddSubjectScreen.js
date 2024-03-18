@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View, SafeAreaView, ScrollView, StatusBar, Button, TextInput } from 'react-native';
 import { useEffect, useState } from 'react';
 
-import * as SQLite from 'expo-sqlite';
+import { DBConnect } from '../../databaseQueries/DBConnect';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { MyColors } from '../../colors';
 
@@ -16,7 +17,7 @@ import { loadSubjects } from '../../databaseQueries/Select';
 
 export default function AddSubjectScreen() {
 
-    const db = SQLite.openDatabase('studynote.db');
+    const db = DBConnect();
 
     const [subjects, setSubjects] = useState([]);
     const [currentSubject, setCurrentSubject] = useState(undefined);
@@ -24,6 +25,23 @@ export default function AddSubjectScreen() {
     useEffect(() => {
         loadSubjects(setSubjects);
     }, []);
+
+    const showBottomSubjectsInfo = () => {
+        if(subjects && subjects.length > 0){
+            return(
+                <View style={{width: '100%', justifyContent: 'flex-start', marginBottom: 10, marginTop: 40}}>
+                    <Text style={globalStyles.littleText}>Twoje przedmioty</Text>
+                </View>
+            )
+        } else {
+            return(
+                <View style={{width: '100%', alignItems: 'center', marginTop: 100}}>
+                    <Text style={globalStyles.littleText}>Nie masz jeszcze żadnych przedmiotów.</Text>
+                    <MaterialCommunityIcons name="emoticon-sad" size={100} color={MyColors.appLightGray} style={{marginTop: 20}}/>
+                </View>
+            )
+        }
+    }
 
     const showSubjects = () => {
         return subjects.map((subject, index) => {
@@ -35,23 +53,26 @@ export default function AddSubjectScreen() {
         })
     }
 
-    const addSubject = () => {
+    const addSubject = (currentSubject) => {
+        console.log(currentSubject)
         if(currentSubject && typeof currentSubject === "string" && currentSubject.trim() !== "") {
             db.transaction(tx => {
-                tx.executeSql('INSERT INTO subjects (subject_name) values (?)', [currentSubject],
+                tx.executeSql(
+                    'INSERT INTO subjects (subject_name) values (?)', 
+                    [currentSubject],
                     (txObj, resultSet) => {
                         let existingSubjects = [...subjects];
                         existingSubjects.push({subject_id: resultSet.insertId, subject_name: currentSubject});
                         setSubjects(existingSubjects);
-                        console.log('udalo sie dodac przedmiot');
+                        console.log('Udalo sie dodac przedmiot');
                         setCurrentSubject(undefined);
                     },
-                    (txObj, error) => console.log('nie udalo sie dodac przedmiotu')
+                    (txObj, error) => console.log('Nie udalo sie dodac przedmiotu -> ' + error)
                 );
             });
         }
         else {
-            console.log('nie mozna dodac pustego przedmiotu')
+            console.log('Nie mozna dodac pustego przedmiotu')
         }
     }
  
@@ -96,21 +117,14 @@ export default function AddSubjectScreen() {
                             }}
                         />
                         
-                        <MakeButton onPress={addSubject}/>
+                        <MakeButton onPress={() => addSubject(currentSubject)}/>
 
-                        <View style={{width: '100%', justifyContent: 'flex-start', marginBottom: 10, marginTop: 40}}>
-                            <Text style={globalStyles.littleText}>Twoje przedmioty</Text>
-                        </View>
-                        
+                        {showBottomSubjectsInfo()}
 
                         {showSubjects()}
 
                     </View>
                 </ScrollView>
-
-                {/* <View style={globalStyles.bottomButtonsView}>
-                    <Button title='Usun tabele' onPress={deleteSubjects} />
-                </View> */}
 
             </SafeAreaView>
         </>

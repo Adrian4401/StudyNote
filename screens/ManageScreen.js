@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, StatusBar, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { Feather, MaterialIcons } from '@expo/vector-icons';
+import { Feather, MaterialIcons, AntDesign } from '@expo/vector-icons';
 
 import { MyColors } from '../colors';
 
@@ -79,7 +79,7 @@ export default function ManageScreen() {
             <View style={{...globalStyles.headlineViewWithIcon, marginBottom: 10}}>
               <Text style={globalStyles.headlineText}>przedmioty</Text>
               <TouchableOpacity onPress={() => navigation.navigate('AddSubjectScreen')}>
-                <Feather name="plus" size={26} color="#fff" />
+                <AntDesign name="plus" size={26} color="#fff" />
               </TouchableOpacity>
             </View>
 
@@ -95,7 +95,7 @@ export default function ManageScreen() {
             <View style={{...globalStyles.headlineViewWithIcon, marginBottom: 10}}>
               <Text style={globalStyles.headlineText}>Rodzaj zajęć</Text>
               <TouchableOpacity onPress={() => navigation.navigate('AddClassScreen')}>
-                <Feather name="plus" size={26} color="#fff" />
+                <AntDesign name="plus" size={26} color="#fff" />
               </TouchableOpacity>
             </View>
 

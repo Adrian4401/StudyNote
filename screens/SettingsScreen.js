@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, SafeAreaView, StatusBar, ScrollView, TouchableOpacity } from 'react-native';
 
 import * as SQLite from 'expo-sqlite';
-import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { MyColors } from '../colors';
 
@@ -55,7 +55,7 @@ export default function SettingsScreen() {
               <Text style={globalStyles.subjectText}>Motyw aplikacji</Text>
             </View>
             <View style={{...globalStyles.eventView, flexDirection: 'row', paddingHorizontal: 20}}>
-              <MaterialIcons name="notifications" size={24} color={MyColors.appOrange} style={{paddingHorizontal: 5}}/>
+              <MaterialCommunityIcons name="bell" size={24} color={MyColors.appOrange} style={{paddingHorizontal: 5}}/>
               <Text style={globalStyles.subjectText}>Powiadomienia</Text>
             </View>
 

@@ -3,14 +3,14 @@ import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, Flat
 import { useNavigation } from '@react-navigation/native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
-import { FontAwesome5, Feather } from '@expo/vector-icons';
+import { FontAwesome5, AntDesign } from '@expo/vector-icons';
 
 import { MyColors } from '../colors';
 
 import { headerStyles } from '../styles/headerStyles';
 import { globalStyles } from '../styles/globalStyles';
 
-import { loadSubjects } from '../databaseQueries/Select';
+import { loadSubjects, selectAllNotes } from '../databaseQueries/Select';
 
 import { DBConnect } from '../databaseQueries/DBConnect';
 
@@ -48,6 +48,15 @@ export default function NoteScreen() {
 
   useEffect(() => {
     const selectNotes = navigation.addListener('focus', () => {
+      selectAllNotes(setData);
+    })
+    
+    return selectNotes;
+  }, [navigation])
+
+
+  useEffect(() => {
+    if (valueSubjects !== null) {
       db.transaction(tx => 
         tx.executeSql(
           'SELECT '+ 
@@ -63,95 +72,23 @@ export default function NoteScreen() {
           'FROM notes '+
           'RIGHT JOIN subjects ON notes.subject_id = subjects.subject_id '+
           'RIGHT JOIN classes ON notes.class_id = classes.class_id '+
-          'WHERE notes.note IS NOT NULL AND notes.is_deleted = 0',
-          [],
+          'WHERE notes.note IS NOT NULL AND notes.is_deleted = 0 AND notes.subject_id = ? ',
+          [valueSubjects],
           (_, {rows}) => {
             const data = rows._array;
-            console.log(data);
             setData(data);
-            console.log('Udalo sie wypisac notatki')
           },
-          (txObj, error) => console.log('Nie udalo sie wypisac notatek -> ' + error)
+          (txObj, error) => console.log('Nie udalo sie wypisac notatek dla wybranego przedmiotu -> ' + error)
         )  
       )
-    })
-    
-    return selectNotes;
-  }, [navigation])
+    } else {
+      selectAllNotes(setData);
+    }
+  }, [valueSubjects]);
 
 
 
 
-  // useEffect(() => {
-  //   console.log(valueSubjects)
-  //   if (valueSubjects === null) {
-  //     db.transaction(tx => 
-  //       tx.executeSql(
-  //         'SELECT '+ 
-  //           'notes.note_id,'+
-  //           'notes.title,'+
-  //           'notes.note,'+
-  //           'notes.create_day,'+
-  //           'notes.subject_id,'+
-  //           'notes.class_id,'+
-  //           'notes.is_deleted,'+
-  //           'subjects.subject_name, '+
-  //           'classes.class_name '+
-  //         'FROM notes '+
-  //         'RIGHT JOIN subjects ON notes.subject_id = subjects.subject_id '+
-  //         'RIGHT JOIN classes ON notes.class_id = classes.class_id '+
-  //         'WHERE notes.note IS NOT NULL AND notes.is_deleted = 0',
-  //         [],
-  //         (_, {rows}) => {
-  //           const data = rows._array;
-  //           console.log(data);
-  //           setData(data);
-  //           console.log('Udalo sie wypisac notatki')
-  //         },
-  //         (txObj, error) => console.log('Nie udalo sie wypisac notatek -> ' + error)
-  //       )  
-  //     )
-  //   } else {
-  //     db.transaction(tx => {
-  //       tx.executeSql(
-  //         'SELECT '+ 
-  //           'notes.note_id,'+
-  //           'notes.title,'+
-  //           'notes.note,'+
-  //           'notes.create_day,'+
-  //           'notes.subject_id,'+
-  //           'notes.class_id,'+
-  //           'notes.is_deleted,'+
-  //           'subjects.subject_name, '+
-  //           'classes.class_name '+
-  //         'FROM notes '+
-  //         'RIGHT JOIN subjects ON notes.subject_id = subjects.subject_id '+
-  //         'RIGHT JOIN classes ON notes.class_id = classes.class_id '+
-  //         'WHERE notes.note IS NOT NULL AND notes.is_deleted = 0'+
-  //         'AND notes.subject_id = ?',
-  //         [valueSubjects],
-  //         (_, {rows}) => {
-  //           const data = rows._array;
-  //           console.log(data);
-  //           setData(data);
-  //           console.log('Udalo sie wypisac notatki')
-  //         },
-  //         (txObj, error) => console.log('Nie udalo sie wypisac notatek -> ' + error)
-  //       );
-  //     });
-  //   }
-  // }, [valueSubjects]);
-  
-
-
-
-
-
-  const [newest, setNewest] = useState([
-    {label: 'Najnowsze', value: '0'},
-    {label: 'Najstarsze', value: '1'},
-    {label: 'Ostatni tydzień', value: '2'}
-  ]);
 
   const renderItem = ({ item }) => {
     if (item.type === 'header') {
@@ -159,7 +96,7 @@ export default function NoteScreen() {
         <View style={{...globalStyles.headlineViewWithIcon, marginTop: 30}}>
           <Text style={globalStyles.headlineText}>Twoje notatki</Text>
           <TouchableOpacity onPress={() => navigation.navigate('AddNoteScreen')}>
-            <Feather name="plus" size={26} color="#fff" />
+            <AntDesign name="plus" size={26} color="#fff" />
           </TouchableOpacity>
         </View>
       );
@@ -175,63 +112,41 @@ export default function NoteScreen() {
             setValue={setValueSubjects}
             setItems={setSubjectsDropDown}
             ScrollView={false}
-            style={{...styles.style, marginBottom: 10}}
+            style={{...styles.style, marginBottom: 30}}
             dropDownContainerStyle={styles.dropDownContainerStyle}
             textStyle={styles.textStyle}
             arrowIconContainerStyle={styles.arrowIconContainerStyle}
           />
         </View>
       );
-    } else if(item.type === 'newestDropdown') {
-      return(
-        <View style={{width: '100%', marginBottom: 30}}>
-          <DropDownPicker
-            open={openNewest}
-            value={valueNewest}
-            items={newest}
-            setOpen={setOpenNewest}
-            setValue={setValueNewest}
-            setItems={setNewest}
-            ScrollView={false}
-            style={styles.style}
-            dropDownContainerStyle={styles.dropDownContainerStyle}
-            textStyle={styles.textStyle}
-            arrowIconContainerStyle={styles.arrowIconContainerStyle}
-          />
-        </View>
-      )
     } else if (item.type === 'note' && data) {
-        return data.map((element, index) => {
-          return (
-            <TouchableOpacity key={index} onPress={() => navigation.navigate('ReadNoteScreen', { noteID: element.note_id })} style={styles.noteStyle}>
+      return data.map((element, index) => {
+        return (
+          <TouchableOpacity key={index} onPress={() => navigation.navigate('ReadNoteScreen', { noteID: element.note_id })} style={styles.noteStyle}>
 
-              <View>
-                <Text style={globalStyles.headlineText}>{element.title}</Text>
-              </View>
+            <View>
+              <Text style={globalStyles.headlineText}>{element.title}</Text>
+            </View>
 
-              <View style={{flex: 1, backgroundColor: MyColors.appLightGray, height: 1}} />
+            <View style={{flex: 1, backgroundColor: MyColors.appLightGray, height: 1}} />
 
-              <View style={styles.infoView}>
-                <FontAwesome5 name="book" size={18} color="#fff" style={{flex: 1}}/>
-                <Text style={styles.infoText}>{element.subject_name}</Text>
-              </View>
+            <View style={styles.infoView}>
+              <FontAwesome5 name="book" size={18} color="#fff" style={{flex: 1}}/>
+              <Text style={styles.infoText}>{element.subject_name}</Text>
+            </View>
 
-              <View style={styles.infoView}>
-                <FontAwesome5 name="info-circle" size={18} color="#fff" style={{flex: 1}} />
-                <Text style={styles.infoText}>{element.class_name}</Text>
-              </View>
+            <View style={styles.infoView}>
+              <FontAwesome5 name="info-circle" size={18} color="#fff" style={{flex: 1}} />
+              <Text style={styles.infoText}>{element.class_name}</Text>
+            </View>
 
-              <View style={styles.noteDataView}>
-                  <Text style={styles.noteDataText}>{element.create_day}</Text>
-              </View>
+            <View style={styles.noteDataView}>
+                <Text style={styles.noteDataText}>{element.create_day}</Text>
+            </View>
 
-              {/* <View style={globalStyles.eventSubjectView}>
-                <Text style={globalStyles.subjectText}>{element.note}</Text>
-              </View> */}
-
-            </TouchableOpacity>
-          )
-        })
+          </TouchableOpacity>
+        )
+      })
     }
   };
 
@@ -255,7 +170,6 @@ export default function NoteScreen() {
           <FlatList
             data={[
               { type: 'note' },
-              { type: 'newestDropdown' },
               { type: 'subjectsDropdown' },
               { type: 'header' }
             ]}

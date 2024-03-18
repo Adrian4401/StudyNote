@@ -33,3 +33,35 @@ export const loadClasses = (setClasses) => {
     );
   });
 };
+
+export const selectAllNotes = (setData) => {
+
+  const db = DBConnect();
+
+  db.transaction(tx => 
+    tx.executeSql(
+      'SELECT '+ 
+        'notes.note_id,'+
+        'notes.title,'+
+        'notes.note,'+
+        'notes.create_day,'+
+        'notes.subject_id,'+
+        'notes.class_id,'+
+        'notes.is_deleted,'+
+        'subjects.subject_name, '+
+        'classes.class_name '+
+      'FROM notes '+
+      'RIGHT JOIN subjects ON notes.subject_id = subjects.subject_id '+
+      'RIGHT JOIN classes ON notes.class_id = classes.class_id '+
+      'WHERE notes.note IS NOT NULL AND notes.is_deleted = 0 ',
+      [],
+      (_, {rows}) => {
+        const data = rows._array;
+        console.log(data);
+        setData(data);
+        console.log('Udalo sie wypisac notatki')
+      },
+      (txObj, error) => console.log('Nie udalo sie wypisac notatek -> ' + error)
+    )  
+  )
+}
