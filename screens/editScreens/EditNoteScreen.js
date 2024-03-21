@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, ScrollView, StatusBar, TextInput, FlatList } from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
 import { useNavigation, useRoute } from '@react-navigation/native';
+
+import DropDownPicker from 'react-native-dropdown-picker';
+
 
 import { MyColors } from '../../colors';
 
@@ -83,22 +85,16 @@ export default function EditNoteScreen() {
         console.log('ID przedmiotu: ' + currentSubject);
     }, [currentSubject]);
 
-    // const subjectItems = subjects.map(subject => {
-    //     return { label: subject.subject_name, value: subject.subject_id.toString() };
-    // });
+
 
     const subjectItems = subjects.map(subject => ({
         label: subject.subject_name,
-        value: subject.subject_id.toString(),
+        value: subject.subject_id,
     }));
-
-    // const classesItems = classes.map(myclass => {
-    //     return { label: myclass.class_name, value: myclass.class_id.toString() };
-    // })
 
     const classesItems = classes.map(myclass => ({
         label: myclass.class_name,
-        value: myclass.class_id.toString(),
+        value: myclass.class_id,
     }));
 
 

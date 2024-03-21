@@ -1,8 +1,10 @@
-import { StyleSheet, Text, View, SafeAreaView, ScrollView, StatusBar, Button, TextInput } from 'react-native';
 import { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, SafeAreaView, ScrollView, StatusBar, Button, TextInput } from 'react-native';
+
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { DBConnect } from '../../databaseQueries/DBConnect';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { loadSubjects } from '../../databaseQueries/Select';
 
 import { MyColors } from '../../colors';
 
@@ -11,18 +13,17 @@ import { globalStyles } from '../../styles/globalStyles';
 
 import { GoBackButton, MakeButton } from '../../components/customButtons';
 
-import { loadSubjects } from '../../databaseQueries/Select';
+
 
 
 
 export default function AddSubjectScreen() {
 
-    const db = DBConnect();
-
     const [subjects, setSubjects] = useState([]);
     const [currentSubject, setCurrentSubject] = useState(undefined);
 
     useEffect(() => {
+        console.log('DATA -- Subjects loaded')
         loadSubjects(setSubjects);
     }, []);
 
@@ -53,21 +54,27 @@ export default function AddSubjectScreen() {
         })
     }
 
-    const addSubject = (currentSubject) => {
+    const addSubject = () => {
+
+        const db = DBConnect();
+
         console.log(currentSubject)
+        
         if(currentSubject && typeof currentSubject === "string" && currentSubject.trim() !== "") {
+            console.log(1)
             db.transaction(tx => {
+                console.log(2)
                 tx.executeSql(
-                    'INSERT INTO subjects (subject_name) values (?)', 
+                    'INSERT INTO subjects (subject_name) VALUES (?)', 
                     [currentSubject],
-                    (txObj, resultSet) => {
+                    (_, resultSet) => {
                         let existingSubjects = [...subjects];
                         existingSubjects.push({subject_id: resultSet.insertId, subject_name: currentSubject});
                         setSubjects(existingSubjects);
                         console.log('Udalo sie dodac przedmiot');
                         setCurrentSubject(undefined);
                     },
-                    (txObj, error) => console.log('Nie udalo sie dodac przedmiotu -> ' + error)
+                    (error) => console.log('Nie udalo sie dodac przedmiotu -> ' + error)
                 );
             });
         }
@@ -75,6 +82,7 @@ export default function AddSubjectScreen() {
             console.log('Nie mozna dodac pustego przedmiotu')
         }
     }
+
  
 
     return (
@@ -117,7 +125,7 @@ export default function AddSubjectScreen() {
                             }}
                         />
                         
-                        <MakeButton onPress={() => addSubject(currentSubject)}/>
+                        <MakeButton onPress={addSubject}/>
 
                         {showBottomSubjectsInfo()}
 

@@ -1,0 +1,9 @@
+npm i @react-navigation/native
+npm i @react-navigation/native-stack
+npm i @react-navigation/bottom-tabs
+
+npx expo install expo-sqlite
+
+npm i react-native-dropdown-picker
+
+npm i moment

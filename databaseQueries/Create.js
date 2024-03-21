@@ -13,9 +13,9 @@ export function Create() {
                     'subject_id INTEGER PRIMARY KEY AUTOINCREMENT,'+ 
                     'subject_name TEXT,'+
                     'is_deleted INTEGER DEFAULT 0)',
-                null,
-                (txObj, resultSet) => console.log('Polaczono z tabela SUBJECTS'),
-                (txObj, error) => console.log('Nie udalo sie polaczyc z tabela SUBJECTS -> ' + error)
+                [],
+                (txObj, resultSet) => console.log('DB -- Connected to table SUBJECTS'),
+                (txObj, error) => console.log('DB ERROR -- Connection failed to table SUBJECTS -> ' + error)
             )
         );
 
@@ -25,9 +25,9 @@ export function Create() {
                     'class_id INTEGER PRIMARY KEY AUTOINCREMENT,'+
                     'class_name TEXT,'+
                     'is_deleted INTEGER DEFAULT 0)',
-                null,
-                (txObj, resultSet) => console.log('Polaczono z tabela CLASSES'),
-                (txObj, error) => console.log('Nie udalo sie polaczyc z tabela CLASSES -> ' + error)
+                [],
+                (txObj, resultSet) => console.log('DB -- Connected to table CLASSES'),
+                (txObj, error) => console.log('DB ERROR -- Connection failed to table CLASSES -> ' + error)
             )
         );
 
@@ -43,9 +43,9 @@ export function Create() {
                     'is_deleted INTEGER DEFAULT 0,'+
                     'FOREIGN KEY (subject_id) REFERENCES subjects(subject_id),'+
                     'FOREIGN KEY (class_id) REFERENCES classes(class_id))',
-                null,
-                (txObj, resultSet) => console.log('Polaczono z tabela NOTES'),
-                (txObj, error) => console.log('Nie udalo sie polaczyc z tabela NOTES -> ' + error)
+                [],
+                (txObj, resultSet) => console.log('DB -- Connected to table NOTES'),
+                (txObj, error) => console.log('DB ERROR -- Connection failed to table NOTES -> ' + error)
             )  
         )
     })

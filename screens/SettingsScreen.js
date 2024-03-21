@@ -1,6 +1,5 @@
-import { StyleSheet, Text, View, SafeAreaView, StatusBar, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, StatusBar, ScrollView, TouchableOpacity, Button } from 'react-native';
 
-import * as SQLite from 'expo-sqlite';
 import { FontAwesome, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { MyColors } from '../colors';
@@ -21,8 +20,6 @@ import {
 
 
 export default function SettingsScreen() {
-
-  const db = SQLite.openDatabase('studynote.db');
 
   return (
     <>

@@ -10,9 +10,7 @@ import { MyColors } from '../colors';
 import { headerStyles } from '../styles/headerStyles';
 import { globalStyles } from '../styles/globalStyles';
 
-import { loadSubjects, selectAllNotes } from '../databaseQueries/Select';
-
-import { DBConnect } from '../databaseQueries/DBConnect';
+import { loadSubjects, selectAllNotes, selectChosenNotes } from '../databaseQueries/Select';
 
 
 
@@ -20,73 +18,33 @@ export default function NoteScreen() {
 
   const navigation = useNavigation();
 
-  const db = DBConnect();
-
   const [openSubjects, setOpenSubjects] = useState(false);
   const [valueSubjects, setValueSubjects] = useState(null);
-  const [openNewest, setOpenNewest] = useState(false);
-  const [valueNewest, setValueNewest] = useState(null);
 
   const [subjectsDropDown, setSubjectsDropDown] = useState([]);
 
+  const [data, setData] = useState([]);
+
+
+
   useEffect(() => {
+
     const loadData = navigation.addListener('focus', () => {
-      loadSubjects(setSubjectsDropDown)
+      loadSubjects(setSubjectsDropDown);
+      selectAllNotes(setData);
     });
 
+    selectChosenNotes(valueSubjects, setData);
+
     return loadData;
-  }, [navigation])
+
+  }, [navigation, valueSubjects, setData])
+
+  
 
   const subjectOptions = subjectsDropDown.map(subject => {
     return { label: subject.subject_name, value: subject.subject_id.toString() };
   });
-
-
-
-
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    const selectNotes = navigation.addListener('focus', () => {
-      selectAllNotes(setData);
-    })
-    
-    return selectNotes;
-  }, [navigation])
-
-
-  useEffect(() => {
-    if (valueSubjects !== null) {
-      db.transaction(tx => 
-        tx.executeSql(
-          'SELECT '+ 
-            'notes.note_id,'+
-            'notes.title,'+
-            'notes.note,'+
-            'notes.create_day,'+
-            'notes.subject_id,'+
-            'notes.class_id,'+
-            'notes.is_deleted,'+
-            'subjects.subject_name, '+
-            'classes.class_name '+
-          'FROM notes '+
-          'RIGHT JOIN subjects ON notes.subject_id = subjects.subject_id '+
-          'RIGHT JOIN classes ON notes.class_id = classes.class_id '+
-          'WHERE notes.note IS NOT NULL AND notes.is_deleted = 0 AND notes.subject_id = ? ',
-          [valueSubjects],
-          (_, {rows}) => {
-            const data = rows._array;
-            setData(data);
-          },
-          (txObj, error) => console.log('Nie udalo sie wypisac notatek dla wybranego przedmiotu -> ' + error)
-        )  
-      )
-    } else {
-      selectAllNotes(setData);
-    }
-  }, [valueSubjects]);
-
-
 
 
 
@@ -128,7 +86,7 @@ export default function NoteScreen() {
               <Text style={globalStyles.headlineText}>{element.title}</Text>
             </View>
 
-            <View style={{flex: 1, backgroundColor: MyColors.appLightGray, height: 1}} />
+            <View style={{flex: 1, backgroundColor: MyColors.appLightGray, height: 1, marginBottom: 10}} />
 
             <View style={styles.infoView}>
               <FontAwesome5 name="book" size={18} color="#fff" style={{flex: 1}}/>
@@ -197,26 +155,26 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: MyColors.appDark,
     borderRadius: 20,
-    padding: 15,
+    padding: 12,
     marginBottom: 15, 
     borderColor: MyColors.appLightGray, 
     borderWidth: 1
   },
   infoView: {
     flexDirection: 'row',
-    marginTop: 15,
+    marginTop: 5,
     alignItems: 'center',
     width: '100%',
     paddingHorizontal: 5
   },
   infoText: {
-    fontSize: 18,
+    fontSize: 16,
     color: '#fff',
     flex: 10
   },
   noteDataView: {
     alignItems: 'flex-end',
-    marginTop: 5,
+    marginTop: 2,
     paddingHorizontal: 5
   },
   noteDataText: {

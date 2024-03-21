@@ -1,5 +1,5 @@
 import CalendarScreen from "./CalendarScreen";
-import NoteScreen from "./NoteScreen";
+import NotesScreen from "./NotesScreen";
 import ManageScreen from "./ManageScreen";
 import SettingsScreen from "./SettingsScreen";
 
@@ -17,7 +17,7 @@ import ReadNoteScreen from "./readScreens/ReadNoteScreen";
 
 export {
     CalendarScreen,
-    NoteScreen,
+    NotesScreen,
     ManageScreen,
     SettingsScreen,
 

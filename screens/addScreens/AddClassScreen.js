@@ -54,7 +54,7 @@ export default function AddClassScreen() {
         })
     }
 
-    const addClass = (currentClass) => {
+    const addClass = () => {
         if(currentClass && typeof currentClass === "string" && currentClass.trim() !== "") {
             db.transaction(tx => {
                 tx.executeSql(
@@ -117,7 +117,7 @@ export default function AddClassScreen() {
                             }}
                         />
                         
-                        <MakeButton onPress={() => addClass(currentClass)}/>
+                        <MakeButton onPress={addClass}/>
 
                         {showBottomClassesInfo()}
                         

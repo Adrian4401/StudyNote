@@ -1,20 +1,16 @@
-import { StyleSheet, Text, View, SafeAreaView, ScrollView, StatusBar, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, SafeAreaView, ScrollView, StatusBar, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import * as SQLite from 'expo-sqlite';
+import { MaterialIcons } from '@expo/vector-icons';
+import { loadClasses } from '../../databaseQueries/Select';
 
 import { MyColors } from '../../colors';
 
 import { headerStyles } from '../../styles/headerStyles';
-
-import { MaterialIcons } from '@expo/vector-icons';
-
 import { EditButton, GoBackButton } from '../../components/customButtons';
 
-import { loadClasses } from '../../databaseQueries/Select';
-import { deleteClass } from '../../databaseQueries/Delete';
-import { editClass } from '../../databaseQueries/Edit';
 
 
 export default function EditClassScreen() {

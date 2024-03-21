@@ -6,7 +6,7 @@ import { Ionicons, FontAwesome } from '@expo/vector-icons';
 import { MyColors } from '../colors';
 import { 
     CalendarScreen, 
-    NoteScreen, 
+    NotesScreen, 
     ManageScreen, 
     SettingsScreen, 
     AddEventScreen, 
@@ -74,7 +74,7 @@ export function MainTabNavigator() {
         />
         <Tab.Screen 
           name='Note' 
-          component={NoteScreen}
+          component={NotesScreen}
           options={{
             tabBarIcon: ({focused}) => {
               return(

@@ -13,7 +13,7 @@ export const globalStyles = {
         justifyContent: 'space-between'
     },
     headlineText: {
-        fontSize: 24,
+        fontSize: 22,
         textTransform: 'uppercase',
         color: '#fff',
         marginBottom: 10
