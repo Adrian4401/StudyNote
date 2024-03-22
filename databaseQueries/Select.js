@@ -41,7 +41,7 @@ export const loadSubjects = (setSubjects) => {
         (txObj, resultSet) => {
           setSubjects(resultSet.rows._array),
           console.log('DATA -- Subjects loaded');
-          console.log(resultSet.rows._array);
+          // console.log(resultSet.rows._array);
         },
         (txObj, error) => console.log('ERROR -- Subjects loading failed' + error)
       );

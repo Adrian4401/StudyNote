@@ -1,5 +1,15 @@
 # Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
 
+
+
+
+# my files
+ToDo.txt
+dependencies.txt
+
+
+
+
 # dependencies
 node_modules/
 

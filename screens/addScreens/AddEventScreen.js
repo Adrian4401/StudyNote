@@ -69,7 +69,7 @@ export default function AddEventScreen() {
 
     
 
-    const addNote = (currentTitle, currentNote, currentSubject, currentClass, formattedNoteDate) => {
+    const addEvent = (currentTitle, currentNote, currentSubject, currentClass, formattedNoteDate) => {
         console.log('tytul: ' + currentTitle)
         console.log('notatka: ' + currentNote)
         console.log('przedmiot: ' + currentSubject)
