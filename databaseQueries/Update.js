@@ -2,9 +2,12 @@ import { DBConnect } from "./DBConnect";
 import { loadSubjects, loadClasses } from "./Select";
 
 
-export const editSubject = (oldSubjectName, newSubjectName) => {
 
-    const db = DBConnect();
+const db = DBConnect();
+
+
+
+export const editSubject = (oldSubjectName, newSubjectName) => {
 
     db.transaction(tx => {
         tx.executeSql(
@@ -12,19 +15,17 @@ export const editSubject = (oldSubjectName, newSubjectName) => {
             [newSubjectName, oldSubjectName],
             (txObj, resultSet) => {
                 loadSubjects(setSubjects);
-                console.log('Przedmiot został zaktualizowany');
+                console.log('DATA -- Subject updated successfully');
                 navigation.goBack(); // Wróć do poprzedniego ekranu
             },
             (txObj, error) => {
-                console.log('Nie udało się zaktualizować przedmiotu:', error);
+                console.log('ERROR -- Subject updating failed -> ', error);
             }
         );
     });   
-};
+}
 
 export const editClass = (classID, newClassName, navigation, setClasses) => {
-
-    const db = DBConnect();
 
     db.transaction(tx => {
         tx.executeSql(
@@ -32,12 +33,27 @@ export const editClass = (classID, newClassName, navigation, setClasses) => {
             [newClassName, classID],
             (txObj, resultSet) => {
                 loadClasses(setClasses);
-                console.log('Zajecie zostalo zaktualizowane');
+                console.log('DATA -- Class updated successfully');
                 navigation.goBack(); // Wróć do poprzedniego ekranu
             },
             (txObj, error) => {
-                console.log('Nie udalo se zaktualizowac zajecia:', error);
+                console.log('ERROR -- Class updating failed -> ', error);
             }
         );
     });   
-};
+}
+
+export const editNote = (currentTitle, currentNote, currentSubject, currentClass, noteID, navigation) => {
+
+    db.transaction(tx => {
+        tx.executeSql(
+            'UPDATE notes SET title = ?, note = ?, subject_id = ?, class_id = ? WHERE note_id = ?',
+            [currentTitle, currentNote, currentSubject, currentClass, noteID],
+            (txObj, resultSet) => {
+                console.log('DATA -- Note updated successfully');
+                navigation.goBack();
+            },
+            (txObj, error) => console.log('ERROR -- Note updating failed -> ', error)
+        )
+    })
+}

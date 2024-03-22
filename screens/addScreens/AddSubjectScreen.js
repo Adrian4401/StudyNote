@@ -3,8 +3,8 @@ import { StyleSheet, Text, View, SafeAreaView, ScrollView, StatusBar, Button, Te
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { DBConnect } from '../../databaseQueries/DBConnect';
 import { loadSubjects } from '../../databaseQueries/Select';
+import { addSubject } from '../../databaseQueries/Insert';
 
 import { MyColors } from '../../colors';
 
@@ -22,10 +22,14 @@ export default function AddSubjectScreen() {
     const [subjects, setSubjects] = useState([]);
     const [currentSubject, setCurrentSubject] = useState(undefined);
 
+
+
     useEffect(() => {
         console.log('DATA -- Subjects loaded')
         loadSubjects(setSubjects);
     }, []);
+
+
 
     const showBottomSubjectsInfo = () => {
         if(subjects && subjects.length > 0){
@@ -54,34 +58,7 @@ export default function AddSubjectScreen() {
         })
     }
 
-    const addSubject = () => {
-
-        const db = DBConnect();
-
-        console.log(currentSubject)
-        
-        if(currentSubject && typeof currentSubject === "string" && currentSubject.trim() !== "") {
-            console.log(1)
-            db.transaction(tx => {
-                console.log(2)
-                tx.executeSql(
-                    'INSERT INTO subjects (subject_name) VALUES (?)', 
-                    [currentSubject],
-                    (_, resultSet) => {
-                        let existingSubjects = [...subjects];
-                        existingSubjects.push({subject_id: resultSet.insertId, subject_name: currentSubject});
-                        setSubjects(existingSubjects);
-                        console.log('Udalo sie dodac przedmiot');
-                        setCurrentSubject(undefined);
-                    },
-                    (error) => console.log('Nie udalo sie dodac przedmiotu -> ' + error)
-                );
-            });
-        }
-        else {
-            console.log('Nie mozna dodac pustego przedmiotu')
-        }
-    }
+    
 
  
 
@@ -125,7 +102,7 @@ export default function AddSubjectScreen() {
                             }}
                         />
                         
-                        <MakeButton onPress={addSubject}/>
+                        <MakeButton onPress={() => addSubject(currentSubject, setCurrentSubject, subjects, setSubjects)}/>
 
                         {showBottomSubjectsInfo()}
 

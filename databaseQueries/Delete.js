@@ -1,137 +1,109 @@
+import { useNavigation } from "@react-navigation/native";
 import { DBConnect } from "./DBConnect"
 
-export const deleteTableSubjects = () => {
 
-    const db = DBConnect();
+
+const db = DBConnect();
+
+
+
+export const deleteTableSubjects = () => {
 
     db.transaction(tx => {
       tx.executeSql(
           'DROP TABLE IF EXISTS subjects',
           null,
-          (txObj, resultSet) => {
-            console.log('udalo sie usunac tabele SUBJECTS')
+          (_, resultSet) => {
+            console.log('DATA -- Subjects table deleted')
           },
-          (txObj, resultSet) => console.log('nie udalo sie usunac tabeli SUBJECTS')
+          (error) => console.log('ERROR -- Deleting subjects table failed -> ', error)
       )
     })
 }
 
 export const deleteSubjects = () => {
 
-    const db = DBConnect();
-
     db.transaction(tx => {
       tx.executeSql(
           'DELETE FROM subjects',
           null,
-          (txObj, resultSet) => {
-            console.log('udalo sie usunac dane z SUBJECTS')
+          (_, resultSet) => {
+            console.log('DATA -- Data from table subjects deleted')
           },
-          (txObj, resultSet) => console.log('nie udalo sie usunac danych z SUBJECTS')
+          (error) => console.log('ERROR -- Deleting data from subjects table failed -> ', error)
       )
     })
 }
 
 export const deleteTableClasses = () => {
 
-    const db = DBConnect();
-
     db.transaction(tx => {
       tx.executeSql(
           'DROP TABLE IF EXISTS classes',
           null,
-          (txObj, resultSet) => {
-            console.log('udalo sie usunac tabele CLASSES')
+          (_, resultSet) => {
+            console.log('DATA -- Classes table deleted')
           },
-          (txObj, resultSet) => console.log('nie udalo sie usunac tabeli CLASSES')
+          (error) => console.log('ERROR -- Deleting classes table failed -> ', error)
       )
     })
 }
 
 export const deleteClasses = () => {
 
-    const db = DBConnect();
-
     db.transaction(tx => {
       tx.executeSql(
           'DELETE FROM classes',
           null,
-          (txObj, resultSet) => {
-            console.log('udalo sie usunac dane z CLASSES')
+          (_, resultSet) => {
+            console.log('DATA -- Data from table classes deleted')
           },
-          (txObj, resultSet) => console.log('nie udalo sie usunac danych z CLASSES')
+          (error) => console.log('ERROR -- Deleting data from classes table failed -> ', error)
       )
     })
 }
 
 export const deleteTableNotes = () => {
 
-    const db = DBConnect();
-
     db.transaction(tx => {
       tx.executeSql(
           'DROP TABLE IF EXISTS notes',
           null,
-          (txObj, resultSet) => {
-            console.log('udalo sie usunac tabele NOTES')
+          (_, resultSet) => {
+            console.log('DATA -- Notes table deleted')
           },
-          (txObj, error) => console.log('nie udalo sie usunac tabeli NOTES -> ' + error)
+          (error) => console.log('ERROR -- Deleting note table failed -> ' + error)
       )
     })
 }
 
 export const deleteNotes = () => {
 
-    const db = DBConnect();
-
-    db.transaction(tx => {
+    db.transaction(tx => { 
       tx.executeSql(
           'DELETE FROM notes',
           null,
-          (txObj, resultSet) => {
-            console.log('udalo sie usunac dane z NOTES')
+          (_, resultSet) => {
+            console.log('DATA -- Data from table notes deleted')
           },
-          (txObj, error) => console.log('nie udalo sie usunac danych z NOTES -> ' + error)
+          (error) => console.log('ERROR -- Deleting data from note table failed -> ' + error)
       )
     })
 }
 
-// export const deleteSubject = (oldSubjectName) => {
 
-//     const db = DBConnect();
 
-//     db.transaction(tx => {
-//         tx.executeSql(
-//             'UPDATE subjects SET is_deleted = 1 WHERE subject_name = ?',
-//             [oldSubjectName],
-//             (txObj, resultSet) => {
-//                 loadSubjects(setSubjects);
-//                 console.log('Przedmiot został usuniety');
-//                 navigation.goBack(); // Wróć do poprzedniego ekranu
-//             },
-//             (txObj, error) => {
-//                 console.log('Nie udało się usunac przedmiotu:', error);
-//             }
-//         );
-//     }); 
-// }
+export const deleteNote = (noteID, navigation) => {
 
-// export const deleteClass = (oldClassName) => {
-
-//     const db = DBConnect();
-
-//     db.transaction(tx => {
-//         tx.executeSql(
-//             'UPDATE classes SET is_deleted = 1 WHERE class_name = ?',
-//             [oldClassName],
-//             (txObj, resultSet) => {
-//                 loadClasses(setClasses);
-//                 console.log('Zajecie zostalo usuniete');
-//                 navigation.goBack(); // Wróć do poprzedniego ekranu
-//             },
-//             (txObj, error) => {
-//                 console.log('Nie udalo się usunac zajecia:', error);
-//             }
-//         );
-//     }); 
-// }
+  db.transaction(tx =>
+      tx.executeSql(
+          'UPDATE notes SET is_deleted = 1 WHERE note_id = ?',
+          [noteID],
+          (_, resultSet) => {
+              console.log('DATA -- Note deleted'),
+              navigation.goBack();
+          },
+          (error) => console.log('ERROR -- Deleting note failed -> ' + error)
+      )    
+  )
+}

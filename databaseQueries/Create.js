@@ -1,12 +1,16 @@
 import { useEffect } from 'react';
 import { DBConnect } from './DBConnect';
 
+
+
+const db = DBConnect();
+
+
+
 export function Create() {
 
-    const db = DBConnect();
-
     useEffect(() => {
-        
+
         db.transaction(tx => 
             tx.executeSql(
                 'CREATE TABLE IF NOT EXISTS subjects ('+
@@ -46,6 +50,23 @@ export function Create() {
                 [],
                 (txObj, resultSet) => console.log('DB -- Connected to table NOTES'),
                 (txObj, error) => console.log('DB ERROR -- Connection failed to table NOTES -> ' + error)
+            )  
+        )
+
+        db.transaction(tx => 
+            tx.executeSql(
+                'CREATE TABLE IF NOT EXISTS events ('+
+                    'event_id INTEGER PRIMARY KEY AUTOINCREMENT,'+
+                    'title TEXT,'+
+                    'description TEXT,'+
+                    'subject_id INTEGER,'+
+                    'class_id INTEGER,'+
+                    'create_day TEXT,'+
+                    'FOREIGN KEY (subject_id) REFERENCES subjects(subject_id),'+
+                    'FOREIGN KEY (class_id) REFERENCES classes(class_id))',
+                [],
+                (txObj, resultSet) => console.log('DB -- Connected to table EVENTS'),
+                (txObj, error) => console.log('DB ERROR -- Connection failed to table EVENTS -> ' + error)
             )  
         )
     })

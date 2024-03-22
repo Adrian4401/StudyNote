@@ -10,7 +10,7 @@ import { MyColors } from '../colors';
 import { headerStyles } from '../styles/headerStyles';
 import { globalStyles } from '../styles/globalStyles';
 
-import { loadSubjects, selectAllNotes, selectChosenNotes } from '../databaseQueries/Select';
+import { loadSubjects, selectAllNotes, selectAllNotesWithSubjects, selectChosenNotes } from '../databaseQueries/Select';
 
 
 
@@ -30,8 +30,7 @@ export default function NoteScreen() {
   useEffect(() => {
 
     const loadData = navigation.addListener('focus', () => {
-      loadSubjects(setSubjectsDropDown);
-      selectAllNotes(setData);
+      selectAllNotesWithSubjects(setSubjectsDropDown, setData)
     });
 
     selectChosenNotes(valueSubjects, setData);

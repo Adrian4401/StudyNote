@@ -5,13 +5,13 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { MyColors } from '../../colors';
 
 import { headerStyles } from '../../styles/headerStyles';
-import { globalStyles } from '../../styles/globalStyles';
 
-import { GoBackButton, MakeButton } from '../../components/customButtons';
+import { GoBackButton } from '../../components/customButtons';
 
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
-import { DBConnect } from '../../databaseQueries/DBConnect';
+import { deleteNote } from '../../databaseQueries/Delete';
+import { selectNoteToRead } from '../../databaseQueries/Select';
 
 
 export default function ReadNoteScreen() {
@@ -33,55 +33,13 @@ export default function ReadNoteScreen() {
         setNoteID(noteID)
 
         const loadData = navigation.addListener('focus', () => {
-            db.transaction(tx => 
-                tx.executeSql(
-                'SELECT '+ 
-                    'notes.note_id,'+
-                    'notes.title,'+
-                    'notes.note,'+
-                    'notes.create_day,'+
-                    'notes.subject_id,'+
-                    'notes.class_id,'+
-                    'notes.is_deleted,'+
-                    'subjects.subject_name, '+
-                    'classes.class_name '+
-                'FROM notes '+
-                'RIGHT JOIN subjects ON notes.subject_id = subjects.subject_id '+
-                'RIGHT JOIN classes ON notes.class_id = classes.class_id '+
-                'WHERE notes.note IS NOT NULL AND notes.is_deleted = 0 '+
-                'AND note_id = ?',
-                [noteID],
-                (_, {rows}) => {
-                    const note = rows.item(0);
-                    setTitle(note.title);
-                    setNote(note.note);
-                    setSubject(note.subject_name);
-                    setMyclass(note.class_name);
-                    setCreateDay(note.create_day);
-                },
-                (txObj, error) => console.log('Nie udalo sie wypisac notatek -> ' + error)
-                )  
-            )
+            selectNoteToRead(noteID, setTitle, setNote, setSubject, setMyclass, setCreateDay)
         })
 
         return loadData;
     }, [navigation])
 
-    const db = DBConnect();
 
-    const deleteNote = (noteID) => {
-        db.transaction(tx =>
-            tx.executeSql(
-                'UPDATE notes SET is_deleted = 1 WHERE note_id = ?',
-                [noteID],
-                (_, resultSet) => {
-                    console.log('Udalo sie usunac notatke'),
-                    navigation.goBack();
-                },
-                (_, error) => console.log('Nie udalo sie usunac notatki -> ' + error)
-            )    
-        )
-    }
 
     const alertDeleteNote = (noteID) => {
         Alert.alert('Usuwanie notatki', 'Czy na pewno chcesz usunąć notatkę?', [
@@ -92,7 +50,7 @@ export default function ReadNoteScreen() {
             },
             {
                 text: 'Usuń',
-                onPress: () => deleteNote(noteID)
+                onPress: () => deleteNote(noteID, navigation)
             }
         ])
     }

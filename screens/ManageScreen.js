@@ -9,7 +9,7 @@ import { MyColors } from '../colors';
 import { headerStyles } from '../styles/headerStyles';
 import { globalStyles } from '../styles/globalStyles';
 
-import { loadSubjects, loadClasses } from '../databaseQueries/Select';
+import { loadSubjects, loadClasses, loadSubjectsAndClasses } from '../databaseQueries/Select';
 
 import { DBConnect } from '../databaseQueries/DBConnect';
 
@@ -24,9 +24,9 @@ export default function ManageScreen() {
 
 
   useEffect(() => {
+
     const loadData = navigation.addListener('focus', () => {
-      loadSubjects(setSubjects);
-      loadClasses(setClasses);
+      loadSubjectsAndClasses(setSubjects, setClasses)
     });
 
     return loadData;

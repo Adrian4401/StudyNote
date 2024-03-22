@@ -4,17 +4,14 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 
 import DropDownPicker from 'react-native-dropdown-picker';
 
-
 import { MyColors } from '../../colors';
 
 import { headerStyles } from '../../styles/headerStyles';
-import { globalStyles } from '../../styles/globalStyles';
 
 import { EditButton, GoBackButton } from '../../components/customButtons';
 
-import { loadClasses, loadSubjects } from '../../databaseQueries/Select';
-
-import { DBConnect } from '../../databaseQueries/DBConnect';
+import { selectEditedNote } from '../../databaseQueries/Select';
+import { editNote } from '../../databaseQueries/Update';
 
 import Moment from 'moment';
 
@@ -23,8 +20,6 @@ export default function EditNoteScreen() {
     const navigation = useNavigation();
 
     const route = useRoute();
-
-    const db = DBConnect();
 
     const [currentTitle, setCurrentTitle] = useState('');
     const [currentNote, setCurrentNote] = useState('');
@@ -38,52 +33,23 @@ export default function EditNoteScreen() {
     const [subjects, setSubjects] = useState([]);
     const [classes, setClasses] = useState([]);
     const [noteID, setNoteID] = useState(null);
-    const [defaultSubject, setDefaultSubject] = useState(null);
+
+    
 
     useEffect(() => {
         const { noteID } = route.params;
         setNoteID(noteID)
 
         const loadData = navigation.addListener('focus', () => {
-            loadSubjects(setSubjects),
-            loadClasses(setClasses),
 
-            db.transaction(tx => 
-                tx.executeSql(
-                  'SELECT '+ 
-                    'notes.note_id,'+
-                    'notes.title,'+
-                    'notes.note,'+
-                    'notes.create_day,'+
-                    'notes.subject_id,'+
-                    'notes.class_id,'+
-                    'notes.is_deleted,'+
-                    'subjects.subject_name, '+
-                    'classes.class_name '+
-                  'FROM notes '+
-                  'RIGHT JOIN subjects ON notes.subject_id = subjects.subject_id '+
-                  'RIGHT JOIN classes ON notes.class_id = classes.class_id '+
-                  'WHERE notes.note IS NOT NULL AND notes.is_deleted = 0 '+
-                  'AND note_id = ?',
-                  [noteID],
-                  (_, {rows}) => {
-                    const row = rows.item(0);
-                    setCurrentTitle(row.title);
-                    setCurrentNote(row.note);
-                    setCurrentSubject(row.subject_id);
-                    console.log('Udalo sie wypisac notatke')
-                  },
-                  (txObj, error) => console.log('Nie udalo sie wypisac notatek -> ' + error)
-                )  
-            )
+            selectEditedNote(setSubjects, setClasses, noteID, setCurrentTitle, setCurrentNote, setCurrentSubject, setCurrentClass)
+
         })
 
-        return loadData;
-    }, [navigation])
-
-    useEffect(() => {
         console.log('ID przedmiotu: ' + currentSubject);
-    }, [currentSubject]);
+
+        return loadData;
+    }, [navigation, currentSubject])
 
 
 
@@ -99,27 +65,9 @@ export default function EditNoteScreen() {
 
 
 
-
     Moment.locale('pl');
     var noteDate = new Date().toLocaleString();
     var formattedNoteDate = Moment(formattedNoteDate).format('DD.MM.yyyy');
-
-    
-
-    const editNote = (currentTitle, currentNote, currentSubject, currentClass) => {
-        db.transaction(tx =>
-            tx.executeSql(
-                'UPDATE notes SET title = ?, note = ?, subject_id = ?, class_id = ? WHERE note_id = ?',
-                [currentTitle, currentNote, currentSubject, currentClass, noteID],
-                (txObj, resultSet) => {
-                    console.log('Udalo sie zaktualizowac notatke');
-                    navigation.goBack();
-                },
-                (txObj, error) => console.log('Nie udalo sie zaktualizowac notatki -> ' + error)
-            )
-        )
-    }
-
 
 
 
@@ -209,9 +157,9 @@ export default function EditNoteScreen() {
                     }}
                 />
             )
-        } else if(item.type === 'addButton') {
+        } else if(item.type === 'editButton') {
             return(
-                <EditButton onPress={() => editNote(currentTitle, currentNote, currentSubject, currentClass)} />
+                <EditButton onPress={() => editNote(currentTitle, currentNote, currentSubject, currentClass, noteID, navigation)} />
             )
         }
     }
@@ -232,7 +180,7 @@ export default function EditNoteScreen() {
                 <View style={styles.container}>
                     <FlatList 
                         data={[
-                            { type: 'addButton' },
+                            { type: 'editButton' },
                             { type: 'noteTextInput' },
                             { type: 'classesDropDownPicker' },
                             { type: 'subjectsDropDownPicker' },

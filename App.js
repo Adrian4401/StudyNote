@@ -5,10 +5,9 @@ import { Create } from './databaseQueries/Create';
 
 
 export default function App() {
+  Create()
   return (
     <>
-      {/* folder databaseQueries->Create.js */}
-      <Create />
       {/* folder navigation->StackNavigation.js */}
       <StackNavigation />
     </>
