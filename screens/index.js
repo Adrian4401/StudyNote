@@ -13,6 +13,7 @@ import EditClassScreen from "./editScreens/EditClassScreen";
 import EditNoteScreen from "./editScreens/EditNoteScreen";
 
 import ReadNoteScreen from "./readScreens/ReadNoteScreen";
+import ReadEventScreen from "./readScreens/ReadEventScreen";
 
 
 export {
@@ -30,5 +31,6 @@ export {
     EditClassScreen,
     EditNoteScreen,
     
-    ReadNoteScreen
+    ReadNoteScreen,
+    ReadEventScreen
 }

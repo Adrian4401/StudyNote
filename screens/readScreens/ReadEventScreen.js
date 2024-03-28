@@ -10,32 +10,29 @@ import { GoBackButton } from '../../components/customButtons';
 
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
-import { deleteNote, selectNoteToRead } from '../../databaseQueries/databaseQueries.js';
+import { deleteEvent, selectEventToRead } from '../../databaseQueries/databaseQueries.js';
 
 
 
 
-export default function ReadNoteScreen() {
+export default function ReadEventScreen() {
 
     const navigation = useNavigation();
 
     const route = useRoute();
 
     const [title, setTitle] = useState('');
+    const [description, setDescription] = useState('');
     const [subject, setSubject] = useState('');
     const [myclass, setMyclass] = useState('');
-    const [createDay, setCreateDay] = useState('');
-    const [note, setNote] = useState('');
-    const [noteID, setNoteID] = useState(null);
-    
-
+    const [eventID, setEventID] = useState(null);
 
     useEffect(() => {
-        const { noteID } = route.params;
-        setNoteID(noteID)
+        const { eventID } = route.params;
+        setEventID(eventID)
 
         const loadData = navigation.addListener('focus', () => {
-            selectNoteToRead(noteID, setTitle, setNote, setSubject, setMyclass, setCreateDay)
+            selectEventToRead(eventID, setTitle, setDescription, setSubject, setMyclass)
         })
 
         return loadData;
@@ -43,8 +40,8 @@ export default function ReadNoteScreen() {
 
 
 
-    const alertDeleteNote = (noteID) => {
-        Alert.alert('Usuwanie wydarzenia', 'Czy na pewno chcesz usunąć wydarzenie?', [
+    const alertDeleteEvent = (eventID) => {
+        Alert.alert('Usuwanie notatki', 'Czy na pewno chcesz usunąć notatkę?', [
             {
                 text: 'Anuluj',
                 onPress: () => console.log('Anuluj'),
@@ -52,7 +49,7 @@ export default function ReadNoteScreen() {
             },
             {
                 text: 'Usuń',
-                onPress: () => deleteNote(noteID, navigation)
+                onPress: () => deleteEvent(eventID, navigation)
             }
         ])
     }
@@ -66,7 +63,7 @@ export default function ReadNoteScreen() {
 
                 {/* HEADER */}
                 <View style={headerStyles.headerBackground}>
-                    <Text style={headerStyles.headerText}>Notatka</Text>
+                    <Text style={headerStyles.headerText}>Wydarzenie</Text>
                 </View>
 
                 {/* CONTAINER */}
@@ -76,7 +73,7 @@ export default function ReadNoteScreen() {
                         <View style={styles.topPanel}>
                             <GoBackButton />
                             <View style={styles.topPanelIcons}>
-                                <TouchableOpacity onPress={() => alertDeleteNote(noteID)}>
+                                <TouchableOpacity onPress={() => alertDeleteEvent(eventID)}>
                                     <MaterialIcons name="delete" size={30} color='white'/>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => navigation.navigate('EditNoteScreen', { noteID: noteID })}>
@@ -92,9 +89,13 @@ export default function ReadNoteScreen() {
                             alignItems: 'flex-start'
                         }}>
 
-                            <View style={{marginVertical: 25}}>
+                            
+
+                            <View style={{
+                                marginVertical: 25
+                            }}>
                                 <View style={styles.noteDataView}>
-                                    <Text style={styles.noteDataText}>{createDay}</Text>
+                                    <Text style={styles.noteDataText}>TU BĘDZIE DATA</Text>
                                 </View>
                                 <View style={styles.infoView}>
                                     <FontAwesome5 name="book" size={18} color="#fff" style={{flex: 1}}/>
@@ -116,7 +117,7 @@ export default function ReadNoteScreen() {
                         <View style={styles.line} />
 
                         <View style={{width: '100%'}}>
-                            <Text style={{color: 'white', fontSize: 17}}>{note}</Text>
+                            <Text style={{color: 'white', fontSize: 17}}>{description}</Text>
                         </View>
                         
 

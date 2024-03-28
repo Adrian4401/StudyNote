@@ -7,7 +7,7 @@ import {
     deleteClasses,
     deleteTableNotes,
     deleteNotes
-} from '../databaseQueries/Delete.js'
+} from '../databaseQueries/databaseQueries.js'
 
 export const AlertDeleteSubjectsTable = () => {
     Alert.alert('Usuwanie tabeli przedmiotów', 'Czy na pewno usunąć tabelę?', [

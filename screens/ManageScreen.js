@@ -9,7 +9,7 @@ import { MyColors } from '../colors';
 import { headerStyles } from '../styles/headerStyles';
 import { globalStyles } from '../styles/globalStyles';
 
-import { loadSubjects, loadClasses, loadSubjectsAndClasses } from '../databaseQueries/Select';
+import { loadSubjectsAndClasses } from '../databaseQueries/databaseQueries.js';
 
 import { DBConnect } from '../databaseQueries/DBConnect';
 

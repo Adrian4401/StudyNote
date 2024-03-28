@@ -3,8 +3,7 @@ import { StyleSheet, Text, View, SafeAreaView, ScrollView, StatusBar, Button, Te
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { loadSubjects } from '../../databaseQueries/Select';
-import { addSubject } from '../../databaseQueries/Insert';
+import { loadSubjects, addSubject } from '../../databaseQueries/databaseQueries.js';
 
 import { MyColors } from '../../colors';
 

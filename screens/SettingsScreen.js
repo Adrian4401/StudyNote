@@ -17,9 +17,40 @@ import {
   AlertDeleteSubjectsTable 
 } from '../components/AppAlerts';
 
+import { DBConnect } from '../databaseQueries/DBConnect';
+
 
 
 export default function SettingsScreen() {
+
+  const db = DBConnect();
+
+  const deleteEventsTable = () => {
+    db.transaction(tx => {
+      tx.executeSql(
+          'DROP TABLE IF EXISTS events',
+          null,
+          (_, resultSet) => {
+            console.log('DATA -- Events table deleted')
+          },
+          (error) => console.log('ERROR -- Deleting events table failed -> ', error)
+      )
+    })
+  }
+
+  const deleteEvents = () => {
+
+    db.transaction(tx => {
+      tx.executeSql(
+          'DELETE FROM events',
+          null,
+          (_, resultSet) => {
+            console.log('DATA -- Data from table events deleted')
+          },
+          (error) => console.log('ERROR -- Deleting data from events table failed -> ', error)
+      )
+    })
+}
 
   return (
     <>
@@ -76,6 +107,16 @@ export default function SettingsScreen() {
             <SettingsScreenButton onPress={AlertDeleteClassesTable} icon={"delete"} text='Usuń tabelę zajęć'/>
             <SettingsScreenButton onPress={AlertDeleteAllNotes} icon={"delete"} text='Usuń wszystkie notatki'/>
             <SettingsScreenButton onPress={AlertDeleteNotesTable} icon={"delete"} text='Usuń tabelę notatek'/>
+
+            <Button
+              title="Usuń tabele wydarzeń"
+              onPress={deleteEventsTable}
+            />
+
+            <Button
+              title="Usuń wydarzenia"
+              onPress={deleteEvents}
+            />
             
 
           </View>

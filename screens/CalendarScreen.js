@@ -1,15 +1,67 @@
-import { StyleSheet, Text, View, SafeAreaView, ScrollView, StatusBar } from 'react-native';
+import { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, SafeAreaView, ScrollView, StatusBar, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
+import { FontAwesome, FontAwesome5, Ionicons, AntDesign } from '@expo/vector-icons';
+
 import { MyColors } from '../colors';
 import { headerStyles } from '../styles/headerStyles';
 import { globalStyles } from '../styles/globalStyles';
 
-import { FontAwesome } from '@expo/vector-icons';
-import { FontAwesome5 } from '@expo/vector-icons';
-import { Ionicons } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
+import { Create, selectAllEvents } from '../databaseQueries/databaseQueries';
+
+
 
 
 export default function CalendarScreen() {
+
+  const navigation = useNavigation();
+
+  const [data, setData] = useState([]);
+
+
+
+  useEffect(() => {
+
+    const loadData = navigation.addListener('focus', () => {
+      selectAllEvents(setData)
+    });
+    
+    return loadData;
+  }, [setData])
+
+
+
+  const showEvents = () => {
+    return data.map((element, index) => {
+      return (
+        <TouchableOpacity key={index} onPress={() => navigation.navigate('ReadEventScreen', { eventID: element.event_id })} style={globalStyles.eventView}>
+          <View style={styles.eventNameView}>
+            <Text style={styles.eventNameText}>{element.title}</Text> 
+          </View>
+
+          <View style={globalStyles.eventSubjectView}>
+            <FontAwesome5 name="book" size={20} color="#fff"/>
+            <Text style={globalStyles.subjectText}>{element.subject_name}</Text>
+          </View>
+
+          <View>
+            <View style={globalStyles.eventDatetimeView}>
+              <Ionicons name="calendar-clear" size={18} color='#D1D0D0' style={{marginRight: 10}} />
+              <Text style={globalStyles.littleText}>12.01.2024</Text>
+            </View>
+            <View style={{...globalStyles.eventDatetimeView, marginTop: 5}}>
+              <AntDesign name="clockcircle" size={18} color='#D1D0D0' style={{marginRight: 10}} />
+              <Text style={globalStyles.littleText}>16:40</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+      )
+    })
+  }
+
+
+
   return (
     <>
       <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: '#000'}}/>
@@ -37,50 +89,9 @@ export default function CalendarScreen() {
             </View>
 
             {/* EVENT */}
-            <View style={globalStyles.eventView}>
-              <View style={styles.eventNameView}>
-                <Text style={styles.eventNameText}>Egzamin</Text> 
-              </View>
+            {showEvents()}
 
-              <View style={globalStyles.eventSubjectView}>
-                <FontAwesome5 name="book" size={20} color="#fff"/>
-                <Text style={globalStyles.subjectText}>Sztuczna inteligencja</Text>
-              </View>
-
-              <View>
-                <View style={globalStyles.eventDatetimeView}>
-                  <Ionicons name="calendar-clear" size={18} color='#D1D0D0' style={{marginRight: 10}} />
-                  <Text style={globalStyles.littleText}>12.01.2024</Text>
-                </View>
-                <View style={{...globalStyles.eventDatetimeView, marginTop: 5}}>
-                  <AntDesign name="clockcircle" size={18} color='#D1D0D0' style={{marginRight: 10}} />
-                  <Text style={globalStyles.littleText}>16:40</Text>
-                </View>
-              </View>
-            </View>
-
-            {/* EVENT */}
-            <View style={globalStyles.eventView}>
-              <View style={styles.eventNameView}>
-                <Text style={styles.eventNameText}>Zaliczenie</Text> 
-              </View>
-
-              <View style={globalStyles.eventSubjectView}>
-                <FontAwesome5 name="book" size={20} color="#fff" />
-                <Text style={globalStyles.subjectText}>Programowanie komponentowe - wykład</Text>
-              </View>
-
-              <View>
-                <View style={globalStyles.eventDatetimeView}>
-                  <Ionicons name="calendar-clear" size={18} color='#D1D0D0' style={{marginRight: 10}} />
-                  <Text style={globalStyles.littleText}>15.01.2024</Text>
-                </View>
-                <View style={{...globalStyles.eventDatetimeView, marginTop: 5}}>
-                  <AntDesign name="clockcircle" size={18} color='#D1D0D0' style={{marginRight: 10}} />
-                  <Text style={globalStyles.littleText}>15:00</Text>
-                </View>
-              </View>
-            </View>
+          
 
 
             {/* HEADLINE */}
@@ -88,51 +99,8 @@ export default function CalendarScreen() {
               <Text style={{...globalStyles.headlineText, marginBottom: 0, marginTop: 10}}>Dalsze terminy</Text>
             </View>
 
-            {/* EVENT */}
-            <View style={globalStyles.eventView}>
-              <View style={styles.eventNameView}>
-                <Text style={styles.eventNameText}>Egzamin</Text> 
-              </View>
+            
 
-              <View style={globalStyles.eventSubjectView}>
-                <FontAwesome5 name="book" size={20} color="#fff" />
-                <Text style={globalStyles.subjectText}>Wizualizacja 3d</Text>
-              </View>
-
-              <View>
-                <View style={globalStyles.eventDatetimeView}>
-                  <Ionicons name="calendar-clear" size={18} color='#D1D0D0' style={{marginRight: 10}} />
-                  <Text style={globalStyles.littleText}>20.01.2024</Text>
-                </View>
-                <View style={{...globalStyles.eventDatetimeView, marginTop: 5}}>
-                  <AntDesign name="clockcircle" size={18} color='#D1D0D0' style={{marginRight: 10}} />
-                  <Text style={globalStyles.littleText}>16:40</Text>
-                </View>
-              </View>
-            </View>
-
-            {/* EVENT */}
-            <View style={globalStyles.eventView}>
-              <View style={styles.eventNameView}>
-                <Text style={styles.eventNameText}>Egzamin</Text> 
-              </View>
-
-              <View style={globalStyles.eventSubjectView}>
-                <FontAwesome5 name="book" size={20} color="#fff" />
-                <Text style={globalStyles.subjectText}>Sztuczna inteligencja</Text>
-              </View>
-
-              <View>
-                <View style={globalStyles.eventDatetimeView}>
-                  <Ionicons name="calendar-clear" size={18} color='#D1D0D0' style={{marginRight: 10}} />
-                  <Text style={globalStyles.littleText}>12.01.2024</Text>
-                </View>
-                <View style={{...globalStyles.eventDatetimeView, marginTop: 5}}>
-                  <AntDesign name="clockcircle" size={18} color='#D1D0D0' style={{marginRight: 10}} />
-                  <Text style={globalStyles.littleText}>16:40</Text>
-                </View>
-              </View>
-            </View>
 
           </View>
         </ScrollView>
@@ -143,6 +111,8 @@ export default function CalendarScreen() {
     </>
   );
 }
+
+
 
 const styles = StyleSheet.create({
   container: {

@@ -4,7 +4,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 
 import * as SQLite from 'expo-sqlite';
 import { MaterialIcons } from '@expo/vector-icons';
-import { loadSubjects } from '../../databaseQueries/Select';
+import { loadSubjects } from '../../databaseQueries/databaseQueries.js';
 
 import { MyColors } from '../../colors';
 

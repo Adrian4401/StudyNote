@@ -10,8 +10,7 @@ import { headerStyles } from '../../styles/headerStyles';
 
 import { EditButton, GoBackButton } from '../../components/customButtons';
 
-import { selectEditedNote } from '../../databaseQueries/Select';
-import { editNote } from '../../databaseQueries/Update';
+import { selectEditedNote, editNote } from '../../databaseQueries/databaseQueries.js';
 
 import Moment from 'moment';
 

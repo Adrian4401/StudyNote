@@ -10,7 +10,7 @@ import { MyColors } from '../colors';
 import { headerStyles } from '../styles/headerStyles';
 import { globalStyles } from '../styles/globalStyles';
 
-import { loadSubjects, selectAllNotes, selectAllNotesWithSubjects, selectChosenNotes } from '../databaseQueries/Select';
+import { selectAllNotesWithSubjects, selectChosenNotes } from '../databaseQueries/databaseQueries.js';
 
 
 

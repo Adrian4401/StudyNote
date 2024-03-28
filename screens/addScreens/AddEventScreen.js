@@ -12,11 +12,11 @@ import { globalStyles } from '../../styles/globalStyles';
 
 import { GoBackButton, MakeButton } from '../../components/customButtons';
 
-import { loadClasses, loadSubjects, selectChosenNotes } from '../../databaseQueries/Select';
+import { loadClasses, loadSubjects, selectChosenNotes } from '../../databaseQueries/databaseQueries.js';
 
 import { DBConnect } from '../../databaseQueries/DBConnect';
 
-import Moment from 'moment';
+
 
 export default function AddEventScreen() {
 
@@ -25,7 +25,7 @@ export default function AddEventScreen() {
     const db = DBConnect();
 
     const [currentTitle, setCurrentTitle] = useState('');
-    const [currentNote, setCurrentNote] = useState('');
+    const [currentDescription, setCurrentDescription] = useState('');
 
     const [openSubjects, setOpenSubjects] = useState(false);
     const [openClasses, setOpenClasses] = useState(false);
@@ -61,28 +61,18 @@ export default function AddEventScreen() {
     })
 
 
-
-
-    Moment.locale('pl');
-    // var noteDate = new Date().toLocaleString();
-    var formattedNoteDate = Moment(formattedNoteDate).format('DD.MM.yyyy');
-
     
 
-    const addEvent = (currentTitle, currentNote, currentSubject, currentClass, formattedNoteDate) => {
-        console.log('tytul: ' + currentTitle)
-        console.log('notatka: ' + currentNote)
-        console.log('przedmiot: ' + currentSubject)
-        console.log('zajecia: ' + currentClass)
+    const addEvent = (currentTitle, currentDescription, currentSubject, currentClass) => {
         db.transaction(tx =>
             tx.executeSql(
-                'INSERT INTO notes (title, note, subject_id, class_id, create_day) values(?,?,?,?,?)',
-                [currentTitle, currentNote, currentSubject, currentClass, formattedNoteDate],
-                (txObj, resultSet) => {
-                    console.log('Udalo sie dodac notatke');
+                'INSERT INTO events (title, description, subject_id, class_id) values(?,?,?,?)',
+                [currentTitle, currentDescription, currentSubject, currentClass],
+                (_, result) => {
+                    console.log('Udalo sie dodac wydarzenie');
                     navigation.goBack();
                 },
-                (txObj, error) => console.log('Nie udalo sie dodac notatki -> ' + error)
+                (error) => console.log('Nie udalo sie dodac wydarzenia -> ' + error)
             )
         )
     }
@@ -124,10 +114,10 @@ export default function AddEventScreen() {
                 <DropDownPicker
                     placeholder='Wybierz przedmiot'
                     open={openSubjects}
-                    value={valueSubjects}
+                    value={currentSubject}
                     items={subjectItems}
                     setOpen={setOpenSubjects}
-                    setValue={setValueSubjects}
+                    setValue={setCurrentSubject}
                     setItems={setSubjects}
                     ScrollView={false}
                     style={{...styles.style, marginBottom: 10, marginTop: 40}}
@@ -156,8 +146,8 @@ export default function AddEventScreen() {
         } else if(item.type === 'descriptionTextInput') {
             return(
                 <TextInput 
-                    value={currentNote}
-                    onChangeText={setCurrentNote}
+                    value={currentDescription}
+                    onChangeText={setCurrentDescription}
                     placeholder='Dodaj krótki opis...'
                     placeholderTextColor={MyColors.appLightGray}
                     multiline={true}
@@ -206,7 +196,7 @@ export default function AddEventScreen() {
               })
         } else if(item.type === 'addButton') {
             return(
-                <MakeButton onPress={() => addNote(currentTitle, currentNote, currentSubject, currentClass, formattedNoteDate)}/>
+                <MakeButton onPress={() => addEvent(currentTitle, currentDescription, currentSubject, currentClass)}/>
             )
         }
     }

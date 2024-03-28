@@ -6,15 +6,17 @@ import { useNavigation } from '@react-navigation/native';
 import { MyColors } from '../../colors';
 
 import { headerStyles } from '../../styles/headerStyles';
-import { globalStyles } from '../../styles/globalStyles';
 
 import { GoBackButton, MakeButton } from '../../components/customButtons';
 
-import { loadClasses, loadSubjects } from '../../databaseQueries/Select';
+import { loadClasses, loadSubjects } from '../../databaseQueries/databaseQueries.js';
 
 import { DBConnect } from '../../databaseQueries/DBConnect';
 
 import Moment from 'moment';
+
+
+
 
 export default function AddNoteScreen() {
 
@@ -54,21 +56,23 @@ export default function AddNoteScreen() {
 
 
 
-    Moment.locale('pl');
-    var noteDate = new Date().toLocaleString();
-    var formattedNoteDate = Moment(formattedNoteDate).format('DD.MM.yyyy');
+    // Moment.locale('pl');
+    // var noteDate = new Date().toLocaleString();
+    // var formattedNoteDate = Moment(formattedNoteDate).format('DD.MM.yyyy');
 
+    var day = (new Date().getDate()).toString().padStart(2, '0');
+    var month = (new Date().getMonth() + 1).toString().padStart(2, '0');
+    var year = new Date().getFullYear();
+
+    var noteDate = day + '.' + month + '.' + year;
     
 
-    const addNote = (currentTitle, currentNote, currentSubject, currentClass, formattedNoteDate) => {
-        console.log('tytul: ' + currentTitle)
-        console.log('notatka: ' + currentNote)
-        console.log('przedmiot: ' + currentSubject)
-        console.log('zajecia: ' + currentClass)
+    const addNote = (currentTitle, currentNote, currentSubject, currentClass, noteDate) => {
+        console.log('Date: ', noteDate)
         db.transaction(tx =>
             tx.executeSql(
                 'INSERT INTO notes (title, note, subject_id, class_id, create_day) values(?,?,?,?,?)',
-                [currentTitle, currentNote, currentSubject, currentClass, formattedNoteDate],
+                [currentTitle, currentNote, currentSubject, currentClass, noteDate],
                 (txObj, resultSet) => {
                     console.log('Udalo sie dodac notatke');
                     navigation.goBack();
@@ -169,7 +173,7 @@ export default function AddNoteScreen() {
             )
         } else if(item.type === 'addButton') {
             return(
-                <MakeButton onPress={() => addNote(currentTitle, currentNote, currentSubject, currentClass, formattedNoteDate)}/>
+                <MakeButton onPress={() => addNote(currentTitle, currentNote, currentSubject, currentClass, noteDate)}/>
             )
         }
     }
