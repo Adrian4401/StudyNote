@@ -29,6 +29,7 @@ export function Create() {
                 'description TEXT,'+
                 'subject_id INTEGER,'+
                 'class_id INTEGER,'+
+                'deadline DATETIME,'+
                 'is_deleted INTEGER DEFAULT 0,'+
                 'FOREIGN KEY (subject_id) REFERENCES subjects(subject_id),'+
                 'FOREIGN KEY (class_id) REFERENCES classes(class_id))',
@@ -293,6 +294,8 @@ export const selectAllEvents = (setData) => {
                 'events.description,'+
                 'events.subject_id,'+
                 'events.class_id,'+
+                'substr(events.deadline, 9, 2) || "." || substr(events.deadline, 6, 2) || "." || substr(events.deadline, 1, 4) AS deadlineDate,'+
+                'substr(events.deadline, 12) AS deadlineTime,'+
                 'subjects.subject_name, '+
                 'classes.class_name '+
             'FROM events '+
@@ -312,7 +315,7 @@ export const selectAllEvents = (setData) => {
 }
 
 
-export const selectEventToRead = (eventID, setTitle, setDescription, setSubject, setMyclass) => {
+export const selectEventToRead = (eventID, setTitle, setDescription, setSubject, setMyclass, setDeadlineDate, setDeadlineTime) => {
   
     db.transaction(tx => 
         tx.executeSql(
@@ -322,6 +325,8 @@ export const selectEventToRead = (eventID, setTitle, setDescription, setSubject,
                 'events.description,'+
                 'events.subject_id,'+
                 'events.class_id,'+
+                'substr(events.deadline, 9, 2) || "." || substr(events.deadline, 6, 2) || "." || substr(events.deadline, 1, 4) AS deadlineDate,'+
+                'substr(events.deadline, 12) AS deadlineTime,'+
                 'subjects.subject_name, '+
                 'classes.class_name '+
             'FROM events '+
@@ -336,6 +341,8 @@ export const selectEventToRead = (eventID, setTitle, setDescription, setSubject,
                 setDescription(event.description);
                 setSubject(event.subject_name);
                 setMyclass(event.class_name);
+                setDeadlineDate(event.deadlineDate);
+                setDeadlineTime(event.deadlineTime);
             },
             (error) => console.log('ERROR -- Events loading failed' + error)
         )  
@@ -369,6 +376,23 @@ export const addSubject = async (currentSubject, setCurrentSubject, subjects, se
     else {
         console.log('Nie mozna dodac pustego przedmiotu')
     }
+
+}
+
+
+export const addEvent = (navigation, currentTitle, currentDescription, selectedDate, currentSubject, currentClass) => {
+
+    db.transaction(tx =>
+        tx.executeSql(
+            'INSERT INTO events (title, description, deadline, subject_id, class_id) values(?,?,?,?,?)',
+            [currentTitle, currentDescription, selectedDate, currentSubject, currentClass],
+            (_, result) => {
+                console.log('Udalo sie dodac wydarzenie');
+                navigation.goBack();
+            },
+            (error) => console.log('Nie udalo sie dodac wydarzenia -> ' + error)
+        )
+    )
 
 }
 

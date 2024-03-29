@@ -25,6 +25,8 @@ export default function ReadEventScreen() {
     const [description, setDescription] = useState('');
     const [subject, setSubject] = useState('');
     const [myclass, setMyclass] = useState('');
+    const [deadlineDate, setDeadlineDate] = useState('');
+    const [deadlineTime, setDeadlineTime] = useState('');
     const [eventID, setEventID] = useState(null);
 
     useEffect(() => {
@@ -32,7 +34,7 @@ export default function ReadEventScreen() {
         setEventID(eventID)
 
         const loadData = navigation.addListener('focus', () => {
-            selectEventToRead(eventID, setTitle, setDescription, setSubject, setMyclass)
+            selectEventToRead(eventID, setTitle, setDescription, setSubject, setMyclass, setDeadlineDate, setDeadlineTime)
         })
 
         return loadData;
@@ -91,11 +93,14 @@ export default function ReadEventScreen() {
 
                             
 
-                            <View style={{
-                                marginVertical: 25
-                            }}>
-                                <View style={styles.noteDataView}>
-                                    <Text style={styles.noteDataText}>TU BĘDZIE DATA</Text>
+                            <View style={{marginVertical: 25}}>
+                                <View style={styles.infoView}>
+                                    <FontAwesome5 name="calendar" size={18} color="#fff" style={{flex: 1}}/>
+                                    <Text style={styles.infoText}>{deadlineDate}</Text>
+                                </View>
+                                <View style={styles.infoView}>
+                                    <FontAwesome5 name="clock" size={18} color="#fff" style={{flex: 1}}/>
+                                    <Text style={styles.infoText}>{deadlineTime}</Text>
                                 </View>
                                 <View style={styles.infoView}>
                                     <FontAwesome5 name="book" size={18} color="#fff" style={{flex: 1}}/>

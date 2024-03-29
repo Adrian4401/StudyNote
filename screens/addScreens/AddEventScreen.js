@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, ScrollView, StatusBar, TextInput, FlatList, TouchableOpacity } from 'react-native';
-import DropDownPicker from 'react-native-dropdown-picker';
+import { StyleSheet, Text, View, SafeAreaView, ScrollView, StatusBar, TextInput, FlatList, TouchableOpacity, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+
+import DropDownPicker from 'react-native-dropdown-picker';
 
 import { MyColors } from '../../colors';
 
@@ -12,17 +13,17 @@ import { globalStyles } from '../../styles/globalStyles';
 
 import { GoBackButton, MakeButton } from '../../components/customButtons';
 
-import { loadClasses, loadSubjects, selectChosenNotes } from '../../databaseQueries/databaseQueries.js';
+import { loadClasses, loadSubjects, selectChosenNotes, addEvent } from '../../databaseQueries/databaseQueries.js';
 
-import { DBConnect } from '../../databaseQueries/DBConnect';
+import DatePicker from 'react-native-modern-datepicker';
+
+
 
 
 
 export default function AddEventScreen() {
 
     const navigation = useNavigation();
-
-    const db = DBConnect();
 
     const [currentTitle, setCurrentTitle] = useState('');
     const [currentDescription, setCurrentDescription] = useState('');
@@ -36,7 +37,10 @@ export default function AddEventScreen() {
 
     const [valueSubjects, setValueSubjects] = useState(null);
     const [data, setData] = useState([]);
-    
+
+    const [selectedDate, setSelectedDate] = useState('');
+
+
 
 
     useEffect(() => {
@@ -59,24 +63,6 @@ export default function AddEventScreen() {
     const classesItems = classes.map(myclass => {
         return { label: myclass.class_name, value: myclass.class_id.toString() };
     })
-
-
-    
-
-    const addEvent = (currentTitle, currentDescription, currentSubject, currentClass) => {
-        db.transaction(tx =>
-            tx.executeSql(
-                'INSERT INTO events (title, description, subject_id, class_id) values(?,?,?,?)',
-                [currentTitle, currentDescription, currentSubject, currentClass],
-                (_, result) => {
-                    console.log('Udalo sie dodac wydarzenie');
-                    navigation.goBack();
-                },
-                (error) => console.log('Nie udalo sie dodac wydarzenia -> ' + error)
-            )
-        )
-    }
-
 
 
 
@@ -103,45 +89,43 @@ export default function AddEventScreen() {
                         borderColor: MyColors.appOrange,
                         borderRadius: 10,
                         padding: 10,
-                        marginVertical: 10,
                         marginTop: 30,
                         backgroundColor: MyColors.appDark
                     }}
                 />
             )
-        } else if(item.type === 'subjectsDropDownPicker') {
+        } else if(item.type === 'dropdownPickers') {
             return(
-                <DropDownPicker
-                    placeholder='Wybierz przedmiot'
-                    open={openSubjects}
-                    value={currentSubject}
-                    items={subjectItems}
-                    setOpen={setOpenSubjects}
-                    setValue={setCurrentSubject}
-                    setItems={setSubjects}
-                    ScrollView={false}
-                    style={{...styles.style, marginBottom: 10, marginTop: 40}}
-                    dropDownContainerStyle={styles.dropDownContainerStyle}
-                    textStyle={styles.textStyle}
-                    arrowIconContainerStyle={styles.arrowIconContainerStyle}
-                />
-            )
-        } else if(item.type === 'classesDropDownPicker') {
-            return(
-                <DropDownPicker
-                    placeholder='Wybierz zajęcia'
-                    open={openClasses}
-                    value={currentClass}
-                    items={classesItems}
-                    setOpen={setOpenClasses}
-                    setValue={setCurrentClass}
-                    setItems={setClasses}
-                    ScrollView={false}
-                    style={styles.style}
-                    dropDownContainerStyle={styles.dropDownContainerStyle}
-                    textStyle={styles.textStyle}
-                    arrowIconContainerStyle={styles.arrowIconContainerStyle}
-                />
+                <>
+                    <DropDownPicker
+                        placeholder='Wybierz przedmiot'
+                        open={openSubjects}
+                        value={currentSubject}
+                        items={subjectItems}
+                        setOpen={setOpenSubjects}
+                        setValue={setCurrentSubject}
+                        setItems={setSubjects}
+                        ScrollView={false}
+                        style={{...styles.style, marginBottom: 10, marginTop: 40}}
+                        dropDownContainerStyle={styles.dropDownContainerStyle}
+                        textStyle={styles.textStyle}
+                        arrowIconContainerStyle={styles.arrowIconContainerStyle}
+                    />
+                    <DropDownPicker
+                        placeholder='Wybierz zajęcia'
+                        open={openClasses}
+                        value={currentClass}
+                        items={classesItems}
+                        setOpen={setOpenClasses}
+                        setValue={setCurrentClass}
+                        setItems={setClasses}
+                        ScrollView={false}
+                        style={styles.style}
+                        dropDownContainerStyle={styles.dropDownContainerStyle}
+                        textStyle={styles.textStyle}
+                        arrowIconContainerStyle={styles.arrowIconContainerStyle}
+                    />
+                </>
             )
         } else if(item.type === 'descriptionTextInput') {
             return(
@@ -159,47 +143,74 @@ export default function AddEventScreen() {
                         borderColor: MyColors.appOrange,
                         borderRadius: 10,
                         padding: 10,
-                        marginVertical: 10,
+                        marginVertical: 20,
                         height: 200,
                         backgroundColor: MyColors.appGray,
                         flexWrap: 'wrap'
                     }}
                 />
             )
+        } else if(item.type === 'dateTimePickers') {
+            return(
+                <>
+                    <DatePicker 
+                        isGregorian={false}
+                        mode='datepicker'
+                        options={{
+                            backgroundColor: MyColors.appGray,
+                            textDefaultColor: MyColors.appOrange,
+                            textHeaderColor: MyColors.appOrange,
+                            textSecondaryColor: MyColors.appOrange,
+                            mainColor: MyColors.appLightGray
+                        }}
+                        style={{
+                            // borderTopLeftRadius: 20,
+                            // borderTopRightRadius: 20
+                            borderRadius: 20
+                        }}
+                        onSelectedChange={date => setSelectedDate(date)}
+                    />
+                    {/* <Button 
+                        title="show data"
+                        onPress={() => console.log("Wybrana data: ", selectedDate)}
+                    /> */}
+                </>
+            )
         } else if(item.type === 'notes') {
-            return data.map((element, index) => {
-                return (
-                  <TouchableOpacity key={index} onPress={() => navigation.navigate('ReadNoteScreen', { noteID: element.note_id })} style={styles.noteStyle}>
+            // return data.map((element, index) => {
+            //     return (
+            //       <TouchableOpacity key={index} onPress={() => navigation.navigate('ReadNoteScreen', { noteID: element.note_id })} style={styles.noteStyle}>
         
-                    <View>
-                      <Text style={globalStyles.headlineText}>{element.title}</Text>
-                    </View>
+            //         <View>
+            //           <Text style={globalStyles.headlineText}>{element.title}</Text>
+            //         </View>
         
-                    <View style={{flex: 1, backgroundColor: MyColors.appLightGray, height: 1, marginBottom: 10}} />
+            //         <View style={{flex: 1, backgroundColor: MyColors.appLightGray, height: 1, marginBottom: 10}} />
         
-                    <View style={styles.infoView}>
-                      <FontAwesome5 name="book" size={18} color="#fff" style={{flex: 1}}/>
-                      <Text style={styles.infoText}>{element.subject_name}</Text>
-                    </View>
+            //         <View style={styles.infoView}>
+            //           <FontAwesome5 name="book" size={18} color="#fff" style={{flex: 1}}/>
+            //           <Text style={styles.infoText}>{element.subject_name}</Text>
+            //         </View>
         
-                    <View style={styles.infoView}>
-                      <FontAwesome5 name="info-circle" size={18} color="#fff" style={{flex: 1}} />
-                      <Text style={styles.infoText}>{element.class_name}</Text>
-                    </View>
+            //         <View style={styles.infoView}>
+            //           <FontAwesome5 name="info-circle" size={18} color="#fff" style={{flex: 1}} />
+            //           <Text style={styles.infoText}>{element.class_name}</Text>
+            //         </View>
         
-                    <View style={styles.noteDataView}>
-                        <Text style={styles.noteDataText}>{element.create_day}</Text>
-                    </View>
+            //         <View style={styles.noteDataView}>
+            //             <Text style={styles.noteDataText}>{element.create_day}</Text>
+            //         </View>
         
-                  </TouchableOpacity>
-                )
-              })
+            //       </TouchableOpacity>
+            //     )
+            //   })
         } else if(item.type === 'addButton') {
             return(
-                <MakeButton onPress={() => addEvent(currentTitle, currentDescription, currentSubject, currentClass)}/>
+                <MakeButton onPress={() => addEvent(navigation, currentTitle, currentDescription, selectedDate, currentSubject, currentClass)}/>
             )
         }
     }
+
 
 
     return (
@@ -219,8 +230,8 @@ export default function AddEventScreen() {
                         data={[
                             { type: 'addButton' },
                             { type: 'notes' },
-                            { type: 'classesDropDownPicker' },
-                            { type: 'subjectsDropDownPicker' },
+                            { type: 'dropdownPickers' },
+                            { type: 'dateTimePickers' },
                             { type: 'descriptionTextInput' },
                             { type: 'titleTextInput' },
                             { type: 'goBackButton' }
@@ -236,6 +247,8 @@ export default function AddEventScreen() {
         </>
     )
 }
+
+
 
 const styles = StyleSheet.create({
     container: {

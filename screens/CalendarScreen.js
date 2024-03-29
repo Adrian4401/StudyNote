@@ -48,11 +48,11 @@ export default function CalendarScreen() {
           <View>
             <View style={globalStyles.eventDatetimeView}>
               <Ionicons name="calendar-clear" size={18} color='#D1D0D0' style={{marginRight: 10}} />
-              <Text style={globalStyles.littleText}>12.01.2024</Text>
+              <Text style={globalStyles.littleText}>{element.deadlineDate}</Text>
             </View>
             <View style={{...globalStyles.eventDatetimeView, marginTop: 5}}>
               <AntDesign name="clockcircle" size={18} color='#D1D0D0' style={{marginRight: 10}} />
-              <Text style={globalStyles.littleText}>16:40</Text>
+              <Text style={globalStyles.littleText}>{element.deadlineTime}</Text>
             </View>
           </View>
         </TouchableOpacity>
