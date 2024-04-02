@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-native-community/datetimepicker": "7.6.1",
     "@react-native-picker/picker": "^2.6.1",
     "@react-navigation/bottom-tabs": "^6.5.12",
     "@react-navigation/native": "6.1.10",
@@ -22,6 +23,7 @@
     "npm": "^10.4.0",
     "react": "18.2.0",
     "react-native": "^0.73.6",
+    "react-native-date-picker": "^5.0.0",
     "react-native-dropdown-picker": "^5.4.6",
     "react-native-element-dropdown": "^2.10.1",
     "react-native-inverted-flat-list": "^1.0.3",

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, ScrollView, StatusBar, TextInput, FlatList, TouchableOpacity, Button } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, ScrollView, StatusBar, TextInput, FlatList, TouchableOpacity, Button, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -15,7 +15,8 @@ import { GoBackButton, MakeButton } from '../../components/customButtons';
 
 import { loadClasses, loadSubjects, selectChosenNotes, addEvent } from '../../databaseQueries/databaseQueries.js';
 
-import DatePicker from 'react-native-modern-datepicker';
+import DateTimePicker, { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
+import RNDateTimePicker from '@react-native-community/datetimepicker';
 
 
 
@@ -38,8 +39,33 @@ export default function AddEventScreen() {
     const [valueSubjects, setValueSubjects] = useState(null);
     const [data, setData] = useState([]);
 
-    const [selectedDate, setSelectedDate] = useState('');
+    const [date, setDate] = useState(new Date());
+    const [mode, setMode] = useState('');
+    const [show, setShow] = useState(false);
 
+    const [dateText, setDateText] = useState('Wybierz dzień');
+    const [timeText, setTimeText] = useState('Wybierz godzinę');
+
+
+
+    const showMode = (currentMode) => {
+        setShow(true);
+        setMode(currentMode);
+    }
+
+
+    const onChange = (event, selectedDate) => {
+        const currentDate = selectedDate || date;
+        setShow(false);
+        setDate(currentDate);
+
+        let tempDate = new Date(currentDate);
+
+        setTimeText(tempDate.getHours() + ':' + tempDate.getMinutes());
+        setDateText(tempDate.getDate() + '.' + (tempDate.getMonth() + 1) + '.' + tempDate.getFullYear());
+
+        console.log(tempDate);
+    }
 
 
 
@@ -151,31 +177,57 @@ export default function AddEventScreen() {
                 />
             )
         } else if(item.type === 'dateTimePickers') {
-            return(
-                <>
-                    <DatePicker 
-                        isGregorian={false}
-                        mode='datepicker'
-                        options={{
-                            backgroundColor: MyColors.appGray,
-                            textDefaultColor: MyColors.appOrange,
-                            textHeaderColor: MyColors.appOrange,
-                            textSecondaryColor: MyColors.appOrange,
-                            mainColor: MyColors.appLightGray
-                        }}
-                        style={{
-                            // borderTopLeftRadius: 20,
-                            // borderTopRightRadius: 20
-                            borderRadius: 20
-                        }}
-                        onSelectedChange={date => setSelectedDate(date)}
-                    />
-                    {/* <Button 
-                        title="show data"
-                        onPress={() => console.log("Wybrana data: ", selectedDate)}
-                    /> */}
-                </>
-            )
+            if(Platform.OS === 'android') {
+                return(
+                    <>
+                        <TouchableOpacity onPress={() => showMode('time')} style={styles.dateTimeButtons}>
+                            <Text style={{fontSize: 20, color: 'white'}}>{timeText}</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity onPress={() => showMode('date')} style={styles.dateTimeButtons}>
+                            <Text style={{fontSize: 20, color: 'white'}}>{dateText}</Text>
+                        </TouchableOpacity>
+    
+    
+                        {show && (
+                            <DateTimePicker
+                                mode={mode}
+                                value={date}
+                                is24Hour={true}
+                                onChange={onChange}
+                            />
+                        )}
+                    </>
+                )
+            } else if(Platform.OS === 'ios') {
+                return (
+                    <View style={{
+                        alignItems: 'center'
+                    }}>
+                        <Text 
+                            style={{
+                                fontSize: 20,
+                                color: MyColors.appLightGray,
+                                textTransform: 'uppercase',
+                                marginVertical: 10
+                            }}
+                        >Wybierz termin</Text>
+                        <DateTimePicker
+                            mode='datetime'
+                            value={date}
+                            is24Hour={true}
+                            onChange={onChange}
+                            minuteInterval={5}
+                            locale='pl-PL'
+                            themeVariant='dark'
+                            // timeZoneName='Europe-Warsaw'
+                            timeZoneOffsetInMinutes={120}
+                        />
+                    </View>
+                )
+            }
+            
+            
         } else if(item.type === 'notes') {
             // return data.map((element, index) => {
             //     return (
@@ -206,7 +258,7 @@ export default function AddEventScreen() {
             //   })
         } else if(item.type === 'addButton') {
             return(
-                <MakeButton onPress={() => addEvent(navigation, currentTitle, currentDescription, selectedDate, currentSubject, currentClass)}/>
+                <MakeButton onPress={() => addEvent(navigation, currentTitle, currentDescription, date, currentSubject, currentClass)}/>
             )
         }
     }
@@ -271,6 +323,14 @@ const styles = StyleSheet.create({
     textStyle: {
         color: MyColors.appLightGray
     },
+    dateTimeButtons: {
+        height: 50,
+        backgroundColor: MyColors.appOrange,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginVertical: 10,
+        borderRadius: 20
+    },
     arrowIconContainerStyle: {
         backgroundColor: MyColors.appOrange,
         borderRadius: 5
@@ -283,28 +343,28 @@ const styles = StyleSheet.create({
         marginBottom: 15, 
         borderColor: MyColors.appLightGray, 
         borderWidth: 1
-      },
-      infoView: {
+    },
+    infoView: {
         flexDirection: 'row',
         marginTop: 5,
         alignItems: 'center',
         width: '100%',
         paddingHorizontal: 5
-      },
-      infoText: {
+    },
+    infoText: {
         fontSize: 16,
         color: '#fff',
         flex: 10
-      },
-      noteDataView: {
+    },
+    noteDataView: {
         alignItems: 'flex-end',
         marginTop: 2,
         paddingHorizontal: 5
-      },
-      noteDataText: {
+    },
+    noteDataText: {
         fontSize: 12,
         color: MyColors.appLightGray,
         textTransform: 'uppercase',
         flex: 15
-      },
+    },
 });

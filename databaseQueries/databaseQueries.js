@@ -295,7 +295,7 @@ export const selectAllEvents = (setData) => {
                 'events.subject_id,'+
                 'events.class_id,'+
                 'substr(events.deadline, 9, 2) || "." || substr(events.deadline, 6, 2) || "." || substr(events.deadline, 1, 4) AS deadlineDate,'+
-                'substr(events.deadline, 12) AS deadlineTime,'+
+                'substr(events.deadline, 12, 5) AS deadlineTime,'+
                 'subjects.subject_name, '+
                 'classes.class_name '+
             'FROM events '+
@@ -380,15 +380,18 @@ export const addSubject = async (currentSubject, setCurrentSubject, subjects, se
 }
 
 
-export const addEvent = (navigation, currentTitle, currentDescription, selectedDate, currentSubject, currentClass) => {
+export const addEvent = (navigation, currentTitle, currentDescription, date, currentSubject, currentClass) => {
+
+    const formattedDate = date.toISOString();
 
     db.transaction(tx =>
         tx.executeSql(
             'INSERT INTO events (title, description, deadline, subject_id, class_id) values(?,?,?,?,?)',
-            [currentTitle, currentDescription, selectedDate, currentSubject, currentClass],
+            [currentTitle, currentDescription, formattedDate, currentSubject, currentClass],
             (_, result) => {
                 console.log('Udalo sie dodac wydarzenie');
                 navigation.goBack();
+                console.log(result)
             },
             (error) => console.log('Nie udalo sie dodac wydarzenia -> ' + error)
         )
