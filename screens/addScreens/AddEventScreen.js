@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, ScrollView, StatusBar, TextInput, FlatList, TouchableOpacity, Button, Platform } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, ScrollView, StatusBar, TextInput, FlatList, TouchableOpacity, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -15,8 +15,9 @@ import { GoBackButton, MakeButton } from '../../components/customButtons';
 
 import { loadClasses, loadSubjects, selectChosenNotes, addEvent } from '../../databaseQueries/databaseQueries.js';
 
-import DateTimePicker, { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
-import RNDateTimePicker from '@react-native-community/datetimepicker';
+import DateTimePicker from '@react-native-community/datetimepicker';
+
+import Checkbox from 'expo-checkbox';
 
 
 
@@ -46,6 +47,8 @@ export default function AddEventScreen() {
     const [dateText, setDateText] = useState('Wybierz dzień');
     const [timeText, setTimeText] = useState('Wybierz godzinę');
 
+    const [isChecked, setChecked] = useState(false);
+
 
 
     const showMode = (currentMode) => {
@@ -57,14 +60,15 @@ export default function AddEventScreen() {
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
         setShow(false);
-        setDate(currentDate);
 
         let tempDate = new Date(currentDate);
+
+        setDate(tempDate);
 
         setTimeText(tempDate.getHours() + ':' + tempDate.getMinutes());
         setDateText(tempDate.getDate() + '.' + (tempDate.getMonth() + 1) + '.' + tempDate.getFullYear());
 
-        console.log(tempDate);
+        console.log(tempDate.toLocaleString());
     }
 
 
@@ -195,6 +199,9 @@ export default function AddEventScreen() {
                                 value={date}
                                 is24Hour={true}
                                 onChange={onChange}
+                                minuteInterval={5}
+                                locale='pl-PL'
+                                themeVariant='dark'
                             />
                         )}
                     </>
@@ -220,8 +227,8 @@ export default function AddEventScreen() {
                             minuteInterval={5}
                             locale='pl-PL'
                             themeVariant='dark'
-                            // timeZoneName='Europe-Warsaw'
-                            timeZoneOffsetInMinutes={120}
+                            display='inline'
+                            timeZoneName={'Europe/Warsaw'}
                         />
                     </View>
                 )
@@ -229,33 +236,46 @@ export default function AddEventScreen() {
             
             
         } else if(item.type === 'notes') {
-            // return data.map((element, index) => {
-            //     return (
-            //       <TouchableOpacity key={index} onPress={() => navigation.navigate('ReadNoteScreen', { noteID: element.note_id })} style={styles.noteStyle}>
+            return data.map((element, index) => {
+                return (
+                  <TouchableOpacity key={index} onPress={() => navigation.navigate('ReadNoteScreen', { noteID: element.note_id })} style={styles.noteStyle}>
         
-            //         <View>
-            //           <Text style={globalStyles.headlineText}>{element.title}</Text>
-            //         </View>
-        
-            //         <View style={{flex: 1, backgroundColor: MyColors.appLightGray, height: 1, marginBottom: 10}} />
-        
-            //         <View style={styles.infoView}>
-            //           <FontAwesome5 name="book" size={18} color="#fff" style={{flex: 1}}/>
-            //           <Text style={styles.infoText}>{element.subject_name}</Text>
-            //         </View>
-        
-            //         <View style={styles.infoView}>
-            //           <FontAwesome5 name="info-circle" size={18} color="#fff" style={{flex: 1}} />
-            //           <Text style={styles.infoText}>{element.class_name}</Text>
-            //         </View>
-        
-            //         <View style={styles.noteDataView}>
-            //             <Text style={styles.noteDataText}>{element.create_day}</Text>
-            //         </View>
-        
-            //       </TouchableOpacity>
-            //     )
-            //   })
+                    <View style={{
+                        flex: 1,
+                        justifyContent: 'center'
+                    }}>
+                        <Checkbox
+                            value={isChecked}
+                            onValueChange={setChecked}
+                            color={isChecked ? MyColors.appOrange : undefined }
+                        />
+                    </View>
+
+                    <View style={{flex: 8}}>
+                        <View>
+                        <Text style={globalStyles.headlineText}>{element.title}</Text>
+                        </View>
+            
+                        <View style={{flex: 1, backgroundColor: MyColors.appLightGray, height: 1, marginBottom: 10}} />
+            
+                        <View style={styles.infoView}>
+                        <FontAwesome5 name="book" size={18} color="#fff" style={{flex: 1}}/>
+                        <Text style={styles.infoText}>{element.subject_name}</Text>
+                        </View>
+            
+                        <View style={styles.infoView}>
+                        <FontAwesome5 name="info-circle" size={18} color="#fff" style={{flex: 1}} />
+                        <Text style={styles.infoText}>{element.class_name}</Text>
+                        </View>
+            
+                        <View style={styles.noteDataView}>
+                            <Text style={styles.noteDataText}>{element.create_day}</Text>
+                        </View>
+                    </View>
+
+                  </TouchableOpacity>
+                )
+              })
         } else if(item.type === 'addButton') {
             return(
                 <MakeButton onPress={() => addEvent(navigation, currentTitle, currentDescription, date, currentSubject, currentClass)}/>
@@ -342,7 +362,8 @@ const styles = StyleSheet.create({
         padding: 12,
         marginBottom: 15, 
         borderColor: MyColors.appLightGray, 
-        borderWidth: 1
+        borderWidth: 1,
+        flexDirection: 'row'
     },
     infoView: {
         flexDirection: 'row',
