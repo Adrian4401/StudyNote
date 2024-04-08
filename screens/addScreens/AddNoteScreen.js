@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, ScrollView, StatusBar, TextInput, FlatList } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TextInput, FlatList } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useNavigation } from '@react-navigation/native';
 
@@ -24,18 +24,20 @@ export default function AddNoteScreen() {
 
     const db = DBConnect();
 
-    const [currentTitle, setCurrentTitle] = useState('');
-    const [currentNote, setCurrentNote] = useState('');
-
-    const [notes, setNotes] = useState([]);
 
     const [openSubjects, setOpenSubjects] = useState(false);
     const [openClasses, setOpenClasses] = useState(false);
+
+    const [currentTitle, setCurrentTitle] = useState('');
+    const [currentNote, setCurrentNote] = useState('');
     const [currentClass, setCurrentClass] = useState(null);
     const [currentSubject, setCurrentSubject] = useState(null);
+
     const [subjects, setSubjects] = useState([]);
     const [classes, setClasses] = useState([]);
 
+
+    
     useEffect(() => {
         const loadData = navigation.addListener('focus', () => {
             loadSubjects(setSubjects),
@@ -183,8 +185,6 @@ export default function AddNoteScreen() {
         <>
             <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: '#000'}}/>
             <SafeAreaView edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: MyColors.appBackground}}>
-
-                <StatusBar barStyle='light-content' />
 
                 {/* HEADER */}
                 <View style={headerStyles.headerBackground}>

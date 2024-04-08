@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, ScrollView, StatusBar, TextInput, FlatList } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TextInput, FlatList } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -22,8 +22,6 @@ export default function EditNoteScreen() {
 
     const [currentTitle, setCurrentTitle] = useState('');
     const [currentNote, setCurrentNote] = useState('');
-
-    const [data, setData] = useState([]);
 
     const [openSubjects, setOpenSubjects] = useState(false);
     const [openClasses, setOpenClasses] = useState(false);
@@ -168,8 +166,6 @@ export default function EditNoteScreen() {
         <>
             <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: '#000'}}/>
             <SafeAreaView edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: MyColors.appBackground}}>
-
-                <StatusBar barStyle='light-content' />
 
                 {/* HEADER */}
                 <View style={headerStyles.headerBackground}>

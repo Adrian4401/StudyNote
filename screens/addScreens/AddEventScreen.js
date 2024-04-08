@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, ScrollView, StatusBar, TextInput, FlatList, TouchableOpacity, Platform } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TextInput, FlatList, TouchableOpacity, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -27,17 +27,18 @@ export default function AddEventScreen() {
 
     const navigation = useNavigation();
 
-    const [currentTitle, setCurrentTitle] = useState('');
-    const [currentDescription, setCurrentDescription] = useState('');
-
     const [openSubjects, setOpenSubjects] = useState(false);
     const [openClasses, setOpenClasses] = useState(false);
+
+    const [currentTitle, setCurrentTitle] = useState('');
+    const [currentDescription, setCurrentDescription] = useState('');
     const [currentClass, setCurrentClass] = useState(null);
     const [currentSubject, setCurrentSubject] = useState(null);
     const [subjects, setSubjects] = useState([]);
     const [classes, setClasses] = useState([]);
 
     const [valueSubjects, setValueSubjects] = useState(null);
+    
     const [data, setData] = useState([]);
 
     const [date, setDate] = useState(new Date());
@@ -289,8 +290,6 @@ export default function AddEventScreen() {
         <>
             <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: '#000'}}/>
             <SafeAreaView edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: MyColors.appBackground}}>
-
-                <StatusBar barStyle='light-content' />
 
                 {/* HEADER */}
                 <View style={headerStyles.headerBackground}>

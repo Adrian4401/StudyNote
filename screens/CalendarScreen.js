@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, ScrollView, StatusBar, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { FontAwesome, FontAwesome5, Ionicons, AntDesign } from '@expo/vector-icons';
@@ -8,7 +8,9 @@ import { MyColors } from '../colors';
 import { headerStyles } from '../styles/headerStyles';
 import { globalStyles } from '../styles/globalStyles';
 
-import { Create, selectAllEvents } from '../databaseQueries/databaseQueries';
+import { selectAllEvents } from '../databaseQueries/databaseQueries';
+
+import { CustomStatusBar } from '../components/StatusBar';
 
 
 
@@ -67,7 +69,9 @@ export default function CalendarScreen() {
       <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: '#000'}}/>
       <SafeAreaView edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: MyColors.appBackground}}>
 
-        <StatusBar barStyle='light-content' />
+        {/* <StatusBar barStyle='light-content' /> */}
+        <CustomStatusBar />
+        
 
         {/* HEADER */}
         <View style={headerStyles.headerBackground}>
@@ -87,6 +91,8 @@ export default function CalendarScreen() {
               <Text style={{...globalStyles.headlineText, marginBottom: 0, marginTop: 10}}>Twoje bliższe terminy</Text>
               <Text style={globalStyles.littleText}>najbliższe 7 dni</Text>
             </View>
+
+
 
             {/* EVENT */}
             {showEvents()}

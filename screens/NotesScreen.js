@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, StatusBar, TouchableOpacity, FlatList } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
@@ -21,7 +21,7 @@ export default function NoteScreen() {
   const [openSubjects, setOpenSubjects] = useState(false);
   const [valueSubjects, setValueSubjects] = useState(null);
 
-  const [subjectsDropDown, setSubjectsDropDown] = useState([]);
+  const [subjects, setSubjects] = useState([]);
 
   const [data, setData] = useState([]);
 
@@ -30,7 +30,7 @@ export default function NoteScreen() {
   useEffect(() => {
 
     const loadData = navigation.addListener('focus', () => {
-      selectAllNotesWithSubjects(setSubjectsDropDown, setData)
+      selectAllNotesWithSubjects(setSubjects, setData)
     });
 
     selectChosenNotes(valueSubjects, setData);
@@ -41,7 +41,7 @@ export default function NoteScreen() {
 
   
 
-  const subjectOptions = subjectsDropDown.map(subject => {
+  const subjectOptions = subjects.map(subject => {
     return { label: subject.subject_name, value: subject.subject_id.toString() };
   });
 
@@ -67,7 +67,7 @@ export default function NoteScreen() {
             items={subjectOptions}
             setOpen={setOpenSubjects}
             setValue={setValueSubjects}
-            setItems={setSubjectsDropDown}
+            setItems={setSubjects}
             ScrollView={false}
             style={{...styles.style, marginBottom: 30}}
             dropDownContainerStyle={styles.dropDownContainerStyle}
@@ -114,8 +114,6 @@ export default function NoteScreen() {
       <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: '#000'}}/>
       <SafeAreaView edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: MyColors.appBackground}}>
 
-        <StatusBar barStyle='light-content' />
-
         {/* HEADER */}
         <View style={headerStyles.headerBackground}>
             <Text style={headerStyles.headerText}>Notatnik</Text>
@@ -148,8 +146,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: MyColors.appBackground,
     alignItems: 'center',
-    paddingHorizontal: 20
-  },
+    paddingHorizontal: 20 },
   noteStyle: {
     width: '100%',
     backgroundColor: MyColors.appDark,

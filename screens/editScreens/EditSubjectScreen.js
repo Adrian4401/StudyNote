@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, ScrollView, StatusBar, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, ScrollView, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import * as SQLite from 'expo-sqlite';
@@ -24,6 +24,8 @@ export default function EditSubjectScreen() {
     const [subjects, setSubjects] = useState([]);
     const [currentSubject, setCurrentSubject] = useState('');
     const [subjectID, setSubjectID] = useState('');
+
+    
 
     useEffect(() => {
         const { subjectID, subjectName } = route.params;
@@ -85,8 +87,6 @@ export default function EditSubjectScreen() {
         <>
             <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: '#000'}}/>
             <SafeAreaView edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: MyColors.appBackground}}>
-
-                <StatusBar barStyle='light-content' />
 
                 {/* HEADER */}
                 <View style={headerStyles.headerBackground}>

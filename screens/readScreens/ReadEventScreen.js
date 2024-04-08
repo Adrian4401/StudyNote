@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, ScrollView, StatusBar, Button, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { MyColors } from '../../colors';
@@ -60,8 +60,6 @@ export default function ReadEventScreen() {
         <>
             <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: '#000'}}/>
             <SafeAreaView edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: MyColors.appBackground}}>
-
-                <StatusBar barStyle='light-content' />
 
                 {/* HEADER */}
                 <View style={headerStyles.headerBackground}>
