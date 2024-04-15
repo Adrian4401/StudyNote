@@ -62,7 +62,8 @@ const styles = StyleSheet.create ({
         backgroundColor: MyColors.appOrange,
         paddingVertical: 5,
         borderRadius: 20,
-        justifyContent: 'center'
+        justifyContent: 'center',
+        marginTop: 20
     },
     makeText: {
         color: '#fff',

@@ -8,49 +8,16 @@ import { headerStyles } from '../styles/headerStyles';
 import { globalStyles } from '../styles/globalStyles';
 
 import { SettingsScreenButton } from '../components/customButtons';
-import { 
-  AlertDeleteAllClasses,
-  AlertDeleteAllNotes,
-  AlertDeleteAllSubjects, 
-  AlertDeleteClassesTable, 
-  AlertDeleteNotesTable, 
-  AlertDeleteSubjectsTable 
-} from '../components/AppAlerts';
 
-import { DBConnect } from '../databaseQueries/DBConnect';
+import { AlertDeleteAllData } from '../components/AppAlerts';
+
+
 
 
 
 export default function SettingsScreen() {
 
-  const db = DBConnect();
 
-  const deleteEventsTable = () => {
-    db.transaction(tx => {
-      tx.executeSql(
-          'DROP TABLE IF EXISTS events',
-          null,
-          (_, resultSet) => {
-            console.log('DATA -- Events table deleted')
-          },
-          (error) => console.log('ERROR -- Deleting events table failed -> ', error)
-      )
-    })
-  }
-
-  const deleteEvents = () => {
-
-    db.transaction(tx => {
-      tx.executeSql(
-          'DELETE FROM events',
-          null,
-          (_, resultSet) => {
-            console.log('DATA -- Data from table events deleted')
-          },
-          (error) => console.log('ERROR -- Deleting data from events table failed -> ', error)
-      )
-    })
-}
 
   return (
     <>
@@ -93,28 +60,13 @@ export default function SettingsScreen() {
             <View style={globalStyles.headlineView}>
               <Text style={globalStyles.littleText}>Zarządzanie danymi</Text>
             </View>
-            <SettingsScreenButton onPress={AlertDeleteAllSubjects} icon={"import-export"} text='Eksportowanie danych'/>
-            <SettingsScreenButton onPress={AlertDeleteSubjectsTable} icon={"import-export"} text='Importowanie danych'/>
+            <SettingsScreenButton onPress={() => console.log("To do")} icon={"import-export"} text='Eksportowanie danych'/>
+            <SettingsScreenButton onPress={() => console.log("To do")} icon={"import-export"} text='Importowanie danych'/>
 
             <View style={globalStyles.headlineView}>
               <Text style={globalStyles.littleText}>Usuwanie danych</Text>
             </View>
-            <SettingsScreenButton onPress={AlertDeleteAllSubjects} icon={"delete"} text='Usuń wszystkie przedmioty'/>
-            <SettingsScreenButton onPress={AlertDeleteSubjectsTable} icon={"delete"} text='Usuń tabelę przedmiotów'/>
-            <SettingsScreenButton onPress={AlertDeleteAllClasses} icon={"delete"} text='Usuń wszystkie zajęcia'/>
-            <SettingsScreenButton onPress={AlertDeleteClassesTable} icon={"delete"} text='Usuń tabelę zajęć'/>
-            <SettingsScreenButton onPress={AlertDeleteAllNotes} icon={"delete"} text='Usuń wszystkie notatki'/>
-            <SettingsScreenButton onPress={AlertDeleteNotesTable} icon={"delete"} text='Usuń tabelę notatek'/>
-
-            <Button
-              title="Usuń tabele wydarzeń"
-              onPress={deleteEventsTable}
-            />
-
-            <Button
-              title="Usuń wydarzenia"
-              onPress={deleteEvents}
-            />
+            <SettingsScreenButton onPress={AlertDeleteAllData} icon={"delete"} text='Usuń wszystkie dane'/>
             
 
           </View>

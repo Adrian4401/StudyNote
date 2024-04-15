@@ -48,7 +48,34 @@ export default function AddEventScreen() {
     const [dateText, setDateText] = useState('Wybierz dzień');
     const [timeText, setTimeText] = useState('Wybierz godzinę');
 
-    const [isChecked, setChecked] = useState(false);
+    const [checkedNotes, setCheckedNotes] = useState([]);
+
+    const [checkedNoteIDs, setCheckedNoteIDs] = useState([]);
+
+
+
+    useEffect(() => {
+        const loadData = navigation.addListener('focus', () => {
+            loadSubjects(setSubjects),
+            loadClasses(setClasses)
+        })
+
+        selectChosenNotes(valueSubjects, setData);
+
+        setCheckedNotes(new Array(data.length).fill(false))
+        
+        return loadData;
+    }, [navigation, valueSubjects, setData, data.length])
+
+
+
+    const subjectItems = subjects.map(subject => {
+        return { label: subject.subject_name, value: subject.subject_id.toString() };
+    });
+
+    const classesItems = classes.map(myclass => {
+        return { label: myclass.class_name, value: myclass.class_id.toString() };
+    })
 
 
 
@@ -74,26 +101,35 @@ export default function AddEventScreen() {
 
 
 
-    useEffect(() => {
-        const loadData = navigation.addListener('focus', () => {
-            loadSubjects(setSubjects),
-            loadClasses(setClasses)
-        })
+    const handleNoteCheckboxChange = (index) => {
+        const newCheckedNotes = [...checkedNotes];
+        newCheckedNotes[index] = !newCheckedNotes[index];
+        setCheckedNotes(newCheckedNotes);
 
-        selectChosenNotes(valueSubjects, setData);
-        
-        return loadData;
-    }, [navigation, valueSubjects, setData])
+        const newCheckedNoteIDs = [...checkedNoteIDs];
+        if (newCheckedNotes[index]) {
+            newCheckedNoteIDs.push(data[index].note_id);
+        } else {
+            const noteIDIndex = newCheckedNoteIDs.indexOf(data[index].note_id);
+            if (noteIDIndex !== -1) {
+                newCheckedNoteIDs.splice(noteIDIndex, 1);
+            }
+        }
+        setCheckedNoteIDs(newCheckedNoteIDs);
+    }
 
+    // const getCheckedNoteIDs = () => {
+    //     const checkedNoteIDs = [];
 
+    //     checkedNotes.forEach((isChecked, index) => {
+    //         if(isChecked) {
+    //             checkedNoteIDs.push(data[index].note_id);
+    //         }
+    //     });
 
-    const subjectItems = subjects.map(subject => {
-        return { label: subject.subject_name, value: subject.subject_id.toString() };
-    });
-
-    const classesItems = classes.map(myclass => {
-        return { label: myclass.class_name, value: myclass.class_id.toString() };
-    })
+    //     return checkedNoteIDs;
+    // }
+    
 
 
 
@@ -125,38 +161,39 @@ export default function AddEventScreen() {
                     }}
                 />
             )
-        } else if(item.type === 'dropdownPickers') {
+        } else if(item.type === 'subjectsPicker') {
             return(
-                <>
-                    <DropDownPicker
-                        placeholder='Wybierz przedmiot'
-                        open={openSubjects}
-                        value={currentSubject}
-                        items={subjectItems}
-                        setOpen={setOpenSubjects}
-                        setValue={setCurrentSubject}
-                        setItems={setSubjects}
-                        ScrollView={false}
-                        style={{...styles.style, marginBottom: 10, marginTop: 40}}
-                        dropDownContainerStyle={styles.dropDownContainerStyle}
-                        textStyle={styles.textStyle}
-                        arrowIconContainerStyle={styles.arrowIconContainerStyle}
-                    />
-                    <DropDownPicker
-                        placeholder='Wybierz zajęcia'
-                        open={openClasses}
-                        value={currentClass}
-                        items={classesItems}
-                        setOpen={setOpenClasses}
-                        setValue={setCurrentClass}
-                        setItems={setClasses}
-                        ScrollView={false}
-                        style={styles.style}
-                        dropDownContainerStyle={styles.dropDownContainerStyle}
-                        textStyle={styles.textStyle}
-                        arrowIconContainerStyle={styles.arrowIconContainerStyle}
-                    />
-                </>
+                <DropDownPicker
+                    placeholder='Wybierz przedmiot'
+                    open={openSubjects}
+                    value={valueSubjects}
+                    items={subjectItems}
+                    setOpen={setOpenSubjects}
+                    setValue={setValueSubjects}
+                    setItems={setSubjects}
+                    ScrollView={false}
+                    style={{...styles.style, marginBottom: 10, marginTop: 10}}
+                    dropDownContainerStyle={styles.dropDownContainerStyle}
+                    textStyle={styles.textStyle}
+                    arrowIconContainerStyle={styles.arrowIconContainerStyle}
+                />
+            )
+        } else if(item.type === 'classesPicker') {
+            return(
+                <DropDownPicker
+                    placeholder='Wybierz zajęcia'
+                    open={openClasses}
+                    value={currentClass}
+                    items={classesItems}
+                    setOpen={setOpenClasses}
+                    setValue={setCurrentClass}
+                    setItems={setClasses}
+                    ScrollView={false}
+                    style={{...styles.style, marginTop: 20}}
+                    dropDownContainerStyle={styles.dropDownContainerStyle}
+                    textStyle={styles.textStyle}
+                    arrowIconContainerStyle={styles.arrowIconContainerStyle}
+                />
             )
         } else if(item.type === 'descriptionTextInput') {
             return(
@@ -175,7 +212,7 @@ export default function AddEventScreen() {
                         borderRadius: 10,
                         padding: 10,
                         marginVertical: 20,
-                        height: 200,
+                        height: 100,
                         backgroundColor: MyColors.appGray,
                         flexWrap: 'wrap'
                     }}
@@ -184,7 +221,7 @@ export default function AddEventScreen() {
         } else if(item.type === 'dateTimePickers') {
             if(Platform.OS === 'android') {
                 return(
-                    <>
+                    <View style={{marginBottom: 20}}>
                         <TouchableOpacity onPress={() => showMode('time')} style={styles.dateTimeButtons}>
                             <Text style={{fontSize: 20, color: 'white'}}>{timeText}</Text>
                         </TouchableOpacity>
@@ -205,7 +242,7 @@ export default function AddEventScreen() {
                                 themeVariant='dark'
                             />
                         )}
-                    </>
+                    </View>
                 )
             } else if(Platform.OS === 'ios') {
                 return (
@@ -241,14 +278,11 @@ export default function AddEventScreen() {
                 return (
                   <TouchableOpacity key={index} onPress={() => navigation.navigate('ReadNoteScreen', { noteID: element.note_id })} style={styles.noteStyle}>
         
-                    <View style={{
-                        flex: 1,
-                        justifyContent: 'center'
-                    }}>
+                    <View style={{flex: 1, justifyContent: 'center'}}>
                         <Checkbox
-                            value={isChecked}
-                            onValueChange={setChecked}
-                            color={isChecked ? MyColors.appOrange : undefined }
+                            value={checkedNotes[index]}
+                            onValueChange={() => handleNoteCheckboxChange(index)}
+                            color={checkedNotes[index] ? MyColors.appOrange : undefined }
                         />
                     </View>
 
@@ -279,7 +313,8 @@ export default function AddEventScreen() {
               })
         } else if(item.type === 'addButton') {
             return(
-                <MakeButton onPress={() => addEvent(navigation, currentTitle, currentDescription, date, currentSubject, currentClass)}/>
+                <MakeButton onPress={() => addEvent(navigation, currentTitle, currentDescription, date, valueSubjects, currentClass, checkedNoteIDs)}/>
+                // <MakeButton onPress={() => console.log('Zaznaczone notatki: ', checkedNoteIDs)} />
             )
         }
     }
@@ -301,9 +336,10 @@ export default function AddEventScreen() {
                         data={[
                             { type: 'addButton' },
                             { type: 'notes' },
-                            { type: 'dropdownPickers' },
                             { type: 'dateTimePickers' },
                             { type: 'descriptionTextInput' },
+                            { type: 'subjectsPicker' },
+                            { type: 'classesPicker' },
                             { type: 'titleTextInput' },
                             { type: 'goBackButton' }
                         ]}
@@ -331,8 +367,7 @@ const styles = StyleSheet.create({
     style: {
         backgroundColor: MyColors.appDark,
         borderWidth: 1,
-        borderColor: MyColors.appOrange,
-        marginBottom: 50
+        borderColor: MyColors.appOrange
     },
     dropDownContainerStyle: {
         backgroundColor: MyColors.appDark,
@@ -347,7 +382,7 @@ const styles = StyleSheet.create({
         backgroundColor: MyColors.appOrange,
         alignItems: 'center',
         justifyContent: 'center',
-        marginVertical: 10,
+        marginVertical: 5,
         borderRadius: 20
     },
     arrowIconContainerStyle: {
@@ -359,7 +394,7 @@ const styles = StyleSheet.create({
         backgroundColor: MyColors.appDark,
         borderRadius: 20,
         padding: 12,
-        marginBottom: 15, 
+        marginBottom: 20, 
         borderColor: MyColors.appLightGray, 
         borderWidth: 1,
         flexDirection: 'row'

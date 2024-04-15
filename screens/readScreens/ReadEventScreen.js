@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, ScrollView, TouchableOpacity, Alert, FlatList } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { MyColors } from '../../colors';
 
 import { headerStyles } from '../../styles/headerStyles';
+import { globalStyles } from '../../styles/globalStyles.js';
 
 import { GoBackButton } from '../../components/customButtons';
 
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
-import { deleteEvent, selectEventToRead } from '../../databaseQueries/databaseQueries.js';
+import { deleteEvent, selectAllNotesEvent, selectEventToRead, selectNotesToEvent } from '../../databaseQueries/databaseQueries.js';
 
 
 
@@ -29,12 +30,17 @@ export default function ReadEventScreen() {
     const [deadlineTime, setDeadlineTime] = useState('');
     const [eventID, setEventID] = useState(null);
 
+    const [notesData, setNotesData] = useState([]);
+
     useEffect(() => {
         const { eventID } = route.params;
         setEventID(eventID)
 
         const loadData = navigation.addListener('focus', () => {
             selectEventToRead(eventID, setTitle, setDescription, setSubject, setMyclass, setDeadlineDate, setDeadlineTime)
+            selectNotesToEvent(eventID, setNotesData)
+
+            // selectAllNotesEvent();
         })
 
         return loadData;
@@ -43,7 +49,7 @@ export default function ReadEventScreen() {
 
 
     const alertDeleteEvent = (eventID) => {
-        Alert.alert('Usuwanie notatki', 'Czy na pewno chcesz usunąć notatkę?', [
+        Alert.alert('Usuwanie wydarzenia', 'Czy na pewno chcesz usunąć wydarzenie?', [
             {
                 text: 'Anuluj',
                 onPress: () => console.log('Anuluj'),
@@ -56,6 +62,101 @@ export default function ReadEventScreen() {
         ])
     }
 
+
+
+
+    const renderItem = ({item}) => {
+        if(item.type === 'topPanel') {
+            return (
+                <View style={styles.topPanel}>
+                    <GoBackButton />
+                    <View style={styles.topPanelIcons}>
+                        <TouchableOpacity onPress={() => alertDeleteEvent(eventID)}>
+                            <MaterialIcons name="delete" size={30} color='white'/>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => navigation.navigate('EditNoteScreen', { noteID: noteID })}>
+                            <MaterialIcons name="edit" size={30} color="white"/>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            )
+        } else if(item.type === 'eventInfo') {
+            return (
+                <>
+                    <View style={{
+                        width: '100%',
+                        alignItems: 'flex-start'
+                    }}>
+
+                        <View style={{marginVertical: 25}}>
+                            <View style={styles.infoView}>
+                                <FontAwesome5 name="calendar" size={18} color="#fff" style={{flex: 1}}/>
+                                <Text style={styles.infoText}>{deadlineDate}</Text>
+                            </View>
+                            <View style={styles.infoView}>
+                                <FontAwesome5 name="clock" size={18} color="#fff" style={{flex: 1}}/>
+                                <Text style={styles.infoText}>{deadlineTime}</Text>
+                            </View>
+                            <View style={styles.infoView}>
+                                <FontAwesome5 name="book" size={18} color="#fff" style={{flex: 1}}/>
+                                <Text style={styles.infoText}>{subject}</Text>
+                            </View>
+                            <View style={styles.infoView}>
+                                <FontAwesome5 name="info-circle" size={18} color="#fff" style={{flex: 1}} />
+                                <Text style={styles.infoText}>{myclass}</Text>
+                            </View>
+                        </View>
+                        
+                        <View style={{marginVertical: 5}}>
+                            <Text style={{fontSize: 30, color: '#fff'}}>{title}</Text>
+                        </View>
+
+                    </View>
+
+
+                    <View style={styles.line} />
+
+
+                    <View style={{width: '100%', marginBottom: 50}}>
+                        <Text style={{color: 'white', fontSize: 17}}>{description}</Text>
+                    </View>
+                </>
+            )
+        } else if(item.type === 'notes') {
+            return notesData.map((element, index) => {
+                return (
+                  <TouchableOpacity key={index} onPress={() => navigation.navigate('ReadNoteScreen', { noteID: element.note_id })} style={styles.noteStyle}>
+     
+                    <View>
+                    <Text style={globalStyles.headlineText}>{element.title}</Text>
+                    </View>
+        
+                    <View style={{flex: 1, backgroundColor: MyColors.appLightGray, height: 1, marginBottom: 10}} />
+        
+                    <View style={styles.infoView}>
+                    <FontAwesome5 name="book" size={18} color="#fff" style={{flex: 1}}/>
+                    <Text style={styles.infoText}>{element.subject_name}</Text>
+                    </View>
+        
+                    <View style={styles.infoView}>
+                    <FontAwesome5 name="info-circle" size={18} color="#fff" style={{flex: 1}} />
+                    <Text style={styles.infoText}>{element.class_name}</Text>
+                    </View>
+        
+                    <View style={styles.noteDataView}>
+                        <Text style={styles.noteDataText}>{element.create_day}</Text>
+                    </View>
+
+                  </TouchableOpacity>
+                )
+            })
+        }
+    }
+
+
+
+
+
     return (
         <>
             <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: '#000'}}/>
@@ -67,65 +168,22 @@ export default function ReadEventScreen() {
                 </View>
 
                 {/* CONTAINER */}
-                <ScrollView>
+                {/* <ScrollView> */}
                     <View style={styles.container}>
 
-                        <View style={styles.topPanel}>
-                            <GoBackButton />
-                            <View style={styles.topPanelIcons}>
-                                <TouchableOpacity onPress={() => alertDeleteEvent(eventID)}>
-                                    <MaterialIcons name="delete" size={30} color='white'/>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={() => navigation.navigate('EditNoteScreen', { noteID: noteID })}>
-                                    <MaterialIcons name="edit" size={30} color="white"/>
-                                </TouchableOpacity>
-                            </View>
-                        </View>
-
-                        {/* <View style={styles.line} /> */}
-                        
-                        <View style={{
-                            width: '100%',
-                            alignItems: 'flex-start'
-                        }}>
-
-                            
-
-                            <View style={{marginVertical: 25}}>
-                                <View style={styles.infoView}>
-                                    <FontAwesome5 name="calendar" size={18} color="#fff" style={{flex: 1}}/>
-                                    <Text style={styles.infoText}>{deadlineDate}</Text>
-                                </View>
-                                <View style={styles.infoView}>
-                                    <FontAwesome5 name="clock" size={18} color="#fff" style={{flex: 1}}/>
-                                    <Text style={styles.infoText}>{deadlineTime}</Text>
-                                </View>
-                                <View style={styles.infoView}>
-                                    <FontAwesome5 name="book" size={18} color="#fff" style={{flex: 1}}/>
-                                    <Text style={styles.infoText}>{subject}</Text>
-                                </View>
-                                <View style={styles.infoView}>
-                                    <FontAwesome5 name="info-circle" size={18} color="#fff" style={{flex: 1}} />
-                                    <Text style={styles.infoText}>{myclass}</Text>
-                                </View>
-                            </View>
-                            
-                            <View style={{marginVertical: 5}}>
-                                <Text style={{fontSize: 30, color: '#fff'}}>{title}</Text>
-                            </View>
-                            
-
-                        </View>
-
-                        <View style={styles.line} />
-
-                        <View style={{width: '100%'}}>
-                            <Text style={{color: 'white', fontSize: 17}}>{description}</Text>
-                        </View>
-                        
+                        <FlatList 
+                            data={[
+                                { type: 'topPanel' },
+                                { type: 'eventInfo' },
+                                { type: 'notes' }
+                            ]}
+                            renderItem={renderItem}
+                            keyExtractor={(item, index) => index.toString()}
+                            showsVerticalScrollIndicator={false}
+                        />
 
                     </View>
-                </ScrollView>
+                {/* </ScrollView> */}
 
                 
 
@@ -141,7 +199,7 @@ const styles = StyleSheet.create({
         backgroundColor: MyColors.appBackground,
         alignItems: 'center',
         padding: 20,
-        paddingBottom: 120
+        paddingBottom: 10
     },
     topPanel: {
         width: '100%',
@@ -158,6 +216,15 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center'
+    },
+    noteStyle: {
+        width: '100%',
+        backgroundColor: MyColors.appDark,
+        borderRadius: 20,
+        padding: 12,
+        marginBottom: 15, 
+        borderColor: MyColors.appLightGray, 
+        borderWidth: 1
     },
     line: {
         width: '100%',

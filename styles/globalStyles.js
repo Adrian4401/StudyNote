@@ -6,11 +6,11 @@ export const globalStyles = {
         marginTop: 10
     },
     headlineViewWithIcon: {
-        width: '100%',
-        marginTop: 10,
-        marginBottom: 20,
+        marginBottom: 30,
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        width: '100%',
+        alignItems: 'center'
     },
     headlineText: {
         fontSize: 22,

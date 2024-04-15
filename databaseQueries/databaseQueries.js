@@ -23,25 +23,6 @@ export function Create() {
 
     db.transaction(tx => 
         tx.executeSql(
-            'CREATE TABLE IF NOT EXISTS events ('+
-                'event_id INTEGER PRIMARY KEY AUTOINCREMENT,'+
-                'title TEXT,'+
-                'description TEXT,'+
-                'subject_id INTEGER,'+
-                'class_id INTEGER,'+
-                'deadline DATETIME,'+
-                'is_deleted INTEGER DEFAULT 0,'+
-                'FOREIGN KEY (subject_id) REFERENCES subjects(subject_id),'+
-                'FOREIGN KEY (class_id) REFERENCES classes(class_id))',
-            [],
-            (_, result) => console.log('DB -- Connected to table EVENTS'),
-            (error) => console.log('DB ERROR -- Connection failed to table EVENTS -> ' + error)
-        )  
-    )   
-
-
-    db.transaction(tx => 
-        tx.executeSql(
             'CREATE TABLE IF NOT EXISTS subjects ('+
                 'subject_id INTEGER PRIMARY KEY AUTOINCREMENT,'+ 
                 'subject_name TEXT,'+
@@ -82,7 +63,40 @@ export function Create() {
             (_, result) => console.log('DB -- Connected to table NOTES'),
             (error) => console.log('DB ERROR -- Connection failed to table NOTES -> ' + error)
         )  
-    )    
+    ) 
+
+
+    db.transaction(tx => 
+        tx.executeSql(
+            'CREATE TABLE IF NOT EXISTS events ('+
+                'event_id INTEGER PRIMARY KEY AUTOINCREMENT,'+
+                'title TEXT,'+
+                'description TEXT,'+
+                'subject_id INTEGER,'+
+                'class_id INTEGER,'+
+                'deadline DATETIME,'+
+                'FOREIGN KEY (subject_id) REFERENCES subjects(subject_id),'+
+                'FOREIGN KEY (class_id) REFERENCES classes(class_id))',
+            [],
+            (_, result) => console.log('DB -- Connected to table EVENTS'),
+            (error) => console.log('DB ERROR -- Connection failed to table EVENTS -> ' + error)
+        )  
+    ) 
+    
+
+    db.transaction(tx =>
+        tx.executeSql(
+            'CREATE TABLE IF NOT EXISTS noteToEvents ('+
+                'id INTEGER PRIMARY KEY AUTOINCREMENT,'+
+                'event_id INTEGER,'+
+                'note_id INTEGER,'+
+                'FOREIGN KEY (event_id) REFERENCES events(event_id),'+
+                'FOREIGN KEY (note_id) REFERENCES notes(note_id))',
+            [],
+            (_, result) => console.log('DB -- Connected to table NOTEtoEVENTS'),
+            (error) => console.log('DB ERROR -- Connection failed to table NOTEtoEVENTS -> ' + error)
+        )
+    )
 
 }
 
@@ -209,10 +223,66 @@ export const selectChosenNotes = (valueSubjects, setData) => {
             (txObj, error) => console.log('ERROR -- Select chosen note failed -> ' + error)
             )  
         )
-    } else {
-      selectAllNotes(setData);
     }
 
+}
+
+
+export const selectNotesToEvent = (eventID, setNotesData) => {
+  
+    db.transaction(tx => 
+        tx.executeSql(
+        'SELECT '+ 
+            'notes.note_id,'+
+            'notes.title,'+
+            'notes.note,'+
+            'notes.create_day,'+
+            'notes.subject_id,'+
+            'notes.class_id,'+
+            'notes.is_deleted,'+
+            'subjects.subject_name, '+
+            'classes.class_name '+
+        'FROM notes '+
+        'RIGHT JOIN subjects ON notes.subject_id = subjects.subject_id '+
+        'RIGHT JOIN classes ON notes.class_id = classes.class_id '+
+        'RIGHT JOIN events '+
+        'RIGHT JOIN noteToEvents ON noteToEvents.event_id = events.event_id '+
+        'WHERE notes.note IS NOT NULL AND notes.is_deleted = 0 '+
+        'AND noteToEvents.event_id = ? ',
+        [eventID],
+        (_, {rows}) => {
+            const data = rows._array;
+
+            const uniqueNotesData = data.filter((note, index, self) =>
+                    index === self.findIndex((t) => (
+                        t.note_id === note.note_id
+                    ))
+                );
+
+
+            setNotesData(uniqueNotesData);
+        },
+        (txObj, error) => console.log('ERROR -- Select notes to event failed -> ' + error)
+        )  
+    )
+
+}
+
+
+export const selectAllNotesEvent = () => {
+  
+    db.transaction(tx => 
+        tx.executeSql(
+            'SELECT * FROM noteToEvents',
+            [],
+            (_, {rows}) => {
+                const data = rows._array;
+                console.log(data)
+            },
+            (txObj, error) => console.log('ERROR -- Ni ma polaczen -> ' + error)
+        )  
+    )
+  
 }
   
   
@@ -301,7 +371,8 @@ export const selectAllEvents = (setData) => {
             'FROM events '+
             'RIGHT JOIN subjects ON events.subject_id = subjects.subject_id '+
             'RIGHT JOIN classes ON events.class_id = classes.class_id '+
-            'WHERE events.title IS NOT NULL AND events.is_deleted = 0',
+            'WHERE events.title IS NOT NULL '+
+            'ORDER BY events.deadline ',
             [],
             (_, {rows}) => {
                 const data = rows._array;
@@ -325,8 +396,8 @@ export const selectEventToRead = (eventID, setTitle, setDescription, setSubject,
                 'events.description,'+
                 'events.subject_id,'+
                 'events.class_id,'+
-                'substr(events.deadline, 9, 2) || "." || substr(events.deadline, 6, 2) || "." || substr(events.deadline, 1, 4) AS deadlineDate,'+
-                'substr(events.deadline, 12) AS deadlineTime,'+
+                'substr(events.deadline, 1, 10) AS deadlineDate,'+
+                'substr(events.deadline, 12, 5) AS deadlineTime,'+
                 'subjects.subject_name, '+
                 'classes.class_name '+
             'FROM events '+
@@ -348,6 +419,16 @@ export const selectEventToRead = (eventID, setTitle, setDescription, setSubject,
         )  
     )
 }
+
+
+// export const selectNotesToEvent = (eventID) => {
+
+//     db.transaction(tx => {
+//         tx.executeSql(
+//             'SELECT '
+//         )
+//     })
+// }
 
 
 
@@ -393,17 +474,20 @@ const formatDate = (date) => {
 
 
 
-export const addEvent = (navigation, currentTitle, currentDescription, date, currentSubject, currentClass) => {
+export const addEvent = (navigation, currentTitle, currentDescription, date, valueSubjects, currentClass, checkedNoteIDs) => {
 
-    // const formattedDate = date.toLocaleString();
     const formattedDate = formatDate(date);
     console.log('Sformatowana data: ', formattedDate)
 
     db.transaction(tx =>
         tx.executeSql(
             'INSERT INTO events (title, description, deadline, subject_id, class_id) values(?,?,?,?,?)',
-            [currentTitle, currentDescription, formattedDate, currentSubject, currentClass],
+            [currentTitle, currentDescription, formattedDate, valueSubjects, currentClass],
             (_, result) => {
+                const eventID = parseInt(result.insertId);
+
+                addNotesToEvent(eventID, checkedNoteIDs);
+
                 console.log('Udalo sie dodac wydarzenie');
                 navigation.goBack();
                 console.log(result)
@@ -412,9 +496,30 @@ export const addEvent = (navigation, currentTitle, currentDescription, date, cur
         )
     )
 
+    // console.log('ID wydarzenia: ', eventID);
+
 }
 
 
+const addNotesToEvent = (eventID, checkedNoteIDs) => {
+
+    checkedNoteIDs.forEach(noteID => {
+
+        const parsedNoteID = parseInt(noteID)
+
+        db.transaction(tx =>
+            tx.executeSql(
+                'INSERT INTO noteToEvents (event_id, note_id) values(?,?)',
+                [eventID, parsedNoteID],
+                (_, result) => {
+                    console.log('Udalo sie dodac notatki do wydarzenia');
+                    console.log(result);
+                },
+                (error) => console.log('Nie udalo sie dodac notatek do wydarzenia -> ' + error)
+            )
+        );
+    });
+}
 
 
 // ===== UPDATE QUERIES =====
@@ -479,7 +584,7 @@ export const editNote = (currentTitle, currentNote, currentSubject, currentClass
 // ===== DELETE QUERIES =====
 
 
-export const deleteTableSubjects = () => {
+export const deleteAllData = () => {
 
     db.transaction(tx => {
       tx.executeSql(
@@ -491,96 +596,55 @@ export const deleteTableSubjects = () => {
           (error) => console.log('ERROR -- Deleting subjects table failed -> ', error)
       )
     })
-}
-
-
-export const deleteSubjects = () => {
 
     db.transaction(tx => {
-      tx.executeSql(
-          'DELETE FROM subjects',
-          null,
-          (_, resultSet) => {
-            console.log('DATA -- Data from table subjects deleted')
-          },
-          (error) => console.log('ERROR -- Deleting data from subjects table failed -> ', error)
-      )
+        tx.executeSql(
+            'DROP TABLE IF EXISTS classes',
+            null,
+            (_, resultSet) => {
+              console.log('DATA -- Classes table deleted')
+            },
+            (error) => console.log('ERROR -- Deleting classes table failed -> ', error)
+        )
     })
-}
-
-
-export const deleteTableClasses = () => {
 
     db.transaction(tx => {
-      tx.executeSql(
-          'DROP TABLE IF EXISTS classes',
-          null,
-          (_, resultSet) => {
-            console.log('DATA -- Classes table deleted')
-          },
-          (error) => console.log('ERROR -- Deleting classes table failed -> ', error)
-      )
+        tx.executeSql(
+            'DROP TABLE IF EXISTS notes',
+            null,
+            (_, resultSet) => {
+              console.log('DATA -- Notes table deleted')
+            },
+            (error) => console.log('ERROR -- Deleting note table failed -> ' + error)
+        )
     })
-}
-
-
-export const deleteClasses = () => {
 
     db.transaction(tx => {
-      tx.executeSql(
-          'DELETE FROM classes',
-          null,
-          (_, resultSet) => {
-            console.log('DATA -- Data from table classes deleted')
-          },
-          (error) => console.log('ERROR -- Deleting data from classes table failed -> ', error)
-      )
+        tx.executeSql(
+            'DROP TABLE IF EXISTS events',
+            null,
+            (_, resultSet) => {
+              console.log('DATA -- Events table deleted')
+            },
+            (error) => console.log('ERROR -- Deleting events table failed -> ' + error)
+        )
     })
 }
 
-
-export const deleteTableNotes = () => {
-
-    db.transaction(tx => {
-      tx.executeSql(
-          'DROP TABLE IF EXISTS notes',
-          null,
-          (_, resultSet) => {
-            console.log('DATA -- Notes table deleted')
-          },
-          (error) => console.log('ERROR -- Deleting note table failed -> ' + error)
-      )
-    })
-}
-
-
-export const deleteNotes = () => {
-
-    db.transaction(tx => { 
-      tx.executeSql(
-          'DELETE FROM notes',
-          null,
-          (_, resultSet) => {
-            console.log('DATA -- Data from table notes deleted')
-          },
-          (error) => console.log('ERROR -- Deleting data from note table failed -> ' + error)
-      )
-    })
-}
 
 
 export const deleteNote = (noteID, navigation) => {
 
   db.transaction(tx =>
-      tx.executeSql(
-          'UPDATE notes SET is_deleted = 1 WHERE note_id = ?',
-          [noteID],
-          (_, resultSet) => {
-              console.log('DATA -- Note deleted'),
-              navigation.goBack();
-          },
-          (error) => console.log('ERROR -- Deleting note failed -> ' + error)
-      )    
+        tx.executeSql(
+            'UPDATE notes SET is_deleted = 1 WHERE note_id = ?',
+            [noteID],
+            (_, resultSet) => {
+                console.log('DATA -- Note deleted'),
+                navigation.goBack();
+            },
+            (error) => console.log('ERROR -- Deleting note failed -> ' + error)
+        )    
   )
 }
 
@@ -589,7 +653,8 @@ export const deleteEvent = (eventID, navigation) => {
 
     db.transaction(tx =>
         tx.executeSql(
-            'UPDATE events SET is_deleted = 1 WHERE event_id = ?',
+            // 'UPDATE events SET is_deleted = 1 WHERE event_id = ?',
+            'DELETE FROM events WHERE event_id = ?',
             [eventID],
             (_, resultSet) => {
                 console.log('DATA -- Event deleted'),

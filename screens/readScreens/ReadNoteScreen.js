@@ -44,7 +44,7 @@ export default function ReadNoteScreen() {
 
 
     const alertDeleteNote = (noteID) => {
-        Alert.alert('Usuwanie wydarzenia', 'Czy na pewno chcesz usunąć wydarzenie?', [
+        Alert.alert('Usuwanie notatek', 'Czy na pewno chcesz usunąć notatkę?', [
             {
                 text: 'Anuluj',
                 onPress: () => console.log('Anuluj'),

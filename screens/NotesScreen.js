@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, FlatList } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, FlatList, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
-import { FontAwesome5, AntDesign } from '@expo/vector-icons';
+import { FontAwesome5, AntDesign, FontAwesome6 } from '@expo/vector-icons';
 
 import { MyColors } from '../colors';
 
@@ -30,7 +30,8 @@ export default function NoteScreen() {
   useEffect(() => {
 
     const loadData = navigation.addListener('focus', () => {
-      selectAllNotesWithSubjects(setSubjects, setData)
+      selectAllNotesWithSubjects(setSubjects, setData);
+      setValueSubjects(null);
     });
 
     selectChosenNotes(valueSubjects, setData);
@@ -47,11 +48,12 @@ export default function NoteScreen() {
 
 
 
+
   const renderItem = ({ item }) => {
     if (item.type === 'header') {
       return (
         <View style={{...globalStyles.headlineViewWithIcon, marginTop: 30}}>
-          <Text style={globalStyles.headlineText}>Twoje notatki</Text>
+          <Text style={{...globalStyles.headlineText, marginBottom: 0}}>Twoje notatki</Text>
           <TouchableOpacity onPress={() => navigation.navigate('AddNoteScreen')}>
             <AntDesign name="plus" size={26} color="#fff" />
           </TouchableOpacity>
@@ -59,21 +61,21 @@ export default function NoteScreen() {
       );
     } else if (item.type === 'subjectsDropdown') {
       return (
-        <View style={{width: '100%'}}>
-          <DropDownPicker
-            placeholder='Wybierz przedmiot'
-            open={openSubjects}
-            value={valueSubjects}
-            items={subjectOptions}
-            setOpen={setOpenSubjects}
-            setValue={setValueSubjects}
-            setItems={setSubjects}
-            ScrollView={false}
-            style={{...styles.style, marginBottom: 30}}
-            dropDownContainerStyle={styles.dropDownContainerStyle}
-            textStyle={styles.textStyle}
-            arrowIconContainerStyle={styles.arrowIconContainerStyle}
-          />
+        <View style={{...globalStyles.headlineViewWithIcon, marginBottom: 40}}>
+            <DropDownPicker
+              placeholder='Wybierz przedmiot'
+              open={openSubjects}
+              value={valueSubjects}
+              items={subjectOptions}
+              setOpen={setOpenSubjects}
+              setValue={setValueSubjects}
+              setItems={setSubjects}
+              ScrollView={false}
+              style={styles.style}
+              dropDownContainerStyle={styles.dropDownContainerStyle}
+              textStyle={styles.textStyle}
+              arrowIconContainerStyle={styles.arrowIconContainerStyle}
+            />
         </View>
       );
     } else if (item.type === 'note' && data) {
@@ -182,7 +184,8 @@ const styles = StyleSheet.create({
   style: {
     backgroundColor: MyColors.appDark,
     borderWidth: 1,
-    borderColor: MyColors.appOrange
+    borderColor: MyColors.appOrange,
+    flex: 1
   },
   dropDownContainerStyle: {
     backgroundColor: MyColors.appDark,
