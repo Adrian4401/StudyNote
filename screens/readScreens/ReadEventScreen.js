@@ -74,7 +74,7 @@ export default function ReadEventScreen() {
                         <TouchableOpacity onPress={() => alertDeleteEvent(eventID)}>
                             <MaterialIcons name="delete" size={30} color='white'/>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => navigation.navigate('EditNoteScreen', { noteID: noteID })}>
+                        <TouchableOpacity onPress={() => navigation.navigate('EditEventScreen', { eventID: eventID })}>
                             <MaterialIcons name="edit" size={30} color="white"/>
                         </TouchableOpacity>
                     </View>

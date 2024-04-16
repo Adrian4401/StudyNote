@@ -194,6 +194,40 @@ export const selectAllNotes = (setData) => {
         )  
     )
 }
+
+
+export const selectNote = (noteID, setCurrentTitle, setCurrentNote, setCurrentSubject, setCurrentClass) => {
+  
+    db.transaction(tx => 
+        tx.executeSql(
+            'SELECT '+ 
+                'notes.note_id,'+
+                'notes.title,'+
+                'notes.note,'+
+                'notes.create_day,'+
+                'notes.subject_id,'+
+                'notes.class_id,'+
+                'notes.is_deleted,'+
+                'subjects.subject_name, '+
+                'classes.class_name '+
+            'FROM notes '+
+            'RIGHT JOIN subjects ON notes.subject_id = subjects.subject_id '+
+            'RIGHT JOIN classes ON notes.class_id = classes.class_id '+
+            'WHERE notes.note IS NOT NULL AND notes.is_deleted = 0 '+
+            'AND note_id = ?',
+            [noteID],
+            (_, {rows}) => {
+                const row = rows.item(0);
+                setCurrentTitle(row.title);
+                setCurrentNote(row.note);
+                setCurrentSubject(row.subject_id);
+                setCurrentClass(row.class_id);
+            },
+            (txObj, error) => console.log('ERROR -- Loading note failed -> ' + error)
+        )  
+    )
+  
+}
   
 
 export const selectChosenNotes = (valueSubjects, setData) => {
@@ -278,40 +312,6 @@ export const selectAllNotesEvent = () => {
   
 }
   
-  
-export const selectNote = (noteID, setCurrentTitle, setCurrentNote, setCurrentSubject, setCurrentClass) => {
-  
-    db.transaction(tx => 
-        tx.executeSql(
-            'SELECT '+ 
-                'notes.note_id,'+
-                'notes.title,'+
-                'notes.note,'+
-                'notes.create_day,'+
-                'notes.subject_id,'+
-                'notes.class_id,'+
-                'notes.is_deleted,'+
-                'subjects.subject_name, '+
-                'classes.class_name '+
-            'FROM notes '+
-            'RIGHT JOIN subjects ON notes.subject_id = subjects.subject_id '+
-            'RIGHT JOIN classes ON notes.class_id = classes.class_id '+
-            'WHERE notes.note IS NOT NULL AND notes.is_deleted = 0 '+
-            'AND note_id = ?',
-            [noteID],
-            (_, {rows}) => {
-                const row = rows.item(0);
-                setCurrentTitle(row.title);
-                setCurrentNote(row.note);
-                setCurrentSubject(row.subject_id);
-                setCurrentClass(row.class_id);
-            },
-            (txObj, error) => console.log('ERROR -- Loading note failed -> ' + error)
-        )  
-    )
-  
-}
-  
 
 export const selectNoteToRead = (noteID, setTitle, setNote, setSubject, setMyclass, setCreateDay) => {
   
@@ -376,6 +376,74 @@ export const selectAllEvents = (setData) => {
             (error) => console.log('ERROR -- Events loading failed' + error)
         )  
     )
+}
+
+
+export const selectEditedEvent = (eventID, setCurrentTitle, setCurrentDescription, setCurrentSubject, setCurrentClass, setDate, setSubjects, setClasses, setCheckedNoteIDs) => {
+
+    loadSubjects(setSubjects)
+    loadClasses(setClasses)
+    selectEvent(eventID, setCurrentTitle, setCurrentDescription, setCurrentSubject, setCurrentClass, setDate)
+    selectChosenEventNotes(eventID, setCheckedNoteIDs)
+
+}
+
+
+export const selectEvent = (eventID, setCurrentTitle, setCurrentDescription, setCurrentSubject, setCurrentClass, setDate) => {
+  
+    db.transaction(tx => 
+        tx.executeSql(
+            'SELECT '+ 
+                'events.event_id,'+
+                'events.title,'+
+                'events.description,'+
+                'events.subject_id,'+
+                'events.class_id,'+
+                'events.deadline,'+
+                'subjects.subject_name, '+
+                'classes.class_name '+
+            'FROM events '+
+            'JOIN subjects ON events.subject_id = subjects.subject_id '+
+            'JOIN classes ON events.class_id = classes.class_id '+
+            'WHERE events.title IS NOT NULL '+
+            'AND event_id = ?',
+            [eventID],
+            (_, {rows}) => {
+                const row = rows.item(0);
+
+                const parts = row.deadline.split(' ');
+                const dateParts = parts[0].split('.');
+                const timeParts = parts[1].split(':');
+                const date = new Date(dateParts[2], dateParts[1] - 1, dateParts[0], timeParts[0], timeParts[1]);
+
+                setCurrentTitle(row.title);
+                setCurrentDescription(row.description);
+                setCurrentSubject(row.subject_id);
+                setCurrentClass(row.class_id);
+                setDate(date);
+            },
+            (error) => console.log('ERROR -- Event loading failed' + error)
+        )  
+    )
+}
+
+
+export const selectChosenEventNotes = (eventID, setCheckedNoteIDs) => {
+  
+    db.transaction(tx => 
+        tx.executeSql(
+            'SELECT note_id '+
+            'FROM notesToEvent '+
+            'WHERE event_id = ?',
+            [eventID],
+            (_, {rows}) => {
+                const data = rows._array
+                setCheckedNoteIDs(data)
+            },
+            (txObj, error) => console.log('ERROR -- Ni ma polaczen -> ' + error)
+        )  
+    )
+  
 }
 
 

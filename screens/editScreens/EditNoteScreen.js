@@ -38,9 +38,7 @@ export default function EditNoteScreen() {
         setNoteID(noteID)
 
         const loadData = navigation.addListener('focus', () => {
-
             selectEditedNote(setSubjects, setClasses, noteID, setCurrentTitle, setCurrentNote, setCurrentSubject, setCurrentClass)
-
         })
 
         console.log('ID przedmiotu: ' + currentSubject);

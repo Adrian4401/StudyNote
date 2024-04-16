@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, TextInput, FlatList, TouchableOpacity, Platform } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 import DropDownPicker from 'react-native-dropdown-picker';
 
@@ -13,7 +13,7 @@ import { globalStyles } from '../../styles/globalStyles';
 
 import { GoBackButton, MakeButton } from '../../components/customButtons';
 
-import { loadClasses, loadSubjects, selectChosenNotes, addEvent } from '../../databaseQueries/databaseQueries.js';
+import { loadClasses, loadSubjects, selectChosenNotes, addEvent, selectEditedEvent } from '../../databaseQueries/databaseQueries.js';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -23,9 +23,10 @@ import Checkbox from 'expo-checkbox';
 
 
 
-export default function AddEventScreen() {
+export default function EditEventScreen() {
 
     const navigation = useNavigation();
+    const route = useRoute();
 
     const [openSubjects, setOpenSubjects] = useState(false);
     const [openClasses, setOpenClasses] = useState(false);
@@ -43,19 +44,24 @@ export default function AddEventScreen() {
     const [mode, setMode] = useState('');
     const [show, setShow] = useState(false);
 
-    const [dateText, setDateText] = useState('Dzień');
-    const [timeText, setTimeText] = useState('Godzina');
-
     const [checkedNotes, setCheckedNotes] = useState([]);
 
     const [checkedNoteIDs, setCheckedNoteIDs] = useState([]);
 
+    const [eventID, setEventID] = useState(null);
+
+    
+
 
 
     useEffect(() => {
+        const { eventID } = route.params;
+        setEventID(eventID)
+
+        console.log('ID wydarzenia: ', eventID)
+
         const loadData = navigation.addListener('focus', () => {
-            loadSubjects(setSubjects),
-            loadClasses(setClasses)
+            selectEditedEvent(eventID, setCurrentTitle, setCurrentDescription, setValueSubjects, setCurrentClass, setDate, setSubjects, setClasses, setCheckedNoteIDs)    
         })
 
         selectChosenNotes(valueSubjects, setData);
@@ -63,16 +69,24 @@ export default function AddEventScreen() {
         setCheckedNotes(new Array(data.length).fill(false))
         
         return loadData;
-    }, [navigation, valueSubjects, setData, data.length])
+    }, [navigation, valueSubjects, setData, data.length, checkedNoteIDs])
+
+    
 
 
 
     const subjectItems = subjects.map(subject => {
-        return { label: subject.subject_name, value: subject.subject_id.toString() };
+        return { 
+            label: subject.subject_name, 
+            value: subject.subject_id
+        };
     });
 
     const classesItems = classes.map(myclass => {
-        return { label: myclass.class_name, value: myclass.class_id.toString() };
+        return { 
+            label: myclass.class_name, 
+            value: myclass.class_id
+        };
     })
 
 
@@ -123,8 +137,8 @@ export default function AddEventScreen() {
         }
         setCheckedNoteIDs(newCheckedNoteIDs);
     }
-    
 
+    
     const selectedDate = formatDate(date);
 
 
@@ -222,11 +236,11 @@ export default function AddEventScreen() {
                         <Text style={{...globalStyles.littleText, marginBottom: 5}}>Wybierz termin</Text>
 
                         <TouchableOpacity onPress={() => showMode('date')} style={styles.dateTimeButtons}>
-                            <Text style={{fontSize: 20, color: 'white'}}>{dateText}</Text>
+                            <Text style={{fontSize: 20, color: 'white'}}>Dzień</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => showMode('time')} style={styles.dateTimeButtons}>
-                            <Text style={{fontSize: 20, color: 'white'}}>{timeText}</Text>
+                            <Text style={{fontSize: 20, color: 'white'}}>Godzina</Text>
                         </TouchableOpacity>
 
                         <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-between', marginVertical: 10}}>
@@ -234,8 +248,6 @@ export default function AddEventScreen() {
                             <Text style={{fontSize: 20, color: 'white'}}>{selectedDate}</Text>
                         </View>
 
-                        
-    
     
                         {show && (
                             <DateTimePicker
@@ -324,8 +336,8 @@ export default function AddEventScreen() {
               })
         } else if(item.type === 'addButton') {
             return(
-                <MakeButton onPress={() => addEvent(navigation, currentTitle, currentDescription, date, valueSubjects, currentClass, checkedNoteIDs)}/>
-                // <MakeButton onPress={() => console.log('Zaznaczone notatki: ', checkedNoteIDs)} />
+                // <MakeButton onPress={() => addEvent(navigation, currentTitle, currentDescription, date, valueSubjects, currentClass, checkedNoteIDs)}/>
+                <MakeButton onPress={() => console.log('Zaznaczone notatki: ', checkedNotes)} />
             )
         }
     }
@@ -341,7 +353,7 @@ export default function AddEventScreen() {
 
                 {/* HEADER */}
                 <View style={headerStyles.headerBackground}>
-                    <Text style={headerStyles.headerText}>Dodaj wydarzenie</Text>
+                    <Text style={headerStyles.headerText}>Edytuj wydarzenie</Text>
                 </View>
 
                 <View style={styles.container}>

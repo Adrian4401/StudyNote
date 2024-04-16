@@ -11,6 +11,7 @@ import AddClassScreen from "./addScreens/AddClassScreen";
 import EditSubjectScreen from "./editScreens/EditSubjectScreen";
 import EditClassScreen from "./editScreens/EditClassScreen";
 import EditNoteScreen from "./editScreens/EditNoteScreen";
+import EditEventScreen from "./editScreens/EditEventScreen";
 
 import ReadNoteScreen from "./readScreens/ReadNoteScreen";
 import ReadEventScreen from "./readScreens/ReadEventScreen";
@@ -30,6 +31,7 @@ export {
     EditSubjectScreen,
     EditClassScreen,
     EditNoteScreen,
+    EditEventScreen,
     
     ReadNoteScreen,
     ReadEventScreen
