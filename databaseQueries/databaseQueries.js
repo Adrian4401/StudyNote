@@ -86,15 +86,15 @@ export function Create() {
 
     db.transaction(tx =>
         tx.executeSql(
-            'CREATE TABLE IF NOT EXISTS noteToEvents ('+
+            'CREATE TABLE IF NOT EXISTS notesToEvent ('+
                 'id INTEGER PRIMARY KEY AUTOINCREMENT,'+
                 'event_id INTEGER,'+
                 'note_id INTEGER,'+
                 'FOREIGN KEY (event_id) REFERENCES events(event_id),'+
                 'FOREIGN KEY (note_id) REFERENCES notes(note_id))',
             [],
-            (_, result) => console.log('DB -- Connected to table NOTEtoEVENTS'),
-            (error) => console.log('DB ERROR -- Connection failed to table NOTEtoEVENTS -> ' + error)
+            (_, result) => console.log('DB -- Connected to table NOTEStoEVENT'),
+            (error) => console.log('DB ERROR -- Connection failed to table NOTEStoEVENT -> ' + error)
         )
     )
 
@@ -241,26 +241,19 @@ export const selectNotesToEvent = (eventID, setNotesData) => {
             'notes.class_id,'+
             'notes.is_deleted,'+
             'subjects.subject_name, '+
-            'classes.class_name '+
+            'classes.class_name, '+
+            'notesToEvent.event_id '+
         'FROM notes '+
-        'RIGHT JOIN subjects ON notes.subject_id = subjects.subject_id '+
-        'RIGHT JOIN classes ON notes.class_id = classes.class_id '+
-        'RIGHT JOIN events '+
-        'RIGHT JOIN noteToEvents ON noteToEvents.event_id = events.event_id '+
-        'WHERE notes.note IS NOT NULL AND notes.is_deleted = 0 '+
-        'AND noteToEvents.event_id = ? ',
+        'JOIN subjects ON notes.subject_id = subjects.subject_id '+
+        'JOIN classes ON notes.class_id = classes.class_id '+
+        'JOIN notesToEvent ON notes.note_id = notesToEvent.note_id '+
+        'WHERE notes.note IS NOT NULL '+
+            'AND notes.is_deleted = 0 '+
+            'AND notesToEvent.event_id = ? ',
         [eventID],
         (_, {rows}) => {
             const data = rows._array;
-
-            const uniqueNotesData = data.filter((note, index, self) =>
-                    index === self.findIndex((t) => (
-                        t.note_id === note.note_id
-                    ))
-                );
-
-
-            setNotesData(uniqueNotesData);
+            setNotesData(data);
         },
         (txObj, error) => console.log('ERROR -- Select notes to event failed -> ' + error)
         )  
@@ -273,7 +266,7 @@ export const selectAllNotesEvent = () => {
   
     db.transaction(tx => 
         tx.executeSql(
-            'SELECT * FROM noteToEvents',
+            'SELECT * FROM notesToEvent',
             [],
             (_, {rows}) => {
                 const data = rows._array;
@@ -509,7 +502,7 @@ const addNotesToEvent = (eventID, checkedNoteIDs) => {
 
         db.transaction(tx =>
             tx.executeSql(
-                'INSERT INTO noteToEvents (event_id, note_id) values(?,?)',
+                'INSERT INTO notesToEvent (event_id, note_id) values(?,?)',
                 [eventID, parsedNoteID],
                 (_, result) => {
                     console.log('Udalo sie dodac notatki do wydarzenia');
@@ -627,6 +620,17 @@ export const deleteAllData = () => {
               console.log('DATA -- Events table deleted')
             },
             (error) => console.log('ERROR -- Deleting events table failed -> ' + error)
+        )
+    })
+
+    db.transaction(tx => {
+        tx.executeSql(
+            'DROP TABLE IF EXISTS notesToEvent',
+            null,
+            (_, resultSet) => {
+              console.log('DATA -- NOTEStoEVENT table deleted')
+            },
+            (error) => console.log('ERROR -- Deleting NOTEStoEVENT table failed -> ' + error)
         )
     })
 }

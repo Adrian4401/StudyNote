@@ -117,18 +117,6 @@ export default function AddEventScreen() {
         }
         setCheckedNoteIDs(newCheckedNoteIDs);
     }
-
-    // const getCheckedNoteIDs = () => {
-    //     const checkedNoteIDs = [];
-
-    //     checkedNotes.forEach((isChecked, index) => {
-    //         if(isChecked) {
-    //             checkedNoteIDs.push(data[index].note_id);
-    //         }
-    //     });
-
-    //     return checkedNoteIDs;
-    // }
     
 
 
@@ -267,6 +255,7 @@ export default function AddEventScreen() {
                             themeVariant='dark'
                             display='inline'
                             timeZoneName={'Europe/Warsaw'}
+                            style={{marginBottom: 40}}
                         />
                     </View>
                 )
@@ -318,6 +307,8 @@ export default function AddEventScreen() {
             )
         }
     }
+
+
 
 
 
