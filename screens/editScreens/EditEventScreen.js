@@ -48,6 +48,8 @@ export default function EditEventScreen() {
 
     const [checkedNoteIDs, setCheckedNoteIDs] = useState([]);
 
+    const noteIndexes = [];
+
     const [eventID, setEventID] = useState(null);
 
     
@@ -65,13 +67,33 @@ export default function EditEventScreen() {
         })
 
         selectChosenNotes(valueSubjects, setData);
-
-        setCheckedNotes(new Array(data.length).fill(false))
         
         return loadData;
-    }, [navigation, valueSubjects, setData, data.length, checkedNoteIDs])
+    }, [navigation, valueSubjects, setData])
 
-    
+
+    useEffect(() => {
+        const newCheckedNotes = data.map(element => checkedNoteIDs.includes(element.note_id));
+        setCheckedNotes(newCheckedNotes);
+    }, [checkedNoteIDs, data]);
+
+
+
+
+    const changeCheckedNotes = (noteID) => {
+        console.log('ID notatek z wydarzenia: ', checkedNoteIDs);
+        console.log('Status notatek: ', checkedNotes);
+
+        const noteIndex = data.findIndex(element => element.note_id === noteID);
+        if (noteIndex !== -1) {
+            const newCheckedNotes = [...checkedNotes];
+            newCheckedNotes[noteIndex] = true;
+            setCheckedNotes(newCheckedNotes);
+        }
+
+        console.log('Status notatek: ', checkedNotes);
+    };
+
 
 
 
@@ -297,6 +319,10 @@ export default function EditEventScreen() {
             
             
         } else if(item.type === 'notes') {
+            data.forEach((element, index) => {
+                noteIndexes.push(element.note_id);
+            });
+
             return data.map((element, index) => {
                 return (
                   <TouchableOpacity key={index} onPress={() => navigation.navigate('ReadNoteScreen', { noteID: element.note_id })} style={styles.noteStyle}>
@@ -337,7 +363,7 @@ export default function EditEventScreen() {
         } else if(item.type === 'addButton') {
             return(
                 // <MakeButton onPress={() => addEvent(navigation, currentTitle, currentDescription, date, valueSubjects, currentClass, checkedNoteIDs)}/>
-                <MakeButton onPress={() => console.log('Zaznaczone notatki: ', checkedNotes)} />
+                <MakeButton onPress={changeCheckedNotes} />
             )
         }
     }

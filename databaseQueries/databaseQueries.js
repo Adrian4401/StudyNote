@@ -437,7 +437,7 @@ export const selectChosenEventNotes = (eventID, setCheckedNoteIDs) => {
             'WHERE event_id = ?',
             [eventID],
             (_, {rows}) => {
-                const data = rows._array
+                const data = rows._array.map(item => item.note_id)
                 setCheckedNoteIDs(data)
             },
             (txObj, error) => console.log('ERROR -- Ni ma polaczen -> ' + error)
