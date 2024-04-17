@@ -385,6 +385,7 @@ export const selectEditedEvent = (eventID, setCurrentTitle, setCurrentDescriptio
     loadClasses(setClasses)
     selectEvent(eventID, setCurrentTitle, setCurrentDescription, setCurrentSubject, setCurrentClass, setDate)
     selectChosenEventNotes(eventID, setCheckedNoteIDs)
+    deleteNotestoEvent(eventID)
 
 }
 
@@ -640,6 +641,31 @@ export const editNote = (currentTitle, currentNote, currentSubject, currentClass
 }
 
 
+export const editEvent = (navigation, currentTitle, currentDescription, date, valueSubjects, currentClass, checkedNoteIDs, eventID) => {
+
+    const formattedDate = formatDate(date);
+    console.log('Sformatowana data: ', formattedDate)
+
+    db.transaction(tx =>
+        tx.executeSql(
+            'UPDATE events SET title = ?, description = ?, deadline = ?, subject_id = ?, class_id = ? WHERE event_id = ?',
+            [currentTitle, currentDescription, formattedDate, valueSubjects, currentClass, eventID],
+            (_, result) => {
+                addNotesToEvent(eventID, checkedNoteIDs);
+
+                console.log('Udalo sie dodac wydarzenie');
+                navigation.goBack();
+                console.log(result)
+            },
+            (error) => console.log('Nie udalo sie dodac wydarzenia -> ' + error)
+        )
+    )
+
+    // console.log('ID wydarzenia: ', eventID);
+
+}
+
+
 
 
 // ===== DELETE QUERIES =====
@@ -735,4 +761,19 @@ export const deleteEvent = (eventID, navigation) => {
             (error) => console.log('ERROR -- Deleting event failed -> ' + error)
         )    
     )
-  }
+}
+
+
+export const deleteNotestoEvent = (eventID) => {
+
+    db.transaction(tx =>
+        tx.executeSql(
+            'DELETE FROM notesToEvent WHERE event_id = ?',
+            [eventID],
+            (_, resultSet) => {
+                console.log('DATA -- NotesToEvent deleted')
+            },
+            (error) => console.log('ERROR -- Deleting NotesToEvent failed -> ' + error)
+        )    
+    )
+}

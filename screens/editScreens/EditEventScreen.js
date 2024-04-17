@@ -11,9 +11,9 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { headerStyles } from '../../styles/headerStyles';
 import { globalStyles } from '../../styles/globalStyles';
 
-import { GoBackButton, MakeButton } from '../../components/customButtons';
+import { EditButton, GoBackButton } from '../../components/customButtons';
 
-import { loadClasses, loadSubjects, selectChosenNotes, addEvent, selectEditedEvent } from '../../databaseQueries/databaseQueries.js';
+import { selectChosenNotes, addEvent, selectEditedEvent, editEvent } from '../../databaseQueries/databaseQueries.js';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -80,19 +80,19 @@ export default function EditEventScreen() {
 
 
 
-    const changeCheckedNotes = (noteID) => {
-        console.log('ID notatek z wydarzenia: ', checkedNoteIDs);
-        console.log('Status notatek: ', checkedNotes);
+    // const changeCheckedNotes = (noteID) => {
+    //     console.log('ID notatek z wydarzenia: ', checkedNoteIDs);
+    //     console.log('Status notatek: ', checkedNotes);
 
-        const noteIndex = data.findIndex(element => element.note_id === noteID);
-        if (noteIndex !== -1) {
-            const newCheckedNotes = [...checkedNotes];
-            newCheckedNotes[noteIndex] = true;
-            setCheckedNotes(newCheckedNotes);
-        }
+    //     const noteIndex = data.findIndex(element => element.note_id === noteID);
+    //     if (noteIndex !== -1) {
+    //         const newCheckedNotes = [...checkedNotes];
+    //         newCheckedNotes[noteIndex] = true;
+    //         setCheckedNotes(newCheckedNotes);
+    //     }
 
-        console.log('Status notatek: ', checkedNotes);
-    };
+    //     console.log('Status notatek: ', checkedNotes);
+    // };
 
 
 
@@ -362,8 +362,8 @@ export default function EditEventScreen() {
               })
         } else if(item.type === 'addButton') {
             return(
-                // <MakeButton onPress={() => addEvent(navigation, currentTitle, currentDescription, date, valueSubjects, currentClass, checkedNoteIDs)}/>
-                <MakeButton onPress={changeCheckedNotes} />
+                <EditButton onPress={() => editEvent(navigation, currentTitle, currentDescription, date, valueSubjects, currentClass, checkedNoteIDs, eventID)}/>
+                // <MakeButton onPress={changeCheckedNotes} />
             )
         }
     }
