@@ -60,7 +60,7 @@ export default function ReadNoteScreen() {
     return (
         <>
             <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: '#000'}}/>
-            <SafeAreaView edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: MyColors.appBackground}}>
+            <View edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: MyColors.appBackground}}>
 
                 {/* HEADER */}
                 <View style={headerStyles.headerBackground}>
@@ -124,7 +124,7 @@ export default function ReadNoteScreen() {
                 
 
 
-            </SafeAreaView>
+            </View>
         </>
     )
 }

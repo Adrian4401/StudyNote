@@ -148,7 +148,9 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: MyColors.appBackground,
     alignItems: 'center',
-    paddingHorizontal: 20 },
+    paddingHorizontal: 20,
+    paddingBottom: 40
+  },
   noteStyle: {
     width: '100%',
     backgroundColor: MyColors.appDark,

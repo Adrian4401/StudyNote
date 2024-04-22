@@ -38,19 +38,8 @@ export default function SettingsScreen() {
             <View style={globalStyles.headlineView}>
               <Text style={globalStyles.headlineText}>Ustawienia</Text>
             </View>
-          
-            <TouchableOpacity style={{...globalStyles.eventView, flexDirection: 'row', paddingHorizontal: 20}}>
-              <FontAwesome name="user" size={24} color={MyColors.appOrange} style={{paddingHorizontal: 5}}/>
-              <Text style={globalStyles.subjectText}>Nazwa użytkownika</Text>
-            </TouchableOpacity>
-            <View style={{...globalStyles.eventView, flexDirection: 'row', paddingHorizontal: 20}}>
-              <FontAwesome name="paint-brush" size={22} color={MyColors.appOrange} style={{paddingHorizontal: 5}}/>
-              <Text style={globalStyles.subjectText}>Motyw aplikacji</Text>
-            </View>
-            <View style={{...globalStyles.eventView, flexDirection: 'row', paddingHorizontal: 20}}>
-              <MaterialCommunityIcons name="bell" size={24} color={MyColors.appOrange} style={{paddingHorizontal: 5}}/>
-              <Text style={globalStyles.subjectText}>Powiadomienia</Text>
-            </View>
+            <SettingsScreenButton onPress={() => console.log("To do")} icon={"bell"} text='Język'/>
+            <SettingsScreenButton onPress={() => console.log("To do")} icon={"invert-colors"} text='Ciemny motyw'/>
 
             {/* HEADLINE */}
             <View style={globalStyles.headlineView}>
@@ -60,8 +49,8 @@ export default function SettingsScreen() {
             <View style={globalStyles.headlineView}>
               <Text style={globalStyles.littleText}>Zarządzanie danymi</Text>
             </View>
-            <SettingsScreenButton onPress={() => console.log("To do")} icon={"import-export"} text='Eksportowanie danych'/>
-            <SettingsScreenButton onPress={() => console.log("To do")} icon={"import-export"} text='Importowanie danych'/>
+            <SettingsScreenButton onPress={() => console.log("To do")} icon={"file-export"} text='Eksportowanie danych'/>
+            <SettingsScreenButton onPress={() => console.log("To do")} icon={"file-import"} text='Importowanie danych'/>
 
             <View style={globalStyles.headlineView}>
               <Text style={globalStyles.littleText}>Usuwanie danych</Text>

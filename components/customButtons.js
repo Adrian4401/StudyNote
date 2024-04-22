@@ -39,7 +39,7 @@ export const EditButton = ({onPress}) => {
 export const SettingsScreenButton = ({onPress, icon, text}) => {
     return (
         <TouchableOpacity onPress={onPress} style={{...globalStyles.eventView, flexDirection: 'row', paddingHorizontal: 20}}>
-            <MaterialCommunityIcons name='delete' size={24} color={MyColors.appOrange} style={{paddingHorizontal: 5}}/>
+            <MaterialCommunityIcons name={icon} size={24} color={MyColors.appOrange} style={{paddingHorizontal: 5}}/>
             <Text style={globalStyles.subjectText}>{text}</Text>
         </TouchableOpacity>
     )

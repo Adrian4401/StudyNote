@@ -160,7 +160,7 @@ export default function ReadEventScreen() {
     return (
         <>
             <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: '#000'}}/>
-            <SafeAreaView edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: MyColors.appBackground}}>
+            <View edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: MyColors.appBackground}}>
 
                 {/* HEADER */}
                 <View style={headerStyles.headerBackground}>
@@ -180,6 +180,7 @@ export default function ReadEventScreen() {
                             renderItem={renderItem}
                             keyExtractor={(item, index) => index.toString()}
                             showsVerticalScrollIndicator={false}
+                            style={{marginBottom: 50}}
                         />
 
                     </View>
@@ -188,7 +189,7 @@ export default function ReadEventScreen() {
                 
 
 
-            </SafeAreaView>
+            </View>
         </>
     )
 }
@@ -199,7 +200,7 @@ const styles = StyleSheet.create({
         backgroundColor: MyColors.appBackground,
         alignItems: 'center',
         padding: 20,
-        paddingBottom: 10
+        paddingBottom: 0
     },
     topPanel: {
         width: '100%',
