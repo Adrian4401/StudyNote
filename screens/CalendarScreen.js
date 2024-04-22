@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { FontAwesome, FontAwesome5, Ionicons, AntDesign } from '@expo/vector-icons';
+import { FontAwesome5, Ionicons, AntDesign } from '@expo/vector-icons';
 
 import { MyColors } from '../colors';
 import { headerStyles } from '../styles/headerStyles';
@@ -31,6 +31,14 @@ export default function CalendarScreen() {
     
     return loadData;
   }, [setData])
+
+
+
+  var day = (new Date().getDate()).toString().padStart(2, '0');
+  var month = (new Date().getMonth() + 1).toString().padStart(2, '0');
+  var year = new Date().getFullYear();
+
+  var todayDate = day + '.' + month + '.' + year;
 
 
 
@@ -85,8 +93,8 @@ export default function CalendarScreen() {
             {/* USER HEADLINE */}
             <View style={globalStyles.headlineView}>
               <View style={styles.headlineUserView}>
-                <FontAwesome name="user-circle-o" size={24} color={MyColors.appOrange} />
-                <Text style={styles.headlineUserText}>Adrian</Text>
+                <Ionicons name="calendar-clear" size={24} color='white' style={{flex: 1}}/>
+                <Text style={styles.headlineUserText}>{todayDate}</Text>
               </View>
               <Text style={{...globalStyles.headlineText, marginBottom: 0, marginTop: 10}}>Zbliżające się terminy</Text>
               <Text style={globalStyles.littleText}>najbliższe 7 dni</Text>
@@ -133,14 +141,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 20,
     backgroundColor: MyColors.appGray,
-    padding: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
     borderRadius: 20
   },
   headlineUserText: {
     fontSize: 25, 
     textTransform: 'uppercase', 
-    color: MyColors.appOrange, 
-    paddingLeft: 20
+    color: 'white',
+    flex: 2
   },
   eventNameView: {
     width: '100%',

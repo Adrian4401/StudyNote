@@ -13,8 +13,6 @@ import { loadClasses, loadSubjects } from '../../databaseQueries/databaseQueries
 
 import { DBConnect } from '../../databaseQueries/DBConnect';
 
-import Moment from 'moment';
-
 
 
 
@@ -57,17 +55,13 @@ export default function AddNoteScreen() {
 
 
 
-
-    // Moment.locale('pl');
-    // var noteDate = new Date().toLocaleString();
-    // var formattedNoteDate = Moment(formattedNoteDate).format('DD.MM.yyyy');
-
     var day = (new Date().getDate()).toString().padStart(2, '0');
     var month = (new Date().getMonth() + 1).toString().padStart(2, '0');
     var year = new Date().getFullYear();
 
     var noteDate = day + '.' + month + '.' + year;
     
+
 
     const addNote = (currentTitle, currentNote, currentSubject, currentClass, noteDate) => {
         console.log('Date: ', noteDate)
@@ -184,7 +178,7 @@ export default function AddNoteScreen() {
     return (
         <>
             <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: '#000'}}/>
-            <SafeAreaView edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: MyColors.appBackground}}>
+            <View edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: MyColors.appBackground}}>
 
                 {/* HEADER */}
                 <View style={headerStyles.headerBackground}>
@@ -208,7 +202,7 @@ export default function AddNoteScreen() {
                     />
                 </View>
 
-            </SafeAreaView>
+            </View>
         </>
     )
 }

@@ -151,7 +151,8 @@ export default function AddEventScreen() {
                         borderWidth: 2,
                         borderColor: MyColors.appOrange,
                         borderRadius: 10,
-                        padding: 10,
+                        paddingVertical: 5,
+                        paddingHorizontal: 10,
                         marginTop: 30,
                         backgroundColor: MyColors.appDark
                     }}
@@ -185,7 +186,7 @@ export default function AddEventScreen() {
                     setValue={setCurrentClass}
                     setItems={setClasses}
                     ScrollView={false}
-                    style={{...styles.style, marginTop: 20}}
+                    style={{...styles.style, marginTop: 10}}
                     dropDownContainerStyle={styles.dropDownContainerStyle}
                     textStyle={styles.textStyle}
                     arrowIconContainerStyle={styles.arrowIconContainerStyle}
@@ -337,7 +338,7 @@ export default function AddEventScreen() {
     return (
         <>
             <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: '#000'}}/>
-            <SafeAreaView edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: MyColors.appBackground}}>
+            <View edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: MyColors.appBackground}}>
 
                 {/* HEADER */}
                 <View style={headerStyles.headerBackground}>
@@ -363,7 +364,7 @@ export default function AddEventScreen() {
                     />
                 </View>
 
-            </SafeAreaView>
+            </View>
         </>
     )
 }

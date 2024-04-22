@@ -16,6 +16,7 @@ export const headerStyles = {
       color: MyColors.appOrange,
       textAlign: 'center',
       fontSize: 30,
-      textTransform: 'uppercase'
+      textTransform: 'uppercase',
+      fontWeight: 500
     }
 }
