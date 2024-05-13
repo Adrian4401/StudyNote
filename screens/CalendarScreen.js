@@ -8,7 +8,7 @@ import { MyColors } from '../colors';
 import { headerStyles } from '../styles/headerStyles';
 import { globalStyles } from '../styles/globalStyles';
 
-import { selectAllEvents } from '../databaseQueries/databaseQueries';
+import { selectThisWeekEvents, selectNextWeekEvents } from '../databaseQueries/databaseQueries';
 
 import { CustomStatusBar } from '../components/StatusBar';
 
@@ -19,18 +19,20 @@ export default function CalendarScreen() {
 
   const navigation = useNavigation();
 
-  const [data, setData] = useState([]);
+  const [weeklyData, setWeeklyData] = useState([]);
+  const [futureData, setFutureData] = useState([]);
 
 
 
   useEffect(() => {
 
     const loadData = navigation.addListener('focus', () => {
-      selectAllEvents(setData)
+      selectThisWeekEvents(setWeeklyData)
+      selectNextWeekEvents(setFutureData)
     });
     
     return loadData;
-  }, [setData])
+  }, [setWeeklyData, setFutureData])
 
 
 
@@ -42,10 +44,10 @@ export default function CalendarScreen() {
 
 
 
-  const showEvents = () => {
-    return data.map((element, index) => {
+  const showThisWeekEvents = () => {
+    return weeklyData.map((element, index) => {
       return (
-        <TouchableOpacity key={index} onPress={() => navigation.navigate('ReadEventScreen', { eventID: element.event_id })} style={globalStyles.eventView}>
+        <TouchableOpacity key={element.event_id} onPress={() => navigation.navigate('ReadEventScreen', { eventID: element.event_id })} style={globalStyles.eventView}>
           <View style={styles.eventNameView}>
             <Text style={styles.eventNameText}>{element.title}</Text> 
           </View>
@@ -68,6 +70,63 @@ export default function CalendarScreen() {
         </TouchableOpacity>
       )
     })
+  }
+
+  const showNextWeekEvents = () => {
+    return futureData.map((element, index) => {
+      return (
+        <TouchableOpacity key={element.event_id} onPress={() => navigation.navigate('ReadEventScreen', { eventID: element.event_id })} style={globalStyles.eventView}>
+          <View style={styles.eventNameView}>
+            <Text style={styles.eventNameText}>{element.title}</Text> 
+          </View>
+
+          <View style={globalStyles.eventSubjectView}>
+            <FontAwesome5 name="book" size={20} color="#fff"/>
+            <Text style={globalStyles.subjectText}>{element.subject_name}</Text>
+          </View>
+
+          <View>
+            <View style={globalStyles.eventDatetimeView}>
+              <Ionicons name="calendar-clear" size={18} color='#D1D0D0' style={{marginRight: 10}} />
+              <Text style={globalStyles.littleText}>{element.deadlineDate}</Text>
+            </View>
+            <View style={{...globalStyles.eventDatetimeView, marginTop: 5}}>
+              <AntDesign name="clockcircle" size={18} color='#D1D0D0' style={{marginRight: 10}} />
+              <Text style={globalStyles.littleText}>{element.deadlineTime}</Text>
+            </View>
+          </View>
+        </TouchableOpacity>
+      )
+    })
+  }
+
+
+
+  const showWeeklyEvents = () => {
+    return (
+      <>
+        <View style={{width: '100%'}}>
+          <Text style={{...globalStyles.headlineText, marginBottom: 0, marginTop: 10}}>Zbliżające się terminy</Text>
+          <Text style={globalStyles.littleText}>najbliższe 7 dni</Text>
+        </View>
+
+        {showThisWeekEvents()}
+      </>
+    )
+  }
+
+
+
+  const showFutureEvents = () => {
+    return (
+      <>
+        <View style={globalStyles.headlineView}>
+          <Text style={{...globalStyles.headlineText, marginBottom: 0, marginTop: 10}}>Dalsze terminy</Text>
+        </View>
+
+        {showNextWeekEvents()}
+      </>
+    )
   }
 
 
@@ -96,22 +155,13 @@ export default function CalendarScreen() {
                 <Ionicons name="calendar-clear" size={24} color='white' style={{flex: 1}}/>
                 <Text style={styles.headlineUserText}>{todayDate}</Text>
               </View>
-              <Text style={{...globalStyles.headlineText, marginBottom: 0, marginTop: 10}}>Zbliżające się terminy</Text>
-              <Text style={globalStyles.littleText}>najbliższe 7 dni</Text>
             </View>
 
 
-
-            {/* EVENT */}
-            {showEvents()}
+            {showWeeklyEvents()}
 
           
-
-
-            {/* HEADLINE */}
-            <View style={globalStyles.headlineView}>
-              <Text style={{...globalStyles.headlineText, marginBottom: 0, marginTop: 10}}>Dalsze terminy</Text>
-            </View>
+            {showFutureEvents()}
 
             
 

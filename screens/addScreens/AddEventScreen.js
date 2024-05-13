@@ -93,6 +93,7 @@ export default function AddEventScreen() {
         return `${day}.${month}.${year} ${hours}:${minutes}`;
     }
 
+    
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
@@ -332,6 +333,8 @@ export default function AddEventScreen() {
     }
 
 
+    
+
 
 
 
@@ -376,7 +379,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: MyColors.appBackground,
         alignItems: 'center',
-        paddingHorizontal: 20
+        paddingHorizontal: '5%'
     },
     style: {
         backgroundColor: MyColors.appDark,

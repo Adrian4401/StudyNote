@@ -1,4 +1,5 @@
 import { DBConnect } from "./DBConnect";
+import * as Updates from 'expo-updates';
 
 const db = DBConnect();
 
@@ -82,7 +83,7 @@ export function Create() {
             (error) => console.log('DB ERROR -- Connection failed to table EVENTS -> ' + error)
         )  
     ) 
-    
+
 
     db.transaction(tx =>
         tx.executeSql(
@@ -347,7 +348,7 @@ export const selectNoteToRead = (noteID, setTitle, setNote, setSubject, setMycla
 }
   
   
-export const selectAllEvents = (setData) => {
+export const selectThisWeekEvents = (setWeeklyData) => {
   
     db.transaction(tx => 
         tx.executeSql(
@@ -357,20 +358,56 @@ export const selectAllEvents = (setData) => {
                 'events.description,'+
                 'events.subject_id,'+
                 'events.class_id,'+
-                'substr(events.deadline, 1, 10) AS deadlineDate,'+
+                'substr(events.deadline, 9, 2) || "." || substr(events.deadline, 6, 2) || "." || substr(events.deadline, 1, 4) AS deadlineDate,'+
                 'substr(events.deadline, 12, 5) AS deadlineTime,'+
+                'events.deadline,'+
                 'subjects.subject_name, '+
                 'classes.class_name '+
             'FROM events '+
             'RIGHT JOIN subjects ON events.subject_id = subjects.subject_id '+
             'RIGHT JOIN classes ON events.class_id = classes.class_id '+
             'WHERE events.title IS NOT NULL '+
+            'AND events.deadline BETWEEN datetime(\'now\') AND datetime(\'now\', \'+7 day\') '+
             'ORDER BY events.deadline ',
             [],
             (_, {rows}) => {
                 const data = rows._array;
                 console.log(data);
-                setData(data);
+                setWeeklyData(data);
+                console.log('DATA -- Events loaded')
+            },
+            (error) => console.log('ERROR -- Events loading failed' + error)
+        )  
+    )
+}
+
+
+export const selectNextWeekEvents = (setFutureData) => {
+  
+    db.transaction(tx => 
+        tx.executeSql(
+            'SELECT '+ 
+                'events.event_id,'+
+                'events.title,'+
+                'events.description,'+
+                'events.subject_id,'+
+                'events.class_id,'+
+                'substr(events.deadline, 9, 2) || "." || substr(events.deadline, 6, 2) || "." || substr(events.deadline, 1, 4) AS deadlineDate,'+
+                'substr(events.deadline, 12, 5) AS deadlineTime,'+
+                'events.deadline,'+
+                'subjects.subject_name, '+
+                'classes.class_name '+
+            'FROM events '+
+            'RIGHT JOIN subjects ON events.subject_id = subjects.subject_id '+
+            'RIGHT JOIN classes ON events.class_id = classes.class_id '+
+            'WHERE events.title IS NOT NULL '+
+            'AND events.deadline > datetime(\'now\', \'+7 day\') '+
+            'ORDER BY events.deadline ',
+            [],
+            (_, {rows}) => {
+                const data = rows._array;
+                console.log(data);
+                setFutureData(data);
                 console.log('DATA -- Events loaded')
             },
             (error) => console.log('ERROR -- Events loading failed' + error)
@@ -483,19 +520,35 @@ export const selectEventToRead = (eventID, setTitle, setDescription, setSubject,
 }
 
 
-// export const selectNotesToEvent = (eventID) => {
-
-//     db.transaction(tx => {
-//         tx.executeSql(
-//             'SELECT '
-//         )
-//     })
-// }
-
-
-
 
 // ===== INSERT QUERIES =====
+
+
+export const addClass = (currentClass, setCurrentClass, classes, setClasses) => {
+    console.log(currentClass)
+    if(currentClass && typeof currentClass === "string" && currentClass.trim() !== "") {
+        console.log("2")
+        db.transaction(tx => {
+            console.log("3")
+            tx.executeSql(
+                'INSERT INTO classes (class_name) values (?)', 
+                [currentClass],
+                (txObj, resultSet) => {
+                    console.log("4")
+                    let existingClasses = [...classes];
+                    setClasses(existingClasses);
+                    existingClasses.push({class_id: resultSet.insertId, class_name: currentClass});
+                    console.log('udalo sie dodac zajecia');
+                    setCurrentClass(undefined);
+                },
+                (txObj, error) => console.log('nie udalo sie dodac zajecia')
+            );
+        });
+    }
+    else {
+        console.log('nie mozna dodac pustego przedmiotu')
+    }
+}
 
 
 export const addSubject = async (currentSubject, setCurrentSubject, subjects, setSubjects) => {
@@ -538,8 +591,10 @@ const formatDate = (date) => {
 
 export const addEvent = (navigation, currentTitle, currentDescription, date, valueSubjects, currentClass, checkedNoteIDs) => {
 
-    const formattedDate = formatDate(date);
+    // const formattedDate = formatDate(date)
+    const formattedDate = date.toISOString();
     console.log('Sformatowana data: ', formattedDate)
+    console.log('Niesformatowana data: ', date)
 
     db.transaction(tx =>
         tx.executeSql(
@@ -727,6 +782,8 @@ export const deleteAllData = () => {
             (error) => console.log('ERROR -- Deleting NOTEStoEVENT table failed -> ' + error)
         )
     })
+
+    Updates.reloadAsync();
 }
 
 

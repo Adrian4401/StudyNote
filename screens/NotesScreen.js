@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, SafeAreaView, TouchableOpacity, FlatList, Butto
 import { useNavigation } from '@react-navigation/native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
-import { FontAwesome5, AntDesign } from '@expo/vector-icons';
+import { FontAwesome5, AntDesign, FontAwesome } from '@expo/vector-icons';
 
 import { MyColors } from '../colors';
 
@@ -106,6 +106,13 @@ export default function NoteScreen() {
           </TouchableOpacity>
         )
       })
+    } else if (item.type === 'emptyNotes' && data.length <= 0) {
+      return (
+        <View style={{alignItems: 'center'}}>
+          <Text style={{color: MyColors.appLightGray, fontSize: 20, marginTop: '30%', marginBottom: '5%', textTransform: 'uppercase'}}>Nie ma jeszcze żadnych notatek.</Text>
+          <FontAwesome name="sticky-note" size={50} color={MyColors.appLightGray} />
+        </View>
+      )
     }
   };
 
@@ -126,6 +133,7 @@ export default function NoteScreen() {
         <View style={styles.container}>
           <FlatList
             data={[
+              { type: 'emptyNotes' },
               { type: 'note' },
               { type: 'subjectsDropdown' },
               { type: 'header' }
