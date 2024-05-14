@@ -20,7 +20,6 @@ export default function NoteScreen() {
 
   const [openSubjects, setOpenSubjects] = useState(false);
   const [valueSubjects, setValueSubjects] = useState(null);
-
   const [subjects, setSubjects] = useState([]);
 
   const [data, setData] = useState([]);
