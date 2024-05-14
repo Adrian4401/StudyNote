@@ -18,6 +18,13 @@ export const globalStyles = {
         color: '#fff',
         marginBottom: 10
     },
+    sectionText: {
+        fontSize: 20,
+        textTransform: 'uppercase',
+        color: '#fff',
+        marginBottom: 5,
+        marginTop: 10
+    },
     littleText: {
         fontSize: 15,
         color: MyColors.appLightGray,

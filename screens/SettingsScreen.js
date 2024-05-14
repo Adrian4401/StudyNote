@@ -50,14 +50,11 @@ export default function SettingsScreen() {
         {/* CONTAINER */}
         <ScrollView>
           <View style={styles.container}>
-            
-            {/* HEADLINE */}
-            <View style={globalStyles.headlineView}>
-              <Text style={globalStyles.headlineText}>Ustawienia</Text>
-            </View>
 
+            
+            {/* LANGUAGE section */}
             <View style={globalStyles.headlineView}>
-              <Text style={globalStyles.littleText}>{getTranslatedText('languageText')}</Text>
+              <Text style={globalStyles.sectionText}>{getTranslatedText('languageText')}</Text>
             </View>
             <DropDownPicker
               placeholder='Wybierz język'
@@ -73,23 +70,26 @@ export default function SettingsScreen() {
               textStyle={styles.textStyle}
               arrowIconContainerStyle={styles.arrowIconContainerStyle}
             />
-            <SettingsScreenButton onPress={() => console.log("To do")} icon={"invert-colors"} text='Ciemny motyw'/>
 
-            {/* HEADLINE */}
+
+            {/* DARK THEME section */}
             <View style={globalStyles.headlineView}>
-              <Text style={globalStyles.headlineText}>Dane</Text>
+              <Text style={globalStyles.sectionText}>{getTranslatedText('themeText')}</Text>
             </View>
+            <SettingsScreenButton onPress={() => console.log("To do")} icon={"invert-colors"} text={getTranslatedText('themeText')}/>
+
+
+            {/* DATA section */}
+            <View style={globalStyles.headlineView}>
+              <Text style={globalStyles.sectionText}>{getTranslatedText('dataText')}</Text>
+            </View>
+            <SettingsScreenButton onPress={() => console.log("To do")} icon={"file-export"} text={getTranslatedText('dataExportButton')}/>
+            <SettingsScreenButton onPress={() => console.log("To do")} icon={"file-import"} text={getTranslatedText('dataImportButton')}/>
 
             <View style={globalStyles.headlineView}>
-              <Text style={globalStyles.littleText}>Zarządzanie danymi</Text>
+              <Text style={globalStyles.sectionText}>{getTranslatedText('deleteDataText')}</Text>
             </View>
-            <SettingsScreenButton onPress={() => console.log("To do")} icon={"file-export"} text='Eksportowanie danych'/>
-            <SettingsScreenButton onPress={() => console.log("To do")} icon={"file-import"} text='Importowanie danych'/>
-
-            <View style={globalStyles.headlineView}>
-              <Text style={globalStyles.littleText}>Usuwanie danych</Text>
-            </View>
-            <SettingsScreenButton onPress={AlertDeleteAllData} icon={"delete"} text='Usuń wszystkie dane'/>
+            <SettingsScreenButton onPress={AlertDeleteAllData} icon={"delete"} text={getTranslatedText('deleteDataButton')}/>
             
 
           </View>
