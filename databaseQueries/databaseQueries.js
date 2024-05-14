@@ -347,6 +347,13 @@ export const selectNoteToRead = (noteID, setTitle, setNote, setSubject, setMycla
     )
 }
   
+
+export const loadEvents = (setWeeklyData, setFutureData, setOlderData) => {
+    selectThisWeekEvents(setWeeklyData)
+    selectNextWeekEvents(setFutureData)
+    selectOlderEvents(setOlderData)
+}
+
   
 export const selectThisWeekEvents = (setWeeklyData) => {
   
@@ -408,6 +415,40 @@ export const selectNextWeekEvents = (setFutureData) => {
                 const data = rows._array;
                 console.log(data);
                 setFutureData(data);
+                console.log('DATA -- Events loaded')
+            },
+            (error) => console.log('ERROR -- Events loading failed' + error)
+        )  
+    )
+}
+
+
+export const selectOlderEvents = (setOlderData) => {
+  
+    db.transaction(tx => 
+        tx.executeSql(
+            'SELECT '+ 
+                'events.event_id,'+
+                'events.title,'+
+                'events.description,'+
+                'events.subject_id,'+
+                'events.class_id,'+
+                'substr(events.deadline, 9, 2) || "." || substr(events.deadline, 6, 2) || "." || substr(events.deadline, 1, 4) AS deadlineDate,'+
+                'substr(events.deadline, 12, 5) AS deadlineTime,'+
+                'events.deadline,'+
+                'subjects.subject_name, '+
+                'classes.class_name '+
+            'FROM events '+
+            'RIGHT JOIN subjects ON events.subject_id = subjects.subject_id '+
+            'RIGHT JOIN classes ON events.class_id = classes.class_id '+
+            'WHERE events.title IS NOT NULL '+
+            'AND events.deadline < datetime(\'now\') '+
+            'ORDER BY events.deadline ',
+            [],
+            (_, {rows}) => {
+                const data = rows._array;
+                console.log(data);
+                setOlderData(data);
                 console.log('DATA -- Events loaded')
             },
             (error) => console.log('ERROR -- Events loading failed' + error)
