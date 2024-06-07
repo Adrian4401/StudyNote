@@ -12,7 +12,8 @@ import { globalStyles } from '../styles/globalStyles';
 
 import { selectAllNotesWithSubjects, selectChosenNotes } from '../databaseQueries/databaseQueries.js';
 
-import { getTranslatedText } from '../utils/functions';
+import { useLanguage } from '../context/LanguageContext';
+import appLanguage from "../utils/languages";
 
 
 
@@ -22,13 +23,23 @@ export default function NoteScreen() {
 
   const [openSubjects, setOpenSubjects] = useState(false);
   const [valueSubjects, setValueSubjects] = useState(null);
+  const { language, changeLanguage } = useLanguage();
+
   const [subjects, setSubjects] = useState([]);
 
   const [data, setData] = useState([]);
 
 
 
+  const getTranslatedText = (key) => {
+    return appLanguage[language][key];
+  }
+
   useEffect(() => {
+
+    const getTranslatedText = (key) => {
+      return appLanguage[language][key];
+    }
 
     const loadData = navigation.addListener('focus', () => {
       selectAllNotesWithSubjects(setSubjects, setData);

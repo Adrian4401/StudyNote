@@ -13,6 +13,9 @@ import { loadSubjectsAndClasses } from '../databaseQueries/databaseQueries.js';
 
 import { DBConnect } from '../databaseQueries/DBConnect';
 
+import { useLanguage } from '../context/LanguageContext';
+import appLanguage from "../utils/languages";
+
 
 
 
@@ -25,6 +28,14 @@ export default function ManageScreen() {
   const [subjects, setSubjects] = useState([]);
   const [classes, setClasses] = useState([]);
 
+  const { language, changeLanguage } = useLanguage();
+
+
+
+
+  const getTranslatedText = (key) => {
+    return appLanguage[language][key];
+  }
 
   useEffect(() => {
 
@@ -68,7 +79,7 @@ export default function ManageScreen() {
 
         {/* HEADER */}
         <View style={headerStyles.headerBackground}>
-          <Text style={headerStyles.headerText}>Zarządzanie</Text>
+          <Text style={headerStyles.headerText}>{getTranslatedText('manageScreenTitle')}</Text>
         </View>
 
 
@@ -78,7 +89,7 @@ export default function ManageScreen() {
           {/* HEADLINE */}
           <View style={{flex: 1, width: '100%'}}>
             <View style={{...globalStyles.headlineViewWithIcon, marginBottom: 10}}>
-              <Text style={globalStyles.headlineText}>przedmioty</Text>
+              <Text style={globalStyles.headlineText}>{getTranslatedText('subjectSectionHeadline')}</Text>
               <TouchableOpacity onPress={() => navigation.navigate('AddSubjectScreen')}>
                 <AntDesign name="plus" size={26} color="#fff" />
               </TouchableOpacity>
@@ -94,7 +105,7 @@ export default function ManageScreen() {
           </View>
           <View style={{flex: 1, width: '100%', marginTop: 20}}>
             <View style={{...globalStyles.headlineViewWithIcon, marginBottom: 10}}>
-              <Text style={globalStyles.headlineText}>Rodzaj zajęć</Text>
+              <Text style={globalStyles.headlineText}>{getTranslatedText('classesSectionHeadline')}</Text>
               <TouchableOpacity onPress={() => navigation.navigate('AddClassScreen')}>
                 <AntDesign name="plus" size={26} color="#fff" />
               </TouchableOpacity>

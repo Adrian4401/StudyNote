@@ -7,7 +7,7 @@ import { MyColors } from '../../colors';
 
 import { headerStyles } from '../../styles/headerStyles';
 
-import { GoBackButton, MakeButton } from '../../components/customButtons';
+import { GoBackButton, MakeButton } from '../../components/customButtons.js';
 
 import { loadClasses, loadSubjects } from '../../databaseQueries/databaseQueries.js';
 

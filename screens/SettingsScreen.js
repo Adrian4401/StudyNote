@@ -12,8 +12,8 @@ import { SettingsScreenButton } from '../components/customButtons';
 
 import { AlertDeleteAllData } from '../components/AppAlerts';
 
-import { getTranslatedText } from '../utils/functions';
 import appLanguage from "../utils/languages";
+import { useLanguage } from '../context/LanguageContext';
 
 
 
@@ -22,7 +22,8 @@ import appLanguage from "../utils/languages";
 export default function SettingsScreen() {
 
   const [openLanguages, setOpenLanguages] = useState(false);
-  const [valueLanguages, setValueLanguages] = useState('pl');
+  // const [valueLanguages, setValueLanguages] = useState('pl');
+  const { language, changeLanguage } = useLanguage();
   const [languages, setLanguages] = useState([
     {label: 'Polski', value: 'pl', icon: () => <Image source={require('../assets/pl_flag.png')} style={{borderRadius: 20}}/>},
     {label: 'English', value: 'en', icon: () => <Image source={require('../assets/uk_flag.png')} style={{borderRadius: 20}}/>}
@@ -30,7 +31,7 @@ export default function SettingsScreen() {
 
 
   const getTranslatedText = (key) => {
-    return appLanguage[valueLanguages][key];
+    return appLanguage[language][key];
   }
 
 
@@ -57,10 +58,10 @@ export default function SettingsScreen() {
             <DropDownPicker
               placeholder='Wybierz język'
               open={openLanguages}
-              value={valueLanguages}
+              value={language}
               items={languages}
               setOpen={setOpenLanguages}
-              setValue={setValueLanguages}
+              setValue={changeLanguage}
               setItems={setLanguages}
               ScrollView={false}
               style={styles.style}

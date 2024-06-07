@@ -15,6 +15,9 @@ const appLanguage = {
         chooseSubjectDropdownPlaceholder: 'Wybierz przedmiot',
 
         // MANAGE SCREEN
+        manageScreenTitle: 'Zarządzanie',
+        subjectSectionHeadline: 'Przedmioty',
+        classesSectionHeadline: 'Rodzaj zajęć',
 
         // SETTINGS SCREEN
         settingsScreenTitle: 'Ustawienia',
@@ -41,8 +44,23 @@ const appLanguage = {
     },
     en: {
         // CALENDAR SCREEN
-        // MANAGE SCREEN
+        calendarScreenTitle: 'Calendar',
+        emptyEventsText: 'No events yet',
+        thisWeekEventsText: 'Upcoming deadlines',
+        thisWeekEventsLittleText: 'next 7 days',
+        futureEventsText: 'Future deadlines',
+        olderEventsText: 'Archived',
+
         // NOTES SCREEN
+        notesScreentitle: 'Notebook',
+        yourNotesHeadline: 'Your notes', 
+        emptyNotesText: 'No notes yet',
+        chooseSubjectDropdownPlaceholder: 'Choose subject',
+
+        // MANAGE SCREEN
+        manageScreenTitle: 'Management',
+        subjectSectionHeadline: 'Subjects',
+        classesSectionHeadline: 'Class types',
 
         // SETTINGS SCREEN
         settingsScreenTitle: 'Settings',

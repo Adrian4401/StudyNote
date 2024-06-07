@@ -6,7 +6,7 @@ import { MyColors } from '../../colors';
 
 import { headerStyles } from '../../styles/headerStyles';
 
-import { GoBackButton } from '../../components/customButtons';
+import { GoBackButton } from '../../components/customButtons.js';
 
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 

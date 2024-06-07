@@ -11,7 +11,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { headerStyles } from '../../styles/headerStyles';
 import { globalStyles } from '../../styles/globalStyles';
 
-import { EditButton, GoBackButton } from '../../components/customButtons';
+import { EditButton, GoBackButton } from '../../components/customButtons.js';
 
 import { selectChosenNotes, addEvent, selectEditedEvent, editEvent } from '../../databaseQueries/databaseQueries.js';
 

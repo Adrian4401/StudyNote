@@ -10,7 +10,7 @@ import { MyColors } from '../../colors';
 import { headerStyles } from '../../styles/headerStyles';
 import { globalStyles } from '../../styles/globalStyles';
 
-import { GoBackButton, MakeButton } from '../../components/customButtons';
+import { GoBackButton, MakeButton } from '../../components/customButtons.js';
 
 
 

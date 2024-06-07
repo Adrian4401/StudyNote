@@ -14,6 +14,9 @@ import { CustomStatusBar } from '../components/StatusBar';
 
 import { showEvents } from '../utils/functions';
 
+import { useLanguage } from '../context/LanguageContext';
+import appLanguage from "../utils/languages";
+
 
 
 
@@ -25,7 +28,13 @@ export default function CalendarScreen() {
   const [futureData, setFutureData] = useState([]);
   const [olderData, setOlderData] = useState([]);
 
+  const { language, changeLanguage } = useLanguage();
 
+
+
+  const getTranslatedText = (key) => {
+    return appLanguage[language][key];
+  }
 
   useEffect(() => {
 
@@ -54,8 +63,8 @@ export default function CalendarScreen() {
     return (
       <>
         <View style={{width: '100%'}}>
-          <Text style={{...globalStyles.headlineText, marginBottom: 0, marginTop: 10}}>Zbliżające się terminy</Text>
-          <Text style={globalStyles.littleText}>najbliższe 7 dni</Text>
+          <Text style={{...globalStyles.headlineText, marginBottom: 0, marginTop: 10}}>{getTranslatedText('thisWeekEventsText')}</Text>
+          <Text style={globalStyles.littleText}>{getTranslatedText('thisWeekEventsLittleText')}</Text>
         </View>
 
         {showEvents(weeklyData, navigation)}
@@ -68,7 +77,7 @@ export default function CalendarScreen() {
     return (
       <>
         <View style={globalStyles.headlineView}>
-          <Text style={{...globalStyles.headlineText, marginBottom: 0, marginTop: 10}}>Dalsze terminy</Text>
+          <Text style={{...globalStyles.headlineText, marginBottom: 0, marginTop: 10}}>{getTranslatedText('futureEventsText')}</Text>
         </View>
 
         {showEvents(futureData, navigation)}
@@ -81,7 +90,7 @@ export default function CalendarScreen() {
     return (
       <>
         <View style={globalStyles.headlineView}>
-          <Text style={{...globalStyles.headlineText, marginBottom: 0, marginTop: 10}}>Archiwalne</Text>
+          <Text style={{...globalStyles.headlineText, marginBottom: 0, marginTop: 10}}>{getTranslatedText('olderEventsText')}</Text>
         </View>
 
         {showEvents(olderData, navigation)}
@@ -96,7 +105,7 @@ export default function CalendarScreen() {
     if(weeklyData.length <= 0 && futureData.length <= 0 && olderData.length <= 0) {
       return (
         <View style={{alignItems: 'center'}}>
-          <Text style={{color: MyColors.appLightGray, fontSize: 20, marginTop: '30%', marginBottom: '5%', textTransform: 'uppercase'}}>Nie ma jeszcze żadnych wydarzeń.</Text>
+          <Text style={{color: MyColors.appLightGray, fontSize: 20, marginTop: '30%', marginBottom: '5%', textTransform: 'uppercase'}}>{getTranslatedText('emptyEventsText')}</Text>
           <FontAwesome name="folder-open" size={50} color={MyColors.appLightGray} />
         </View>
       )
@@ -126,7 +135,7 @@ export default function CalendarScreen() {
 
         {/* HEADER */}
         <View style={headerStyles.headerBackground}>
-            <Text style={headerStyles.headerText}>Terminarz</Text>
+            <Text style={headerStyles.headerText}>{getTranslatedText('calendarScreenTitle')}</Text>
         </View>
 
         {/* CONTAINER */}
