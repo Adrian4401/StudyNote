@@ -12,16 +12,14 @@ import { SettingsScreenButton } from '../components/customButtons';
 
 import { AlertDeleteAllData } from '../components/AppAlerts';
 
-import { Entypo } from '@expo/vector-icons';
-
-import appLanguage from '../utils/languages';
+import { getTranslatedText } from '../utils/functions';
+import appLanguage from "../utils/languages";
 
 
 
 
 
 export default function SettingsScreen() {
-
 
   const [openLanguages, setOpenLanguages] = useState(false);
   const [valueLanguages, setValueLanguages] = useState('pl');
@@ -99,6 +97,9 @@ export default function SettingsScreen() {
     </>
   );
 }
+
+
+
 
 const styles = StyleSheet.create({
   container: {

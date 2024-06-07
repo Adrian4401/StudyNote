@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import { Feather, MaterialIcons, AntDesign } from '@expo/vector-icons';
+import { MaterialIcons, AntDesign } from '@expo/vector-icons';
 
 import { MyColors } from '../colors';
 
@@ -12,6 +12,9 @@ import { globalStyles } from '../styles/globalStyles';
 import { loadSubjectsAndClasses } from '../databaseQueries/databaseQueries.js';
 
 import { DBConnect } from '../databaseQueries/DBConnect';
+
+
+
 
 export default function ManageScreen() {
 

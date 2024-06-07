@@ -12,6 +12,8 @@ import { globalStyles } from '../styles/globalStyles';
 
 import { selectAllNotesWithSubjects, selectChosenNotes } from '../databaseQueries/databaseQueries.js';
 
+import { getTranslatedText } from '../utils/functions';
+
 
 
 export default function NoteScreen() {
@@ -52,7 +54,7 @@ export default function NoteScreen() {
     if (item.type === 'header') {
       return (
         <View style={{...globalStyles.headlineViewWithIcon, marginTop: 30}}>
-          <Text style={{...globalStyles.headlineText, marginBottom: 0}}>Twoje notatki</Text>
+          <Text style={{...globalStyles.headlineText, marginBottom: 0}}>{getTranslatedText('yourNotesHeadline')}</Text>
           <TouchableOpacity onPress={() => navigation.navigate('AddNoteScreen')}>
             <AntDesign name="plus" size={26} color="#fff" />
           </TouchableOpacity>
@@ -62,7 +64,7 @@ export default function NoteScreen() {
       return (
         <View style={{...globalStyles.headlineViewWithIcon, marginBottom: 40}}>
             <DropDownPicker
-              placeholder='Wybierz przedmiot'
+              placeholder={getTranslatedText('chooseSubjectDropdownPlaceholder')}
               open={openSubjects}
               value={valueSubjects}
               items={subjectOptions}
@@ -108,7 +110,7 @@ export default function NoteScreen() {
     } else if (item.type === 'emptyNotes' && data.length <= 0) {
       return (
         <View style={{alignItems: 'center'}}>
-          <Text style={{color: MyColors.appLightGray, fontSize: 20, marginTop: '30%', marginBottom: '5%', textTransform: 'uppercase'}}>Nie ma jeszcze żadnych notatek.</Text>
+          <Text style={{color: MyColors.appLightGray, fontSize: 20, marginTop: '30%', marginBottom: '5%', textTransform: 'uppercase'}}>{getTranslatedText('emptyNotesText')}</Text>
           <FontAwesome name="sticky-note" size={50} color={MyColors.appLightGray} />
         </View>
       )
@@ -124,7 +126,7 @@ export default function NoteScreen() {
 
         {/* HEADER */}
         <View style={headerStyles.headerBackground}>
-            <Text style={headerStyles.headerText}>Notatnik</Text>
+            <Text style={headerStyles.headerText}>{getTranslatedText('notesScreentitle')}</Text>
         </View>
         
 

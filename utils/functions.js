@@ -6,8 +6,15 @@ import { globalStyles } from "../styles/globalStyles";
 
 import { MyColors } from "../colors";
 
+import appLanguage from "./languages";
+import valueLanguages from "../screens/SettingsScreen";
 
 
+
+
+export const getTranslatedText = (key) => {
+  return appLanguage[valueLanguages][key];
+}
 
 
 export const showEvents = (dataType, navigation) => {
