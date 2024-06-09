@@ -13,6 +13,9 @@ import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
 import { deleteEvent, selectAllNotesEvent, selectEventToRead, selectNotesToEvent } from '../../databaseQueries/databaseQueries.js';
 
+import appLanguage from "../../utils/languages";
+import { useLanguage } from '../../context/LanguageContext';
+
 
 
 
@@ -31,6 +34,12 @@ export default function ReadEventScreen() {
     const [eventID, setEventID] = useState(null);
 
     const [notesData, setNotesData] = useState([]);
+
+    const { language } = useLanguage();
+
+    const getTranslatedText = (key) => {
+        return appLanguage[language][key];
+    }
 
     useEffect(() => {
         const { eventID } = route.params;

@@ -11,6 +11,9 @@ import { MyColors } from '../../utils/colors.js';
 import { headerStyles } from '../../styles/headerStyles';
 import { EditButton, GoBackButton } from '../../components/customButtons.js';
 
+import appLanguage from "../../utils/languages";
+import { useLanguage } from '../../context/LanguageContext';
+
 
 
 export default function EditClassScreen() {
@@ -23,6 +26,12 @@ export default function EditClassScreen() {
     const [classes, setClasses] = useState([]);
     const [currentClass, setCurrentClass] = useState('');
     const [classID, setClassID] = useState('');
+
+    const { language } = useLanguage();
+
+    const getTranslatedText = (key) => {
+        return appLanguage[language][key];
+    }
 
 
     useEffect(() => {

@@ -12,12 +12,21 @@ import { GoBackButton, MakeButton } from '../../components/customButtons.js';
 
 import { addClass, loadClasses } from '../../databaseQueries/databaseQueries.js';
 
+import appLanguage from "../../utils/languages";
+import { useLanguage } from '../../context/LanguageContext';
+
 
 
 export default function AddClassScreen() {
 
     const [classes, setClasses] = useState([]);
     const [currentClass, setCurrentClass] = useState(undefined);
+
+    const { language } = useLanguage();
+
+    const getTranslatedText = (key) => {
+        return appLanguage[language][key];
+    }
 
     useEffect(() => {
         loadClasses(setClasses);
@@ -28,13 +37,13 @@ export default function AddClassScreen() {
         if(classes && classes.length > 0){
             return(
                 <View style={{width: '100%', justifyContent: 'flex-start', marginBottom: 10, marginTop: 40}}>
-                    <Text style={globalStyles.littleText}>Twoje zajęcia</Text>
+                    <Text style={globalStyles.littleText}>{getTranslatedText('yourClasses')}</Text>
                 </View>
             )
         } else {
             return(
                 <View style={{width: '100%', alignItems: 'center', marginTop: 100}}>
-                    <Text style={globalStyles.littleText}>Nie masz jeszcze żadnych zajęć.</Text>
+                    <Text style={globalStyles.littleText}>{getTranslatedText('emptyClassesInfo')}.</Text>
                     <MaterialCommunityIcons name="emoticon-sad" size={100} color={MyColors.appLightGray} style={{marginTop: 20}}/>
                 </View>
             )
@@ -67,7 +76,7 @@ export default function AddClassScreen() {
 
                 {/* HEADER */}
                 <View style={headerStyles.headerBackground}>
-                    <Text style={headerStyles.headerText}>Dodaj zajęcia</Text>
+                    <Text style={headerStyles.headerText}>{getTranslatedText('add')} {getTranslatedText('classes')}</Text>
                 </View>
 
                 {/* CONTAINER */}
@@ -82,7 +91,7 @@ export default function AddClassScreen() {
                         <TextInput 
                             value={currentClass}
                             onChangeText={setCurrentClass}
-                            placeholder='Dodaj zajęcia...'
+                            placeholder={getTranslatedText('addClassesPlaceholder')}
                             placeholderTextColor={MyColors.appLightGray}
                             maxLength={50}
                             style={{

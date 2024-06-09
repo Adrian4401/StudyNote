@@ -13,6 +13,9 @@ import { loadClasses, loadSubjects } from '../../databaseQueries/databaseQueries
 
 import { DBConnect } from '../../databaseQueries/DBConnect';
 
+import appLanguage from "../../utils/languages";
+import { useLanguage } from '../../context/LanguageContext';
+
 
 
 
@@ -33,6 +36,12 @@ export default function AddNoteScreen() {
 
     const [subjects, setSubjects] = useState([]);
     const [classes, setClasses] = useState([]);
+
+    const { language } = useLanguage();
+
+    const getTranslatedText = (key) => {
+      return appLanguage[language][key];
+    }
 
 
     
@@ -93,7 +102,7 @@ export default function AddNoteScreen() {
                 <TextInput 
                     value={currentTitle}
                     onChangeText={setCurrentTitle}
-                    placeholder='Dodaj tytuł notatki...'
+                    placeholder={getTranslatedText('noteTitlePlaceholder')}
                     placeholderTextColor={MyColors.appLightGray}
                     maxLength={100}
                     multiline
@@ -113,7 +122,7 @@ export default function AddNoteScreen() {
         } else if(item.type === 'subjectsDropDownPicker') {
             return(
                 <DropDownPicker
-                    placeholder='Wybierz przedmiot'
+                    placeholder={getTranslatedText('chooseSubject')}
                     open={openSubjects}
                     value={currentSubject}
                     items={subjectItems}
@@ -130,7 +139,7 @@ export default function AddNoteScreen() {
         } else if(item.type === 'classesDropDownPicker') {
             return(
                 <DropDownPicker
-                    placeholder='Wybierz zajęcia'
+                    placeholder={getTranslatedText('chooseClasses')}
                     open={openClasses}
                     value={currentClass}
                     items={classesItems}
@@ -149,7 +158,7 @@ export default function AddNoteScreen() {
                 <TextInput 
                     value={currentNote}
                     onChangeText={setCurrentNote}
-                    placeholder='Dodaj notatkę...'
+                    placeholder={getTranslatedText('addNotePlaceholder')}
                     placeholderTextColor={MyColors.appLightGray}
                     multiline={true}
                     style={{
@@ -182,7 +191,7 @@ export default function AddNoteScreen() {
 
                 {/* HEADER */}
                 <View style={headerStyles.headerBackground}>
-                    <Text style={headerStyles.headerText}>Dodaj notatkę</Text>
+                    <Text style={headerStyles.headerText}>{getTranslatedText('add')} {getTranslatedText('notes')}</Text>
                 </View>
 
                 <View style={styles.container}>

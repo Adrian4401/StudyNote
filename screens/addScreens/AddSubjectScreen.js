@@ -12,6 +12,10 @@ import { globalStyles } from '../../styles/globalStyles';
 
 import { GoBackButton, MakeButton } from '../../components/customButtons.js';
 
+import appLanguage from '../../utils/languages';
+import { useLanguage } from '../../context/LanguageContext';
+
+
 
 
 
@@ -20,6 +24,12 @@ export default function AddSubjectScreen() {
 
     const [subjects, setSubjects] = useState([]);
     const [currentSubject, setCurrentSubject] = useState(undefined);
+
+    const { language } = useLanguage();
+
+    const getTranslatedText = (key) => {
+        return appLanguage[language][key];
+    }
 
 
 
@@ -34,13 +44,13 @@ export default function AddSubjectScreen() {
         if(subjects && subjects.length > 0){
             return(
                 <View style={{width: '100%', justifyContent: 'flex-start', marginBottom: 10, marginTop: 40}}>
-                    <Text style={globalStyles.littleText}>Twoje przedmioty</Text>
+                    <Text style={globalStyles.littleText}>{getTranslatedText('yourSubjects')}</Text>
                 </View>
             )
         } else {
             return(
                 <View style={{width: '100%', alignItems: 'center', marginTop: 100}}>
-                    <Text style={globalStyles.littleText}>Nie masz jeszcze żadnych przedmiotów.</Text>
+                    <Text style={globalStyles.littleText}>{getTranslatedText('emptySubjectsInfo')}.</Text>
                     <MaterialCommunityIcons name="emoticon-sad" size={100} color={MyColors.appLightGray} style={{marginTop: 20}}/>
                 </View>
             )
@@ -68,7 +78,7 @@ export default function AddSubjectScreen() {
 
                 {/* HEADER */}
                 <View style={headerStyles.headerBackground}>
-                    <Text style={headerStyles.headerText}>Dodaj przedmiot</Text>
+                    <Text style={headerStyles.headerText}>{getTranslatedText('add')} {getTranslatedText('subjects')}</Text>
                 </View>
 
                 {/* CONTAINER */}
@@ -83,7 +93,7 @@ export default function AddSubjectScreen() {
                         <TextInput 
                             value={currentSubject}
                             onChangeText={setCurrentSubject}
-                            placeholder='Dodaj przedmiot...'
+                            placeholder={getTranslatedText('addSubjectsPlaceholder')}
                             placeholderTextColor={MyColors.appLightGray}
                             maxLength={50}
                             style={{

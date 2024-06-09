@@ -19,6 +19,9 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 import Checkbox from 'expo-checkbox';
 
+import appLanguage from "../../utils/languages";
+import { useLanguage } from '../../context/LanguageContext';
+
 
 
 
@@ -43,12 +46,15 @@ export default function AddEventScreen() {
     const [mode, setMode] = useState('');
     const [show, setShow] = useState(false);
 
-    const [dateText, setDateText] = useState('Dzień');
-    const [timeText, setTimeText] = useState('Godzina');
-
     const [checkedNotes, setCheckedNotes] = useState([]);
 
     const [checkedNoteIDs, setCheckedNoteIDs] = useState([]);
+
+    const { language } = useLanguage();
+
+    const getTranslatedText = (key) => {
+        return appLanguage[language][key];
+    }
 
 
 
@@ -142,7 +148,7 @@ export default function AddEventScreen() {
                 <TextInput 
                     value={currentTitle}
                     onChangeText={setCurrentTitle}
-                    placeholder='Dodaj tytuł wydarzenia...'
+                    placeholder={getTranslatedText('eventTitlePlaceholder')}
                     placeholderTextColor={MyColors.appLightGray}
                     maxLength={100}
                     multiline
@@ -162,7 +168,7 @@ export default function AddEventScreen() {
         } else if(item.type === 'subjectsPicker') {
             return(
                 <DropDownPicker
-                    placeholder='Wybierz przedmiot'
+                    placeholder={getTranslatedText('chooseSubject')}
                     open={openSubjects}
                     value={valueSubjects}
                     items={subjectItems}
@@ -179,7 +185,7 @@ export default function AddEventScreen() {
         } else if(item.type === 'classesPicker') {
             return(
                 <DropDownPicker
-                    placeholder='Wybierz zajęcia'
+                    placeholder={getTranslatedText('chooseClasses')}
                     open={openClasses}
                     value={currentClass}
                     items={classesItems}
@@ -198,7 +204,7 @@ export default function AddEventScreen() {
                 <TextInput 
                     value={currentDescription}
                     onChangeText={setCurrentDescription}
-                    placeholder='Dodaj krótki opis...'
+                    placeholder={getTranslatedText('addDescriptionPlaceholder')}
                     placeholderTextColor={MyColors.appLightGray}
                     multiline={true}
                     style={{
@@ -221,23 +227,20 @@ export default function AddEventScreen() {
                 return(
                     <View style={{marginBottom: 20, alignItems: 'center'}}>
 
-                        <Text style={{...globalStyles.littleText, marginBottom: 5}}>Wybierz termin</Text>
+                        <Text style={{...globalStyles.littleText, marginBottom: 5}}>{getTranslatedText('chooseDeadline')}</Text>
 
                         <TouchableOpacity onPress={() => showMode('date')} style={styles.dateTimeButtons}>
-                            <Text style={{fontSize: 20, color: 'white'}}>{dateText}</Text>
+                            <Text style={{fontSize: 20, color: 'white'}}>{getTranslatedText('day')}</Text>
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => showMode('time')} style={styles.dateTimeButtons}>
-                            <Text style={{fontSize: 20, color: 'white'}}>{timeText}</Text>
+                            <Text style={{fontSize: 20, color: 'white'}}>{getTranslatedText('hour')}</Text>
                         </TouchableOpacity>
 
                         <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-between', marginVertical: 10}}>
-                            <Text style={{fontSize: 20, color: 'white'}}>Wybrany termin:</Text>
+                            <Text style={{fontSize: 20, color: 'white'}}>{getTranslatedText('choosenDeadline')}:</Text>
                             <Text style={{fontSize: 20, color: 'white'}}>{selectedDate}</Text>
                         </View>
-
-                        
-    
     
                         {show && (
                             <DateTimePicker
@@ -265,7 +268,7 @@ export default function AddEventScreen() {
                                 textTransform: 'uppercase',
                                 marginVertical: 10
                             }}>
-                            Wybierz termin
+                            {getTranslatedText('chooseDeadline')}
                         </Text>
 
                         <DateTimePicker
@@ -345,7 +348,7 @@ export default function AddEventScreen() {
 
                 {/* HEADER */}
                 <View style={headerStyles.headerBackground}>
-                    <Text style={headerStyles.headerText}>Dodaj wydarzenie</Text>
+                    <Text style={headerStyles.headerText}>{getTranslatedText('add')} {getTranslatedText('events')}</Text>
                 </View>
 
                 <View style={styles.container}>

@@ -28,7 +28,7 @@ export default function ManageScreen() {
   const [subjects, setSubjects] = useState([]);
   const [classes, setClasses] = useState([]);
 
-  const { language, changeLanguage } = useLanguage();
+  const { language } = useLanguage();
 
 
 

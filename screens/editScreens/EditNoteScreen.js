@@ -14,6 +14,13 @@ import { selectEditedNote, editNote } from '../../databaseQueries/databaseQuerie
 
 import Moment from 'moment';
 
+import appLanguage from "../../utils/languages";
+import { useLanguage } from '../../context/LanguageContext';
+
+
+
+
+
 export default function EditNoteScreen() {
 
     const navigation = useNavigation();
@@ -30,6 +37,12 @@ export default function EditNoteScreen() {
     const [subjects, setSubjects] = useState([]);
     const [classes, setClasses] = useState([]);
     const [noteID, setNoteID] = useState(null);
+
+    const { language } = useLanguage();
+
+    const getTranslatedText = (key) => {
+        return appLanguage[language][key];
+    }
 
     
 

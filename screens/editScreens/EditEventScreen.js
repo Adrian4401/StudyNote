@@ -19,6 +19,9 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 
 import Checkbox from 'expo-checkbox';
 
+import appLanguage from "../../utils/languages";
+import { useLanguage } from '../../context/LanguageContext';
+
 
 
 
@@ -51,6 +54,12 @@ export default function EditEventScreen() {
     const noteIndexes = [];
 
     const [eventID, setEventID] = useState(null);
+
+    const { language } = useLanguage();
+
+    const getTranslatedText = (key) => {
+        return appLanguage[language][key];
+    }
 
     
 

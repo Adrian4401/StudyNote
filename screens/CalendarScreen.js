@@ -28,14 +28,13 @@ export default function CalendarScreen() {
   const [futureData, setFutureData] = useState([]);
   const [olderData, setOlderData] = useState([]);
 
-  const { language, changeLanguage } = useLanguage();
-
-
+  const { language } = useLanguage();
 
   const getTranslatedText = (key) => {
     return appLanguage[language][key];
   }
 
+  
   useEffect(() => {
 
     const loadData = navigation.addListener('focus', () => {

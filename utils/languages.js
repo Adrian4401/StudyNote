@@ -1,5 +1,19 @@
 const appLanguage = {
     pl: {
+        // GENERAL
+        add: 'Dodaj',
+        subjects: 'Przedmioty',
+        classes: 'Zajęcia',
+        notes: 'Notatki',
+        events: 'Wydarzenia',
+        goBack: 'Wróć',
+        chooseSubject: 'Wybierz przedmiot',
+        chooseClasses: 'Wybierz zajęcia',
+        day: 'Dzień',
+        hour: 'Godzina',
+
+
+
         // CALENDAR SCREEN
         calendarScreenTitle: 'Terminarz',
         emptyEventsText: 'Nie ma jeszcze żadnych wydarzeń',
@@ -27,22 +41,56 @@ const appLanguage = {
         dataExportButton: 'Eksport danych',
         dataImportButton: 'Import danych',
         deleteDataText: 'Usuwanie danych aplikacji',
-        deleteDataButton: 'Usuń wszystkie dane'
+        deleteDataButton: 'Usuń wszystkie dane',
+
+
+        // ADD SUBJECT SCREEN
+        emptySubjectsInfo: 'Nie masz jeszcze żadnych przedmiotów',
+        addSubjectsPlaceholder: 'Dodaj przedmioty...',
+        yourSubjects: 'Twoje przedmioty',
 
         // ADD CLASS SCREEN
-        // ADD EVENT SCREEN
+        emptyClassesInfo: 'Nie masz jeszcze żadnych zajęć',
+        addClassesPlaceholder: 'Dodaj zajęcia...',
+        yourClasses: 'Twoje zajęcia',
+
         // ADD NOTE SCREEN
-        // ADD SUBJECT SCREEN
+        noteTitlePlaceholder: 'Dodaj tytuł notatki...',
+        addNotePlaceholder: 'Dodaj notatkę...',
 
-        // EDIT CLASS SCREEN
-        // EDIT EVENT SCREEN
-        // EDIT NOTE SCREEN
+        // ADD EVENT SCREEN
+        eventTitlePlaceholder: 'Dodaj tytuł wydarzenia...',
+        addDescriptionPlaceholder: 'Dodaj krótki opis...',
+        chooseDeadline: 'Wybierz termin',
+        choosenDeadline: 'Wybrany termin'
+
+  
+
         // EDIT SUBJECT SCREEN
+        // EDIT CLASS SCREEN
+        // EDIT NOTE SCREEN
+        // EDIT EVENT SCREEN
+        
 
-        // READ EVENT SCREEN
+
         // READ NOTE SCREEN
+        // READ EVENT SCREEN
     },
     en: {
+        // GENERAL
+        add: 'Add',
+        subjects: 'Subjects',
+        classes: 'Classes',
+        notes: 'Notes',
+        events: 'Events',
+        goBack: 'Go Back',
+        chooseSubject: 'Choose subject',
+        chooseClasses: 'Choose classes',
+        day: 'Day',
+        hour: 'Hour',
+
+
+
         // CALENDAR SCREEN
         calendarScreenTitle: 'Calendar',
         emptyEventsText: 'No events yet',
@@ -70,7 +118,29 @@ const appLanguage = {
         dataExportButton: 'Data export',
         dataImportButton: 'Data import',
         deleteDataText: 'Delete app data',
-        deleteDataButton: 'Delete all data'
+        deleteDataButton: 'Delete all data',
+
+
+
+        // ADD SUBJECT SCREEN
+        emptySubjectsInfo: 'You have no subjects yet',
+        addSubjectsPlaceholder: 'Add subjects...',
+        yourSubjects: 'Your subjects',
+
+        // ADD CLASS SCREEN
+        emptyClassesInfo: 'You have no classes yet',
+        addClassesPlaceholder: 'Add classes...',
+        yourClasses: 'Your classes',
+
+        // ADD NOTE SCREEN
+        noteTitlePlaceholder: 'Add note title...',
+        addNotePlaceholder: 'Add note...',
+
+        // ADD EVENT SCREEN
+        eventTitlePlaceholder: 'Add event title...',
+        addDescriptionPlaceholder: 'Add brief description...',
+        chooseDeadline: 'Choose deadline',
+        choosenDeadline: 'Chosen deadline'
     }
 }
 

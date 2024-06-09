@@ -6,16 +6,23 @@ import { MaterialIcons, MaterialCommunityIcons, FontAwesome5, AntDesign } from '
 import { MyColors } from '../utils/colors';
 import { globalStyles } from '../styles/globalStyles';
 
+import appLanguage from '../utils/languages';
+import { useLanguage } from '../context/LanguageContext';
+
 
 
 export const GoBackButton = () => {
 
     const navigation = useNavigation();
+    const { language } = useLanguage();
+    const getTranslatedText = (key) => {
+        return appLanguage[language][key];
+    }
 
     return (
         <TouchableOpacity style={styles.goBackButton} onPress={() => navigation.goBack()} >
             <AntDesign name="left" size={25} color="#fff" style={{marginRight: 5}} />
-            <Text style={styles.goBackText}>Wróć</Text>
+            <Text style={styles.goBackText}>{getTranslatedText('goBack')}</Text>
          </TouchableOpacity>
     )
 }

@@ -12,6 +12,11 @@ import { headerStyles } from '../../styles/headerStyles';
 
 import { EditButton, GoBackButton } from '../../components/customButtons.js';
 
+import appLanguage from "../../utils/languages";
+import { useLanguage } from '../../context/LanguageContext';
+
+
+
 
 
 export default function EditSubjectScreen() {
@@ -24,6 +29,12 @@ export default function EditSubjectScreen() {
     const [subjects, setSubjects] = useState([]);
     const [currentSubject, setCurrentSubject] = useState('');
     const [subjectID, setSubjectID] = useState('');
+
+    const { language } = useLanguage();
+
+    const getTranslatedText = (key) => {
+        return appLanguage[language][key];
+    }
 
     
 

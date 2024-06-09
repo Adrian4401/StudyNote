@@ -12,6 +12,9 @@ import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
 import { deleteNote, selectNoteToRead } from '../../databaseQueries/databaseQueries.js';
 
+import appLanguage from "../../utils/languages";
+import { useLanguage } from '../../context/LanguageContext';
+
 
 
 
@@ -27,6 +30,12 @@ export default function ReadNoteScreen() {
     const [createDay, setCreateDay] = useState('');
     const [note, setNote] = useState('');
     const [noteID, setNoteID] = useState(null);
+    
+    const { language } = useLanguage();
+
+    const getTranslatedText = (key) => {
+        return appLanguage[language][key];
+    }
     
 
 
