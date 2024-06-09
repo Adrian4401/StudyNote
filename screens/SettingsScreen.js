@@ -5,7 +5,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 
 import { MyColors } from '../utils/colors';
 
-import { headerStyles } from '../styles/headerStyles';
+import { headerStyles, createHeaderStyles } from '../styles/headerStyles';
 import { globalStyles } from '../styles/globalStyles';
 
 import { SettingsScreenButton } from '../components/customButtons';
@@ -31,21 +31,49 @@ export default function SettingsScreen() {
     {label: 'Polski', value: 'pl', icon: () => <Image source={require('../assets/pl_flag.png')} style={{borderRadius: 20}}/>},
     {label: 'English', value: 'en', icon: () => <Image source={require('../assets/uk_flag.png')} style={{borderRadius: 20}}/>}
   ]);
-  const { darkMode, changeDarkMode } = useDarkMode()
-
+  const { darkMode, changeDarkMode, theme } = useDarkMode()
 
   const getTranslatedText = (key) => {
     return appLanguage[language][key];
   }
 
+  // const headerStyles = createHeaderStyles(theme)
 
+
+
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.appBackground,
+      alignItems: 'center',
+      padding: 20,
+      paddingBottom: 120
+    },
+    style: {
+      backgroundColor: theme.appDark,
+      flex: 1,
+      borderRadius: 20
+    },
+    dropDownContainerStyle: {
+      backgroundColor: theme.appDark,
+      paddingVertical: 5
+    },
+    textStyle: {
+      color: 'white',
+      fontSize: 20
+    },
+    arrowIconContainerStyle: {
+      backgroundColor: MyColors.appBlue,
+      borderRadius: 5
+    }
+  });
 
   
 
   return (
     <>
       <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: '#000'}}/>
-      <SafeAreaView edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: MyColors.appBackground}}>
+      <SafeAreaView edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: theme.appBackground}}>
 
         {/* HEADER */}
         <View style={headerStyles.headerBackground}>
@@ -125,33 +153,3 @@ export default function SettingsScreen() {
     </>
   );
 }
-
-
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: MyColors.appBackground,
-    alignItems: 'center',
-    padding: 20,
-    paddingBottom: 120
-  },
-  style: {
-    backgroundColor: MyColors.appDark,
-    flex: 1,
-    borderRadius: 20
-  },
-  dropDownContainerStyle: {
-    backgroundColor: MyColors.appDark,
-    paddingVertical: 5
-  },
-  textStyle: {
-    color: 'white',
-    fontSize: 20
-  },
-  arrowIconContainerStyle: {
-    backgroundColor: MyColors.appBlue,
-    borderRadius: 5
-  }
-});
