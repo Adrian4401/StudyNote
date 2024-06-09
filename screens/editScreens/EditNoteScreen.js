@@ -4,7 +4,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 
 import DropDownPicker from 'react-native-dropdown-picker';
 
-import { MyColors } from '../../colors';
+import { MyColors } from '../../utils/colors.js';
 
 import { headerStyles } from '../../styles/headerStyles';
 
@@ -86,7 +86,7 @@ export default function EditNoteScreen() {
                         color: 'white',
                         fontSize: 25,
                         borderWidth: 2,
-                        borderColor: MyColors.appOrange,
+                        borderColor: MyColors.appBlue,
                         borderRadius: 10,
                         padding: 10,
                         marginVertical: 10,
@@ -142,7 +142,7 @@ export default function EditNoteScreen() {
                         flex: 1,
                         fontSize: 18,
                         borderWidth: 2,
-                        borderColor: MyColors.appOrange,
+                        borderColor: MyColors.appBlue,
                         borderRadius: 10,
                         padding: 10,
                         marginVertical: 50,
@@ -202,18 +202,18 @@ const styles = StyleSheet.create({
     style: {
         backgroundColor: MyColors.appDark,
         borderWidth: 1,
-        borderColor: MyColors.appOrange
+        borderColor: MyColors.appBlue
     },
     dropDownContainerStyle: {
         backgroundColor: MyColors.appDark,
         borderWidth: 1,
-        borderColor: MyColors.appOrange
+        borderColor: MyColors.appBlue
     },
     textStyle: {
         color: MyColors.appLightGray
     },
     arrowIconContainerStyle: {
-        backgroundColor: MyColors.appOrange,
+        backgroundColor: MyColors.appBlue,
         borderRadius: 5
     }
 });

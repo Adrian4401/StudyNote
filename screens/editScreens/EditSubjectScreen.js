@@ -6,7 +6,7 @@ import * as SQLite from 'expo-sqlite';
 import { MaterialIcons } from '@expo/vector-icons';
 import { loadSubjects } from '../../databaseQueries/databaseQueries.js';
 
-import { MyColors } from '../../colors';
+import { MyColors } from '../../utils/colors.js';
 
 import { headerStyles } from '../../styles/headerStyles';
 
@@ -116,7 +116,7 @@ export default function EditSubjectScreen() {
                                 width: '100%',
                                 fontSize: 25,
                                 borderWidth: 2,
-                                borderColor: MyColors.appOrange,
+                                borderColor: MyColors.appBlue,
                                 borderRadius: 10,
                                 padding: 10,
                                 marginVertical: 10,

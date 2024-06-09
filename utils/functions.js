@@ -4,7 +4,7 @@ import { FontAwesome5, Ionicons, AntDesign } from '@expo/vector-icons';
 
 import { globalStyles } from "../styles/globalStyles";
 
-import { MyColors } from "../colors";
+import { MyColors } from "./colors";
 
 import appLanguage from "./languages";
 import valueLanguages from "../screens/SettingsScreen";

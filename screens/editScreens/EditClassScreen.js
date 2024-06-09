@@ -6,7 +6,7 @@ import * as SQLite from 'expo-sqlite';
 import { MaterialIcons } from '@expo/vector-icons';
 import { loadClasses } from '../../databaseQueries/databaseQueries.js';
 
-import { MyColors } from '../../colors';
+import { MyColors } from '../../utils/colors.js';
 
 import { headerStyles } from '../../styles/headerStyles';
 import { EditButton, GoBackButton } from '../../components/customButtons.js';
@@ -113,7 +113,7 @@ export default function EditClassScreen() {
                                 width: '100%',
                                 fontSize: 25,
                                 borderWidth: 2,
-                                borderColor: MyColors.appOrange,
+                                borderColor: MyColors.appBlue,
                                 borderRadius: 10,
                                 padding: 10,
                                 marginVertical: 10,

@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { Ionicons, FontAwesome } from '@expo/vector-icons';
 
-import { MyColors } from '../colors';
+import { MyColors } from '../utils/colors';
 import { 
     CalendarScreen, 
     NotesScreen, 
@@ -28,7 +28,7 @@ const CustomTabBarButton = ({children, onPress}) => (
         height: 60,
         top: Platform.OS === 'ios' ? 15 : 0,
         borderRadius: 30,
-        backgroundColor: MyColors.appOrange
+        backgroundColor: MyColors.appBlue
       }}
     >
       {children}

@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { MaterialIcons, MaterialCommunityIcons, FontAwesome5, AntDesign } from '@expo/vector-icons';
 
-import { MyColors } from '../colors';
+import { MyColors } from '../utils/colors';
 import { globalStyles } from '../styles/globalStyles';
 
 
@@ -39,7 +39,7 @@ export const EditButton = ({onPress}) => {
 export const SettingsScreenButton = ({onPress, icon, text}) => {
     return (
         <TouchableOpacity onPress={onPress} style={{...globalStyles.eventView, flexDirection: 'row', paddingHorizontal: 20}}>
-            <MaterialCommunityIcons name={icon} size={24} color={MyColors.appOrange} style={{paddingHorizontal: 5}}/>
+            <MaterialCommunityIcons name={icon} size={24} color={MyColors.appBlue} style={{paddingHorizontal: 5}}/>
             <Text style={globalStyles.subjectText}>{text}</Text>
         </TouchableOpacity>
     )
@@ -59,7 +59,7 @@ const styles = StyleSheet.create ({
     makeButton: {
         width: '100%',
         flexDirection: 'row',
-        backgroundColor: MyColors.appOrange,
+        backgroundColor: MyColors.appBlue,
         paddingVertical: 5,
         borderRadius: 20,
         justifyContent: 'center',

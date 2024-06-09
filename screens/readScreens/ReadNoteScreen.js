@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
-import { MyColors } from '../../colors';
+import { MyColors } from '../../utils/colors.js';
 
 import { headerStyles } from '../../styles/headerStyles';
 
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     line: {
         width: '100%',
         height: 1,
-        backgroundColor: MyColors.appOrange,
+        backgroundColor: MyColors.appBlue,
         marginVertical: 20
     },
     infoView: {

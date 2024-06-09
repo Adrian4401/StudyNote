@@ -5,7 +5,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 
 import { FontAwesome5, AntDesign, FontAwesome } from '@expo/vector-icons';
 
-import { MyColors } from '../colors';
+import { MyColors } from '../utils/colors.js';
 
 import { headerStyles } from '../styles/headerStyles';
 import { globalStyles } from '../styles/globalStyles';
@@ -206,19 +206,19 @@ const styles = StyleSheet.create({
   style: {
     backgroundColor: MyColors.appDark,
     borderWidth: 1,
-    borderColor: MyColors.appOrange,
+    borderColor: MyColors.appBlue,
     flex: 1
   },
   dropDownContainerStyle: {
     backgroundColor: MyColors.appDark,
     borderWidth: 1,
-    borderColor: MyColors.appOrange
+    borderColor: MyColors.appBlue
   },
   textStyle: {
     color: MyColors.appLightGray
   },
   arrowIconContainerStyle: {
-    backgroundColor: MyColors.appOrange,
+    backgroundColor: MyColors.appBlue,
     borderRadius: 5
   }
 });

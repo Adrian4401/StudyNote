@@ -5,6 +5,7 @@ import { StackNavigation } from './navigation/StackNavigation';
 import { Create } from './databaseQueries/databaseQueries';
 
 import { LanguageProvider } from './context/LanguageContext';
+import { DarkModeProvider } from './context/DarkModeContext';
 
 
 export default function App() {
@@ -13,8 +14,12 @@ export default function App() {
 
   return (
     <LanguageProvider>
-      {/* folder navigation->StackNavigation.js */}
-      <StackNavigation />
+      <DarkModeProvider>
+
+        {/* folder navigation->StackNavigation.js */}
+        <StackNavigation />
+        
+      </DarkModeProvider>
     </LanguageProvider>
   )
 }

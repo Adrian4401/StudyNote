@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, ScrollView, Image } from 'react-native';
+import { useState } from 'react';
+import { StyleSheet, Text, View, SafeAreaView, ScrollView, Image, TouchableOpacity, Switch, Platform } from 'react-native';
 
 import DropDownPicker from 'react-native-dropdown-picker';
 
-import { MyColors } from '../colors';
+import { MyColors } from '../utils/colors';
 
 import { headerStyles } from '../styles/headerStyles';
 import { globalStyles } from '../styles/globalStyles';
@@ -14,6 +14,9 @@ import { AlertDeleteAllData } from '../components/AppAlerts';
 
 import appLanguage from "../utils/languages";
 import { useLanguage } from '../context/LanguageContext';
+import { useDarkMode } from '../context/DarkModeContext';
+
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 
 
@@ -28,12 +31,16 @@ export default function SettingsScreen() {
     {label: 'Polski', value: 'pl', icon: () => <Image source={require('../assets/pl_flag.png')} style={{borderRadius: 20}}/>},
     {label: 'English', value: 'en', icon: () => <Image source={require('../assets/uk_flag.png')} style={{borderRadius: 20}}/>}
   ]);
+  const { darkMode, changeDarkMode } = useDarkMode()
 
 
   const getTranslatedText = (key) => {
     return appLanguage[language][key];
   }
 
+
+
+  
 
   return (
     <>
@@ -76,6 +83,26 @@ export default function SettingsScreen() {
               <Text style={globalStyles.sectionText}>{getTranslatedText('themeText')}</Text>
             </View>
             <SettingsScreenButton onPress={() => console.log("To do")} icon={"invert-colors"} text={getTranslatedText('themeText')}/>
+
+            <View style={{...globalStyles.eventView, flexDirection: 'row', paddingHorizontal: 20, alignItems: 'center'}}>
+              <MaterialCommunityIcons name="invert-colors" size={24} color={MyColors.appBlue} style={{paddingHorizontal: 5}}/>
+              <Text style={globalStyles.subjectText}>{getTranslatedText('themeText')}</Text>
+              <View
+                style={{
+                  flex: 1,
+                  // backgroundColor: 'red',
+                  alignItems: 'flex-end'
+                }}
+              >
+                <Switch
+                  value={darkMode}
+                  onValueChange={changeDarkMode}
+                  trackColor={{false: MyColors.appLightGray, true: MyColors.appBlue}}
+                  thumbColor={darkMode ? '#0066CD' : '#BDBBBB'}
+                  style={{height: Platform.OS === 'android' ? 20 : 30}}
+                />
+              </View>
+            </View>
 
 
             {/* DATA section */}
@@ -124,7 +151,7 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   arrowIconContainerStyle: {
-    backgroundColor: MyColors.appOrange,
+    backgroundColor: MyColors.appBlue,
     borderRadius: 5
   }
 });

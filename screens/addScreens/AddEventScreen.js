@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import DropDownPicker from 'react-native-dropdown-picker';
 
-import { MyColors } from '../../colors';
+import { MyColors } from '../../utils/colors.js';
 
 import { FontAwesome5 } from '@expo/vector-icons';
 
@@ -150,7 +150,7 @@ export default function AddEventScreen() {
                         color: 'white',
                         fontSize: 25,
                         borderWidth: 2,
-                        borderColor: MyColors.appOrange,
+                        borderColor: MyColors.appBlue,
                         borderRadius: 10,
                         paddingVertical: 5,
                         paddingHorizontal: 10,
@@ -206,7 +206,7 @@ export default function AddEventScreen() {
                         flex: 1,
                         fontSize: 18,
                         borderWidth: 2,
-                        borderColor: MyColors.appOrange,
+                        borderColor: MyColors.appBlue,
                         borderRadius: 10,
                         padding: 10,
                         marginVertical: 20,
@@ -295,7 +295,7 @@ export default function AddEventScreen() {
                         <Checkbox
                             value={checkedNotes[index]}
                             onValueChange={() => handleNoteCheckboxChange(index)}
-                            color={checkedNotes[index] ? MyColors.appOrange : undefined }
+                            color={checkedNotes[index] ? MyColors.appBlue : undefined }
                         />
                     </View>
 
@@ -384,19 +384,19 @@ const styles = StyleSheet.create({
     style: {
         backgroundColor: MyColors.appDark,
         borderWidth: 1,
-        borderColor: MyColors.appOrange
+        borderColor: MyColors.appBlue
     },
     dropDownContainerStyle: {
         backgroundColor: MyColors.appDark,
         borderWidth: 1,
-        borderColor: MyColors.appOrange
+        borderColor: MyColors.appBlue
     },
     textStyle: {
         color: MyColors.appLightGray
     },
     dateTimeButtons: {
         height: 50,
-        backgroundColor: MyColors.appOrange,
+        backgroundColor: MyColors.appBlue,
         alignItems: 'center',
         justifyContent: 'center',
         marginVertical: 5,
@@ -404,7 +404,7 @@ const styles = StyleSheet.create({
         width: '100%'
     },
     arrowIconContainerStyle: {
-        backgroundColor: MyColors.appOrange,
+        backgroundColor: MyColors.appBlue,
         borderRadius: 5
     },
     noteStyle: {

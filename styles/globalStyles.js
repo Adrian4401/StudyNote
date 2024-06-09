@@ -1,4 +1,4 @@
-import { MyColors } from "../colors";
+import { MyColors } from "../utils/colors";
 
 export const globalStyles = {
     headlineView: {

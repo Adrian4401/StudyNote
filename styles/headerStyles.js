@@ -1,4 +1,4 @@
-import { MyColors } from "../colors"
+import { MyColors } from "../utils/colors"
 
 export const headerStyles = {
     headerBackground: {
@@ -13,7 +13,7 @@ export const headerStyles = {
         alignItems: 'center'
     },
     headerText: {
-      color: MyColors.appOrange,
+      color: MyColors.appBlue,
       textAlign: 'center',
       fontSize: 30,
       textTransform: 'uppercase',

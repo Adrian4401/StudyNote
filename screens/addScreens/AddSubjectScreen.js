@@ -5,7 +5,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { loadSubjects, addSubject } from '../../databaseQueries/databaseQueries.js';
 
-import { MyColors } from '../../colors';
+import { MyColors } from '../../utils/colors.js';
 
 import { headerStyles } from '../../styles/headerStyles';
 import { globalStyles } from '../../styles/globalStyles';
@@ -91,7 +91,7 @@ export default function AddSubjectScreen() {
                                 width: '100%',
                                 fontSize: 25,
                                 borderWidth: 2,
-                                borderColor: MyColors.appOrange,
+                                borderColor: MyColors.appBlue,
                                 borderRadius: 10,
                                 padding: 10,
                                 marginVertical: 10,
