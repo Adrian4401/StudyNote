@@ -75,7 +75,7 @@ export default function EditClassScreen() {
     }
 
     const alertDeleteClass = (classID) => {
-        Alert.alert('Usuwanie zajęć', 'Czy na pewno usunąć zajęcie?', [
+        Alert.alert(getTranslatedText('deletingClass'), getTranslatedText('deleteClassQuestion'), [
             {
                 text: 'Anuluj',
                 onPress: () => console.log('Anuluj'),

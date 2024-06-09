@@ -58,7 +58,7 @@ export default function ReadEventScreen() {
 
 
     const alertDeleteEvent = (eventID) => {
-        Alert.alert('Usuwanie wydarzenia', 'Czy na pewno chcesz usunąć wydarzenie?', [
+        Alert.alert(getTranslatedText('deletingEvent'), getTranslatedText('deleteEventQuestion'), [
             {
                 text: 'Anuluj',
                 onPress: () => console.log('Anuluj'),

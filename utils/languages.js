@@ -67,7 +67,31 @@ const appLanguage = {
         eventTitlePlaceholder: 'Dodaj tytuł wydarzenia...',
         addDescriptionPlaceholder: 'Dodaj krótki opis...',
         chooseDeadline: 'Wybierz termin',
-        choosenDeadline: 'Wybrany termin'
+        choosenDeadline: 'Wybrany termin',
+
+
+
+        // ALERTS
+
+        // DELETE SUBJECT
+        deletingSubject: 'Usuwanie przedmiotu',
+        deleteSubjectQuestion: 'Czy na pewno chcesz usunąć wybrany przedmiot?',
+
+        // DELETE CLASS
+        deletingClass: 'Usuwanie zajęcia',
+        deleteClassQuestion: 'Czy na pewno chcesz usunąć wybrane zajęcie?',
+
+        // DELETE NOTE
+        deletingNote: 'Usuwanie notatki',
+        deleteNoteQuestion: 'Czy na pewno chcesz usunąć wybraną notatkę?',
+
+        // DELETE EVENT
+        deletingEvent: 'Usuwanie wydarzenia',
+        deleteEventQuestion: 'Czy na pewno chcesz usunąć wybrane wydarzenie?',
+
+        // DELETE ALL DATA
+        deletingData: 'Usuwanie danych',
+        deleteDataQuestion: 'Czy na pewno chcesz usunąć wszystkie dane?',
 
     },
     en: {
@@ -139,7 +163,32 @@ const appLanguage = {
         eventTitlePlaceholder: 'Add event title...',
         addDescriptionPlaceholder: 'Add brief description...',
         chooseDeadline: 'Choose deadline',
-        choosenDeadline: 'Chosen deadline'
+        choosenDeadline: 'Chosen deadline',
+
+
+
+        // ALERTS
+
+        // DELETE SUBJECT
+        deletingSubject: 'Deleting subject',
+        deleteSubjectQuestion: 'Are you sure you want to delete the selected subject?',
+
+        // DELETE CLASS
+        deletingClass: 'Deleting class',
+        deleteClassQuestion: 'Are you sure you want to delete the selected class?',
+
+        // DELETE NOTE
+        deletingNote: 'Deleting note',
+        deleteNoteQuestion: 'Are you sure you want to delete the selected note?',
+
+        // DELETE EVENT
+        deletingEvent: 'Deleting event',
+        deleteEventQuestion: 'Are you sure you want to delete the selected event?',
+
+        // DELETE ALL DATA
+        deletingData: 'Deleting data',
+        deleteDataQuestion: 'Are you sure you want to delete all data?',
+
     }
 }
 

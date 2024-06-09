@@ -80,7 +80,7 @@ export default function EditSubjectScreen() {
     }
 
     const alertDeleteSubject = (subjectID) => {
-        Alert.alert('Usuwanie przedmiotu', 'Czy na pewno usunąć przedmiot?', [
+        Alert.alert(getTranslatedText('deletingSubject'), getTranslatedText('deleteSubjectQuestion'), [
             {
                 text: 'Anuluj',
                 onPress: () => console.log('Anuluj'),

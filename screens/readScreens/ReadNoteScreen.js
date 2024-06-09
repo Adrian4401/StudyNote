@@ -53,7 +53,7 @@ export default function ReadNoteScreen() {
 
 
     const alertDeleteNote = (noteID) => {
-        Alert.alert('Usuwanie notatek', 'Czy na pewno chcesz usunąć notatkę?', [
+        Alert.alert(getTranslatedText('deletingNote'), getTranslatedText('deleteNoteQuestion'), [
             {
                 text: 'Anuluj',
                 onPress: () => console.log('Anuluj'),
@@ -65,6 +65,8 @@ export default function ReadNoteScreen() {
             }
         ])
     }
+
+
 
     return (
         <>
