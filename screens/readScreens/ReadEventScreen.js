@@ -173,7 +173,7 @@ export default function ReadEventScreen() {
 
                 {/* HEADER */}
                 <View style={headerStyles.headerBackground}>
-                    <Text style={headerStyles.headerText}>Wydarzenie</Text>
+                    <Text style={headerStyles.headerText}>{getTranslatedText('event')}</Text>
                 </View>
 
                 {/* CONTAINER */}

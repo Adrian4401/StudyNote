@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, ScrollView, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
-import * as SQLite from 'expo-sqlite';
+import * as SQLite from 'expo-sqlite/legacy';
 import { MaterialIcons } from '@expo/vector-icons';
 import { loadClasses } from '../../databaseQueries/databaseQueries.js';
 
@@ -96,7 +96,7 @@ export default function EditClassScreen() {
 
                 {/* HEADER */}
                 <View style={headerStyles.headerBackground}>
-                    <Text style={headerStyles.headerText}>Edytuj zajęcia</Text>
+                    <Text style={headerStyles.headerText}>{getTranslatedText('edit')} {getTranslatedText('classes')}</Text>
                 </View>
 
                 {/* CONTAINER */}

@@ -2,9 +2,14 @@ const appLanguage = {
     pl: {
         // GENERAL
         add: 'Dodaj',
+        edit: 'Edytuj',
+        subject: 'Przedmiot',
         subjects: 'Przedmioty',
         classes: 'Zajęcia',
+        note: 'Notatka',
+        note_2: 'Notatkę',
         notes: 'Notatki',
+        event: 'Wydarzenie',
         events: 'Wydarzenia',
         goBack: 'Wróć',
         chooseSubject: 'Wybierz przedmiot',
@@ -64,24 +69,18 @@ const appLanguage = {
         chooseDeadline: 'Wybierz termin',
         choosenDeadline: 'Wybrany termin'
 
-  
-
-        // EDIT SUBJECT SCREEN
-        // EDIT CLASS SCREEN
-        // EDIT NOTE SCREEN
-        // EDIT EVENT SCREEN
-        
-
-
-        // READ NOTE SCREEN
-        // READ EVENT SCREEN
     },
     en: {
         // GENERAL
         add: 'Add',
+        edit: 'Edit',
+        subject: 'Subject',
         subjects: 'Subjects',
         classes: 'Classes',
+        note: 'Note',
+        note_2: 'Note',
         notes: 'Notes',
+        event: 'Event',
         events: 'Events',
         goBack: 'Go Back',
         chooseSubject: 'Choose subject',

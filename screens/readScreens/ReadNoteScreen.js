@@ -73,7 +73,7 @@ export default function ReadNoteScreen() {
 
                 {/* HEADER */}
                 <View style={headerStyles.headerBackground}>
-                    <Text style={headerStyles.headerText}>Notatka</Text>
+                    <Text style={headerStyles.headerText}>{getTranslatedText('note')}</Text>
                 </View>
 
                 {/* CONTAINER */}

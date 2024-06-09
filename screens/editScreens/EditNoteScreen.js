@@ -91,7 +91,6 @@ export default function EditNoteScreen() {
                 <TextInput
                     value={currentTitle.toString()}
                     onChangeText={setCurrentTitle}
-                    placeholder='Dodaj tytuł notatki...'
                     placeholderTextColor={MyColors.appLightGray}
                     maxLength={100}
                     multiline
@@ -111,7 +110,6 @@ export default function EditNoteScreen() {
         } else if(item.type === 'subjectsDropDownPicker') {
             return(
                 <DropDownPicker
-                    placeholder='Wybierz przedmiot'
                     open={openSubjects}
                     value={currentSubject}
                     items={subjectItems}
@@ -128,7 +126,6 @@ export default function EditNoteScreen() {
         } else if(item.type === 'classesDropDownPicker') {
             return(
                 <DropDownPicker
-                    placeholder='Wybierz zajęcia'
                     open={openClasses}
                     value={currentClass}
                     items={classesItems}
@@ -147,7 +144,6 @@ export default function EditNoteScreen() {
                 <TextInput 
                     value={currentNote.toString()}
                     onChangeText={setCurrentNote}
-                    placeholder='Dodaj notatkę...'
                     placeholderTextColor={MyColors.appLightGray}
                     multiline={true}
                     style={{
@@ -180,7 +176,7 @@ export default function EditNoteScreen() {
 
                 {/* HEADER */}
                 <View style={headerStyles.headerBackground}>
-                    <Text style={headerStyles.headerText}>Edytuj notatkę</Text>
+                    <Text style={headerStyles.headerText}>{getTranslatedText('edit')} {getTranslatedText('note_2')}</Text>
                 </View>
 
                 <View style={styles.container}>

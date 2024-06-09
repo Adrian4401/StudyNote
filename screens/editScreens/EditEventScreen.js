@@ -186,7 +186,6 @@ export default function EditEventScreen() {
                 <TextInput 
                     value={currentTitle}
                     onChangeText={setCurrentTitle}
-                    placeholder='Dodaj tytuł wydarzenia...'
                     placeholderTextColor={MyColors.appLightGray}
                     maxLength={100}
                     multiline
@@ -205,7 +204,6 @@ export default function EditEventScreen() {
         } else if(item.type === 'subjectsPicker') {
             return(
                 <DropDownPicker
-                    placeholder='Wybierz przedmiot'
                     open={openSubjects}
                     value={valueSubjects}
                     items={subjectItems}
@@ -222,7 +220,6 @@ export default function EditEventScreen() {
         } else if(item.type === 'classesPicker') {
             return(
                 <DropDownPicker
-                    placeholder='Wybierz zajęcia'
                     open={openClasses}
                     value={currentClass}
                     items={classesItems}
@@ -241,7 +238,6 @@ export default function EditEventScreen() {
                 <TextInput 
                     value={currentDescription}
                     onChangeText={setCurrentDescription}
-                    placeholder='Dodaj krótki opis...'
                     placeholderTextColor={MyColors.appLightGray}
                     multiline={true}
                     style={{
@@ -264,7 +260,7 @@ export default function EditEventScreen() {
                 return(
                     <View style={{marginBottom: 20, alignItems: 'center'}}>
 
-                        <Text style={{...globalStyles.littleText, marginBottom: 5}}>Wybierz termin</Text>
+                        <Text style={{...globalStyles.littleText, marginBottom: 5}}>{getTranslatedText('chooseDeadline')}</Text>
 
                         <TouchableOpacity onPress={() => showMode('date')} style={styles.dateTimeButtons}>
                             <Text style={{fontSize: 20, color: 'white'}}>Dzień</Text>
@@ -275,7 +271,7 @@ export default function EditEventScreen() {
                         </TouchableOpacity>
 
                         <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-between', marginVertical: 10}}>
-                            <Text style={{fontSize: 20, color: 'white'}}>Wybrany termin:</Text>
+                            <Text style={{fontSize: 20, color: 'white'}}>{getTranslatedText('choosenDeadline')}:</Text>
                             <Text style={{fontSize: 20, color: 'white'}}>{selectedDate}</Text>
                         </View>
 
@@ -388,7 +384,7 @@ export default function EditEventScreen() {
 
                 {/* HEADER */}
                 <View style={headerStyles.headerBackground}>
-                    <Text style={headerStyles.headerText}>Edytuj wydarzenie</Text>
+                    <Text style={headerStyles.headerText}>{getTranslatedText('edit')} {getTranslatedText('event')}</Text>
                 </View>
 
                 <View style={styles.container}>
