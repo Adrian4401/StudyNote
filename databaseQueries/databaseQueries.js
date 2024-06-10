@@ -617,6 +617,21 @@ export const addSubject = async (currentSubject, setCurrentSubject, subjects, se
 }
 
 
+export const addNote = (currentTitle, currentNote, currentSubject, currentClass, noteDate, navigation) => {
+    console.log('Date: ', noteDate)
+    db.transaction(tx =>
+        tx.executeSql(
+            'INSERT INTO notes (title, note, subject_id, class_id, create_day) values(?,?,?,?,?)',
+            [currentTitle, currentNote, currentSubject, currentClass, noteDate],
+            (txObj, resultSet) => {
+                console.log('Udalo sie dodac notatke');
+                navigation.goBack();
+            },
+            (txObj, error) => console.log('Nie udalo sie dodac notatki -> ' + error)
+        )
+    )
+}
+
 
 const formatDate = (date) => {
     const day = date.getDate().toString().padStart(2, '0');
@@ -627,7 +642,6 @@ const formatDate = (date) => {
 
     return `${day}.${month}.${year} ${hours}:${minutes}`;
 }
-
 
 
 export const addEvent = (navigation, currentTitle, currentDescription, date, valueSubjects, currentClass, checkedNoteIDs) => {

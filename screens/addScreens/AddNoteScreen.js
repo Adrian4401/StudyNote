@@ -9,7 +9,7 @@ import { headerStyles } from '../../styles/headerStyles';
 
 import { GoBackButton, MakeButton } from '../../components/customButtons.js';
 
-import { loadClasses, loadSubjects } from '../../databaseQueries/databaseQueries.js';
+import { loadClasses, loadSubjects, addNote } from '../../databaseQueries/databaseQueries.js';
 
 import { DBConnect } from '../../databaseQueries/DBConnect';
 
@@ -54,6 +54,8 @@ export default function AddNoteScreen() {
         return loadData;
     }, [navigation])
 
+
+
     const subjectItems = subjects.map(subject => {
         return { label: subject.subject_name, value: subject.subject_id.toString() };
     });
@@ -70,23 +72,11 @@ export default function AddNoteScreen() {
 
     var noteDate = day + '.' + month + '.' + year;
     
+    
 
-
-    const addNote = (currentTitle, currentNote, currentSubject, currentClass, noteDate) => {
-        console.log('Date: ', noteDate)
-        db.transaction(tx =>
-            tx.executeSql(
-                'INSERT INTO notes (title, note, subject_id, class_id, create_day) values(?,?,?,?,?)',
-                [currentTitle, currentNote, currentSubject, currentClass, noteDate],
-                (txObj, resultSet) => {
-                    console.log('Udalo sie dodac notatke');
-                    navigation.goBack();
-                },
-                (txObj, error) => console.log('Nie udalo sie dodac notatki -> ' + error)
-            )
-        )
+    const handleAddNote = () => {
+        addNote(currentTitle, currentNote, currentSubject, currentClass, noteDate, navigation)
     }
-
 
 
 
@@ -178,10 +168,13 @@ export default function AddNoteScreen() {
             )
         } else if(item.type === 'addButton') {
             return(
-                <MakeButton onPress={() => addNote(currentTitle, currentNote, currentSubject, currentClass, noteDate)}/>
+                <MakeButton onPress={handleAddNote}/>
             )
         }
     }
+
+
+
 
 
     return (

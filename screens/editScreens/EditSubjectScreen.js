@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, ScrollView, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
-import * as SQLite from 'expo-sqlite/legacy';
 import { MaterialIcons } from '@expo/vector-icons';
 import { editSubject, deleteSubject } from '../../databaseQueries/databaseQueries.js';
 
@@ -20,8 +19,6 @@ import { useLanguage } from '../../context/LanguageContext';
 
 
 export default function EditSubjectScreen() {
-
-    const db = SQLite.openDatabase('studynote.db');
 
     const navigation = useNavigation();
     const route = useRoute();
