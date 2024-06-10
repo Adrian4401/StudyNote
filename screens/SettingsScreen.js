@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, ScrollView, Image, TouchableOpacity, Switch, Platform, FlatList } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Image, Switch, Platform, FlatList } from 'react-native';
 
 import DropDownPicker from 'react-native-dropdown-picker';
 
@@ -41,6 +41,11 @@ export default function SettingsScreen() {
   const handleLanguageChange = (value) => {
     console.log('Wybrany jezyk: ', value)
     changeLanguage(value)
+  }
+
+  const handleDarkModeChange = (value) => {
+    console.log('Wybrany darkmode: ', value)
+    changeDarkMode(value)
   }
 
   const handleDeleteAllData = () => {
@@ -97,7 +102,7 @@ export default function SettingsScreen() {
             >
               <Switch
                 value={darkMode}
-                onValueChange={changeDarkMode}
+                onValueChange={handleDarkModeChange}
                 trackColor={{false: MyColors.appLightGray, true: MyColors.appBlue}}
                 thumbColor={darkMode ? '#0066CD' : '#BDBBBB'}
                 style={{height: Platform.OS === 'android' ? 20 : 30}}
