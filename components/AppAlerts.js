@@ -11,12 +11,12 @@ export const alertDeleteAllData = (getTranslatedText) => {
     return (
         Alert.alert(getTranslatedText('deletingData'), getTranslatedText('deleteDataQuestion'), [
             {
-                text: 'Anuluj',
+                text: getTranslatedText('cancel'),
                 onPress: () => console.log('Anuluj'),
                 style: 'cancel'
             },
             {
-                text: 'Usuń',
+                text: getTranslatedText('delete'),
                 onPress: () => deleteAllData()
             }
         ])
@@ -28,12 +28,12 @@ export const alertDeleteSubject = (subjectID, setSubjects, navigation, getTransl
 
     Alert.alert(getTranslatedText('deletingSubject'), getTranslatedText('deleteSubjectQuestion'), [
         {
-            text: 'Anuluj',
+            text: getTranslatedText('cancel'),
             onPress: () => console.log('Anuluj'),
             style: 'cancel'
         },
         {
-            text: 'Usuń',
+            text: getTranslatedText('delete'),
             onPress: () => deleteSubject(subjectID, setSubjects, navigation)
         }
     ])
@@ -43,12 +43,12 @@ export const alertDeleteSubject = (subjectID, setSubjects, navigation, getTransl
 export const alertDeleteClass = (classID, setClasses, navigation, getTranslatedText) => {
     Alert.alert(getTranslatedText('deletingClass'), getTranslatedText('deleteClassQuestion'), [
         {
-            text: 'Anuluj',
+            text: getTranslatedText('cancel'),
             onPress: () => console.log('Anuluj'),
             style: 'cancel'
         },
         {
-            text: 'Usuń',
+            text: getTranslatedText('delete'),
             onPress: () => deleteClass(classID, setClasses, navigation)
         }
     ])
@@ -58,12 +58,12 @@ export const alertDeleteClass = (classID, setClasses, navigation, getTranslatedT
 export const alertDeleteEvent = (eventID, navigation, getTranslatedText) => {
     Alert.alert(getTranslatedText('deletingEvent'), getTranslatedText('deleteEventQuestion'), [
         {
-            text: 'Anuluj',
+            text: getTranslatedText('cancel'),
             onPress: () => console.log('Anuluj'),
             style: 'cancel'
         },
         {
-            text: 'Usuń',
+            text: getTranslatedText('delete'),
             onPress: () => deleteEvent(eventID, navigation)
         }
     ])
@@ -73,12 +73,12 @@ export const alertDeleteEvent = (eventID, navigation, getTranslatedText) => {
 export const alertDeleteNote = (noteID, navigation, getTranslatedText) => {
     Alert.alert(getTranslatedText('deletingNote'), getTranslatedText('deleteNoteQuestion'), [
         {
-            text: 'Anuluj',
+            text: getTranslatedText('cancel'),
             onPress: () => console.log('Anuluj'),
             style: 'cancel'
         },
         {
-            text: 'Usuń',
+            text: getTranslatedText('delete'),
             onPress: () => deleteNote(noteID, navigation)
         }
     ])

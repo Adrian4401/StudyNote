@@ -3,6 +3,8 @@ const appLanguage = {
         // GENERAL
         add: 'Dodaj',
         edit: 'Edytuj',
+        cancel: 'Anuluj',
+        delete: 'Usuń',
         subject: 'Przedmiot',
         subjects: 'Przedmioty',
         classes: 'Zajęcia',
@@ -98,6 +100,8 @@ const appLanguage = {
         // GENERAL
         add: 'Add',
         edit: 'Edit',
+        cancel: 'Cancel',
+        delete: 'Delete',
         subject: 'Subject',
         subjects: 'Subjects',
         classes: 'Classes',
