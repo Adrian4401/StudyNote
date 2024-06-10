@@ -38,6 +38,11 @@ export default function SettingsScreen() {
   }
 
 
+  const handleLanguageChange = (value) => {
+    console.log('Wybrany jezyk: ', value)
+    changeLanguage(value)
+  }
+
   const handleDeleteAllData = () => {
     alertDeleteAllData(getTranslatedText)
   }
@@ -58,7 +63,10 @@ export default function SettingsScreen() {
             value={language}
             items={languages}
             setOpen={setOpenLanguages}
-            setValue={(value) => changeLanguage(value)}
+            setValue={(callback) => {
+              const value = typeof callback === 'function' ? callback(language) : callback;
+              handleLanguageChange(value);
+            }}
             setItems={setLanguages}
             ScrollView={false}
             style={styles.style}
