@@ -71,7 +71,6 @@ export default function SettingsScreen() {
           <View style={globalStyles.headlineView}>
             <Text style={globalStyles.sectionText}>{getTranslatedText('themeText')}</Text>
           </View>
-          <SettingsScreenButton onPress={() => console.log("To do")} icon={"invert-colors"} text={getTranslatedText('themeText')}/>
 
           <View style={{...globalStyles.eventView, flexDirection: 'row', paddingHorizontal: 20, alignItems: 'center'}}>
             <MaterialCommunityIcons name="invert-colors" size={24} color={MyColors.appBlue} style={{paddingHorizontal: 5}}/>

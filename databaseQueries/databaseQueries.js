@@ -683,31 +683,31 @@ const addNotesToEvent = (eventID, checkedNoteIDs) => {
 // ===== UPDATE QUERIES =====
 
 
-export const editSubject = (oldSubjectName, newSubjectName) => {
+export const editSubject = (subjectID, currentSubject, setSubjects, navigation) => {
 
     db.transaction(tx => {
         tx.executeSql(
-            'UPDATE subjects SET subject_name = ? WHERE subject_name = ?',
-            [newSubjectName, oldSubjectName],
+            'UPDATE subjects SET subject_name = ? WHERE subject_id = ?',
+            [currentSubject, subjectID],
             (txObj, resultSet) => {
                 loadSubjects(setSubjects);
-                console.log('DATA -- Subject updated successfully');
+                console.log('Przedmiot został zaktualizowany');
                 navigation.goBack(); // Wróć do poprzedniego ekranu
             },
             (txObj, error) => {
-                console.log('ERROR -- Subject updating failed -> ', error);
+                console.log('Nie udało się zaktualizować przedmiotu:', error);
             }
         );
     });   
-}
+};
 
 
-export const editClass = (classID, newClassName, navigation, setClasses) => {
+export const editClass = (classID, currentClass, setClasses, navigation) => {
 
     db.transaction(tx => {
         tx.executeSql(
             'UPDATE classes SET class_name = ? WHERE class_id = ?',
-            [newClassName, classID],
+            [currentClass, classID],
             (txObj, resultSet) => {
                 loadClasses(setClasses);
                 console.log('DATA -- Class updated successfully');
@@ -828,7 +828,6 @@ export const deleteAllData = () => {
 }
 
 
-
 export const deleteNote = (noteID, navigation) => {
 
   db.transaction(tx =>
@@ -874,4 +873,42 @@ export const deleteNotestoEvent = (eventID) => {
             (error) => console.log('ERROR -- Deleting NotesToEvent failed -> ' + error)
         )    
     )
+}
+
+
+export const deleteClass = (classID, setClasses, navigation) => {
+
+    db.transaction(tx => {
+        tx.executeSql(
+            'UPDATE classes SET is_deleted = 1 WHERE class_id = ?',
+            [classID],
+            (txObj, resultSet) => {
+                loadClasses(setClasses);
+                console.log('Zajecie zostalo usuniete');
+                navigation.goBack(); // Wróć do poprzedniego ekranu
+            },
+            (txObj, error) => {
+                console.log('Nie udalo się usunac zajecia:', error);
+            }
+        );
+    }); 
+}
+
+
+export const deleteSubject = (subjectID, setSubjects, navigation) => {
+
+    db.transaction(tx => {
+        tx.executeSql(
+            'UPDATE subjects SET is_deleted = 1 WHERE subject_id = ?',
+            [subjectID],
+            (txObj, resultSet) => {
+                loadSubjects(setSubjects);
+                console.log('Przedmiot został usuniety');
+                navigation.goBack(); // Wróć do poprzedniego ekranu
+            },
+            (txObj, error) => {
+                console.log('Nie udało się usunac przedmiotu:', error);
+            }
+        );
+    }); 
 }

@@ -4,7 +4,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 
 import * as SQLite from 'expo-sqlite/legacy';
 import { MaterialIcons } from '@expo/vector-icons';
-import { loadClasses } from '../../databaseQueries/databaseQueries.js';
+import { editClass, deleteClass } from '../../databaseQueries/databaseQueries.js';
 
 import { MyColors } from '../../utils/colors.js';
 
@@ -34,47 +34,26 @@ export default function EditClassScreen() {
     }
 
 
+
     useEffect(() => {
         const { classID, className } = route.params;
         setCurrentClass(className);
         setClassID(classID);
     }, []);
 
-    const editClass = (classID, newClassName) => {
-        db.transaction(tx => {
-            tx.executeSql(
-                'UPDATE classes SET class_name = ? WHERE class_id = ?',
-                [newClassName, classID],
-                (txObj, resultSet) => {
-                    loadClasses(setClasses);
-                    console.log('Zajecie zostalo zaktualizowane');
-                    navigation.goBack(); // Wróć do poprzedniego ekranu
-                },
-                (txObj, error) => {
-                    console.log('Nie udalo se zaktualizowac zajecia:', error);
-                }
-            );
-        });   
-    };
+    
 
-    const deleteClass = (classID) => {
-        db.transaction(tx => {
-            tx.executeSql(
-                'UPDATE classes SET is_deleted = 1 WHERE class_id = ?',
-                [classID],
-                (txObj, resultSet) => {
-                    loadClasses(setClasses);
-                    console.log('Zajecie zostalo usuniete');
-                    navigation.goBack(); // Wróć do poprzedniego ekranu
-                },
-                (txObj, error) => {
-                    console.log('Nie udalo się usunac zajecia:', error);
-                }
-            );
-        }); 
+    const handleEditClass = () => {
+        editClass(classID, currentClass, setClasses, navigation)
     }
 
-    const alertDeleteClass = (classID) => {
+    const handleDeleteClass = () => {
+        deleteClass(classID, setClasses, navigation)
+    }
+
+
+
+    const alertDeleteClass = () => {
         Alert.alert(getTranslatedText('deletingClass'), getTranslatedText('deleteClassQuestion'), [
             {
                 text: 'Anuluj',
@@ -83,10 +62,13 @@ export default function EditClassScreen() {
             },
             {
                 text: 'Usuń',
-                onPress: () => deleteClass(classID)
+                onPress: handleDeleteClass
             }
         ])
     }
+
+
+
 
 
     return (
@@ -130,7 +112,7 @@ export default function EditClassScreen() {
                             }}
                         />
                         
-                        <EditButton onPress={() => editClass(route.params.classID, currentClass, navigation)}/>
+                        <EditButton onPress={handleEditClass}/>
 
                     </View>
                 </ScrollView>

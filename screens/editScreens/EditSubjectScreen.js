@@ -4,7 +4,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 
 import * as SQLite from 'expo-sqlite/legacy';
 import { MaterialIcons } from '@expo/vector-icons';
-import { loadSubjects } from '../../databaseQueries/databaseQueries.js';
+import { editSubject, deleteSubject } from '../../databaseQueries/databaseQueries.js';
 
 import { MyColors } from '../../utils/colors.js';
 
@@ -45,41 +45,19 @@ export default function EditSubjectScreen() {
         setSubjectID(subjectID);
     }, []);
 
-    const editSubject = (subjectID, newSubjectName) => {
-        db.transaction(tx => {
-            tx.executeSql(
-                'UPDATE subjects SET subject_name = ? WHERE subject_id = ?',
-                [newSubjectName, subjectID],
-                (txObj, resultSet) => {
-                    loadSubjects(setSubjects);
-                    console.log('Przedmiot został zaktualizowany');
-                    navigation.goBack(); // Wróć do poprzedniego ekranu
-                },
-                (txObj, error) => {
-                    console.log('Nie udało się zaktualizować przedmiotu:', error);
-                }
-            );
-        });   
-    };
 
-    const deleteSubject = (subjectID) => {
-        db.transaction(tx => {
-            tx.executeSql(
-                'UPDATE subjects SET is_deleted = 1 WHERE subject_id = ?',
-                [subjectID],
-                (txObj, resultSet) => {
-                    loadSubjects(setSubjects);
-                    console.log('Przedmiot został usuniety');
-                    navigation.goBack(); // Wróć do poprzedniego ekranu
-                },
-                (txObj, error) => {
-                    console.log('Nie udało się usunac przedmiotu:', error);
-                }
-            );
-        }); 
+
+    const handleEditSubject = () => {
+        editSubject(subjectID, currentSubject, setSubjects, navigation)
     }
 
-    const alertDeleteSubject = (subjectID) => {
+    const handleDeleteSubject = () => {
+        deleteSubject(subjectID, setSubjects, navigation)
+    }
+
+
+
+    const alertDeleteSubject = () => {
         Alert.alert(getTranslatedText('deletingSubject'), getTranslatedText('deleteSubjectQuestion'), [
             {
                 text: 'Anuluj',
@@ -88,10 +66,13 @@ export default function EditSubjectScreen() {
             },
             {
                 text: 'Usuń',
-                onPress: () => deleteSubject(subjectID)
+                onPress: handleDeleteSubject
             }
         ])
     }
+
+
+
 
 
     return (
@@ -135,7 +116,7 @@ export default function EditSubjectScreen() {
                             }}
                         />
                         
-                        <EditButton onPress={() => editSubject(route.params.subjectID, currentSubject)}/>
+                        <EditButton onPress={handleEditSubject}/>
 
                     </View>
                 </ScrollView>
