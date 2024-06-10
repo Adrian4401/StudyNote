@@ -13,6 +13,7 @@ import { EditButton, GoBackButton } from '../../components/customButtons.js';
 
 import appLanguage from "../../utils/languages";
 import { useLanguage } from '../../context/LanguageContext';
+import { alertDeleteSubject } from '../../components/AppAlerts.js';
 
 
 
@@ -49,27 +50,11 @@ export default function EditSubjectScreen() {
     }
 
     const handleDeleteSubject = () => {
-        deleteSubject(subjectID, setSubjects, navigation)
+        alertDeleteSubject(subjectID, setSubjects, navigation, getTranslatedText)
     }
 
 
-
-    const alertDeleteSubject = () => {
-        Alert.alert(getTranslatedText('deletingSubject'), getTranslatedText('deleteSubjectQuestion'), [
-            {
-                text: 'Anuluj',
-                onPress: () => console.log('Anuluj'),
-                style: 'cancel'
-            },
-            {
-                text: 'Usuń',
-                onPress: handleDeleteSubject
-            }
-        ])
-    }
-
-
-
+    
 
 
     return (
@@ -88,7 +73,7 @@ export default function EditSubjectScreen() {
 
                         <View style={{alignItems: 'center', width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
                             <GoBackButton />
-                            <TouchableOpacity onPress={() => alertDeleteSubject(route.params.subjectID)}>
+                            <TouchableOpacity onPress={handleDeleteSubject}>
                                 <MaterialIcons name="delete" size={30} color='white'/>
                             </TouchableOpacity>
                         </View>

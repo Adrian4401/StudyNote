@@ -10,7 +10,7 @@ import { globalStyles } from '../styles/globalStyles';
 
 import { SettingsScreenButton } from '../components/customButtons';
 
-import { AlertDeleteAllData } from '../components/AppAlerts';
+import { alertDeleteAllData } from '../components/AppAlerts';
 
 import appLanguage from "../utils/languages";
 import { useLanguage } from '../context/LanguageContext';
@@ -35,6 +35,11 @@ export default function SettingsScreen() {
 
   const getTranslatedText = (key) => {
     return appLanguage[language][key];
+  }
+
+
+  const handleDeleteAllData = () => {
+    alertDeleteAllData(getTranslatedText)
   }
 
   // const headerStyles = createHeaderStyles(theme)
@@ -103,7 +108,7 @@ export default function SettingsScreen() {
           <View style={globalStyles.headlineView}>
             <Text style={globalStyles.sectionText}>{getTranslatedText('deleteDataText')}</Text>
           </View>
-          <SettingsScreenButton onPress={AlertDeleteAllData} icon={"delete"} text={getTranslatedText('deleteDataButton')}/>
+          <SettingsScreenButton onPress={handleDeleteAllData} icon={"delete"} text={getTranslatedText('deleteDataButton')}/>
         </>
       )
     }

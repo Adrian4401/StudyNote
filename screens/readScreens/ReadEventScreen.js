@@ -11,10 +11,11 @@ import { GoBackButton } from '../../components/customButtons.js';
 
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
-import { deleteEvent, selectAllNotesEvent, selectEventToRead, selectNotesToEvent } from '../../databaseQueries/databaseQueries.js';
+import { selectEventToRead, selectNotesToEvent } from '../../databaseQueries/databaseQueries.js';
 
 import appLanguage from "../../utils/languages";
 import { useLanguage } from '../../context/LanguageContext';
+import { alertDeleteEvent } from '../../components/AppAlerts.js';
 
 
 
@@ -41,6 +42,8 @@ export default function ReadEventScreen() {
         return appLanguage[language][key];
     }
 
+
+
     useEffect(() => {
         const { eventID } = route.params;
         setEventID(eventID)
@@ -57,20 +60,9 @@ export default function ReadEventScreen() {
 
 
 
-    const alertDeleteEvent = (eventID) => {
-        Alert.alert(getTranslatedText('deletingEvent'), getTranslatedText('deleteEventQuestion'), [
-            {
-                text: 'Anuluj',
-                onPress: () => console.log('Anuluj'),
-                style: 'cancel'
-            },
-            {
-                text: 'Usuń',
-                onPress: () => deleteEvent(eventID, navigation)
-            }
-        ])
+    const handleDeleteEvent = () => {
+        alertDeleteEvent(eventID, navigation, getTranslatedText)
     }
-
 
 
 
@@ -80,7 +72,7 @@ export default function ReadEventScreen() {
                 <View style={styles.topPanel}>
                     <GoBackButton />
                     <View style={styles.topPanelIcons}>
-                        <TouchableOpacity onPress={() => alertDeleteEvent(eventID)}>
+                        <TouchableOpacity onPress={handleDeleteEvent}>
                             <MaterialIcons name="delete" size={30} color='white'/>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => navigation.navigate('EditEventScreen', { eventID: eventID })}>

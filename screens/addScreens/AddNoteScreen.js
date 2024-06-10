@@ -11,8 +11,6 @@ import { GoBackButton, MakeButton } from '../../components/customButtons.js';
 
 import { loadClasses, loadSubjects, addNote } from '../../databaseQueries/databaseQueries.js';
 
-import { DBConnect } from '../../databaseQueries/DBConnect';
-
 import appLanguage from "../../utils/languages";
 import { useLanguage } from '../../context/LanguageContext';
 
@@ -22,9 +20,6 @@ import { useLanguage } from '../../context/LanguageContext';
 export default function AddNoteScreen() {
 
     const navigation = useNavigation();
-
-    const db = DBConnect();
-
 
     const [openSubjects, setOpenSubjects] = useState(false);
     const [openClasses, setOpenClasses] = useState(false);

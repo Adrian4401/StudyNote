@@ -12,6 +12,7 @@ import { EditButton, GoBackButton } from '../../components/customButtons.js';
 
 import appLanguage from "../../utils/languages";
 import { useLanguage } from '../../context/LanguageContext';
+import { alertDeleteClass } from '../../components/AppAlerts.js';
 
 
 
@@ -45,23 +46,7 @@ export default function EditClassScreen() {
     }
 
     const handleDeleteClass = () => {
-        deleteClass(classID, setClasses, navigation)
-    }
-
-
-
-    const alertDeleteClass = () => {
-        Alert.alert(getTranslatedText('deletingClass'), getTranslatedText('deleteClassQuestion'), [
-            {
-                text: 'Anuluj',
-                onPress: () => console.log('Anuluj'),
-                style: 'cancel'
-            },
-            {
-                text: 'Usuń',
-                onPress: handleDeleteClass
-            }
-        ])
+        alertDeleteClass(classID, setClasses, navigation, getTranslatedText)
     }
 
 
@@ -84,7 +69,7 @@ export default function EditClassScreen() {
 
                         <View style={{alignItems: 'center', width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
                             <GoBackButton />
-                            <TouchableOpacity onPress={() => alertDeleteClass(route.params.classID)}>
+                            <TouchableOpacity onPress={handleDeleteClass}>
                                 <MaterialIcons name="delete" size={30} color='white'/>
                             </TouchableOpacity>
                         </View>

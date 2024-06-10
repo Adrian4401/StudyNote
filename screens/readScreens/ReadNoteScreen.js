@@ -14,6 +14,7 @@ import { deleteNote, selectNoteToRead } from '../../databaseQueries/databaseQuer
 
 import appLanguage from "../../utils/languages";
 import { useLanguage } from '../../context/LanguageContext';
+import { alertDeleteNote } from '../../components/AppAlerts.js';
 
 
 
@@ -52,19 +53,11 @@ export default function ReadNoteScreen() {
 
 
 
-    const alertDeleteNote = (noteID) => {
-        Alert.alert(getTranslatedText('deletingNote'), getTranslatedText('deleteNoteQuestion'), [
-            {
-                text: 'Anuluj',
-                onPress: () => console.log('Anuluj'),
-                style: 'cancel'
-            },
-            {
-                text: 'Usuń',
-                onPress: () => deleteNote(noteID, navigation)
-            }
-        ])
+    const handleDeleteNote = () => {
+        alertDeleteNote(noteID, navigation, getTranslatedText)
     }
+
+
 
 
 
@@ -85,7 +78,7 @@ export default function ReadNoteScreen() {
                         <View style={styles.topPanel}>
                             <GoBackButton />
                             <View style={styles.topPanelIcons}>
-                                <TouchableOpacity onPress={() => alertDeleteNote(noteID)}>
+                                <TouchableOpacity onPress={handleDeleteNote}>
                                     <MaterialIcons name="delete" size={30} color='white'/>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => navigation.navigate('EditNoteScreen', { noteID: noteID })}>
