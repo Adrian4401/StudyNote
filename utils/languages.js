@@ -43,7 +43,9 @@ const appLanguage = {
         // SETTINGS SCREEN
         settingsScreenTitle: 'Ustawienia',
         languageText: 'Język',
-        themeText: 'Ciemny motyw',
+        themeText: 'Motyw aplikacji',
+        dark: 'Ciemny',
+        light: 'Jasny',
         dataText: 'Dane',
         dataExportButton: 'Eksport danych',
         dataImportButton: 'Import danych',
@@ -140,7 +142,9 @@ const appLanguage = {
         // SETTINGS SCREEN
         settingsScreenTitle: 'Settings',
         languageText: 'Language',
-        themeText: 'Dark theme',
+        themeText: 'App theme',
+        dark: 'Dark',
+        light: 'Light',
         dataText: 'Data',
         dataExportButton: 'Data export',
         dataImportButton: 'Data import',

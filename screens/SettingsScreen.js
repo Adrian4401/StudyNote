@@ -72,9 +72,9 @@ export default function SettingsScreen() {
             }}
             setItems={setLanguages}
             ScrollView={false}
-            style={styles.style}
+            style={styles.dropDownStyle}
             dropDownContainerStyle={styles.dropDownContainerStyle}
-            textStyle={styles.textStyle}
+            textStyle={styles.dropDownTextStyle}
             arrowIconContainerStyle={styles.arrowIconContainerStyle}
           />
         </>
@@ -90,14 +90,8 @@ export default function SettingsScreen() {
 
           <View style={{...tempStyles.eventView, flexDirection: 'row', paddingHorizontal: 20, alignItems: 'center'}}>
             <MaterialCommunityIcons name="invert-colors" size={24} color={theme.primary} style={{paddingHorizontal: 5}}/>
-            <Text style={tempStyles.subjectText}>{getTranslatedText('themeText')}</Text>
-            <View
-              style={{
-                flex: 1,
-                // backgroundColor: 'red',
-                alignItems: 'flex-end'
-              }}
-            >
+            <Text style={tempStyles.subjectText}>{darkMode ? getTranslatedText('dark') : getTranslatedText('light')}</Text>
+            <View style={{flex: 1, alignItems: 'flex-end'}}>
               <Switch
                 value={darkMode}
                 onValueChange={handleDarkModeChange}
@@ -135,7 +129,7 @@ export default function SettingsScreen() {
       paddingHorizontal: 20,
       paddingBottom: 40
     },
-    style: {
+    dropDownStyle: {
       backgroundColor: theme.secondary,
       flex: 1,
       borderRadius: 20,
@@ -146,8 +140,8 @@ export default function SettingsScreen() {
       paddingVertical: 5,
       borderWidth: 0
     },
-    textStyle: {
-      color: 'white',
+    dropDownTextStyle: {
+      color: theme.textPrimary,
       fontSize: 20
     },
     arrowIconContainerStyle: {
