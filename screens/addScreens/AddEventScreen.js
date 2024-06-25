@@ -4,12 +4,9 @@ import { useNavigation } from '@react-navigation/native';
 
 import DropDownPicker from 'react-native-dropdown-picker';
 
-import { MyColors } from '../../utils/colors.js';
+import { MyColors } from '../../assets/styles/colors.js';
 
 import { FontAwesome5 } from '@expo/vector-icons';
-
-import { headerStyles } from '../../styles/headerStyles';
-import { globalStyles } from '../../styles/globalStyles';
 
 import { GoBackButton, MakeButton } from '../../components/customButtons.js';
 
@@ -21,6 +18,11 @@ import Checkbox from 'expo-checkbox';
 
 import appLanguage from "../../utils/languages";
 import { useLanguage } from '../../context/LanguageContext';
+
+import { useDarkMode } from '../../context/DarkModeContext.js';
+import { createStyles, headerStyles, globalStyles } from '../../assets/styles/index.js';
+
+import { Safearea } from '../../components/SafeArea.js';
 
 
 

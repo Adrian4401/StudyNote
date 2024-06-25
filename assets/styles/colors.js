@@ -2,10 +2,13 @@ export const MyColors = {
     background: '#3F3D4C',
     navigation: '#000000',
     primary: '#0b84ff',
+    // appDark
     secondary: '#252331',
     textPrimary: '#000000',
+    // appLightGray
     textSecondary: '#D1D0D0',
     inputBackground: '#26282A',
+    // eventBlue
     eventBackground: '#2F3051'
 }
 export const lightTheme = {
