@@ -7,6 +7,7 @@ export const MyColors = {
     textPrimary: '#000000',
     // appLightGray
     textSecondary: '#D1D0D0',
+    // appGray
     inputBackground: '#26282A',
     // eventBlue
     eventBackground: '#2F3051'
