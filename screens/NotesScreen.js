@@ -5,15 +5,13 @@ import DropDownPicker from 'react-native-dropdown-picker';
 
 import { FontAwesome5, AntDesign, FontAwesome } from '@expo/vector-icons';
 
-import { MyColors } from '../utils/colors.js';
-
-import { headerStyles } from '../styles/headerStyles';
-import { globalStyles } from '../styles/globalStyles';
-
 import { selectAllNotesWithSubjects, selectChosenNotes } from '../databaseQueries/databaseQueries.js';
 
 import { useLanguage } from '../context/LanguageContext';
 import appLanguage from "../utils/languages";
+
+import { useDarkMode } from '../context/DarkModeContext';
+import { createStyles } from '../assets/styles/index';
 
 
 
@@ -28,6 +26,9 @@ export default function NoteScreen() {
   const [subjects, setSubjects] = useState([]);
 
   const [data, setData] = useState([]);
+
+  const { theme } = useDarkMode()
+  const styles = createStyles(theme)
 
 
 
@@ -64,16 +65,16 @@ export default function NoteScreen() {
   const renderItem = ({ item }) => {
     if (item.type === 'header') {
       return (
-        <View style={{...globalStyles.headlineViewWithIcon, marginTop: 30}}>
-          <Text style={{...globalStyles.headlineText, marginBottom: 0}}>{getTranslatedText('yourNotesHeadline')}</Text>
+        <View style={{...styles.headlineViewWithIcon, marginTop: 30}}>
+          <Text style={{...styles.headlineText, marginBottom: 0}}>{getTranslatedText('yourNotesHeadline')}</Text>
           <TouchableOpacity onPress={() => navigation.navigate('AddNoteScreen')}>
-            <AntDesign name="plus" size={26} color="#fff" />
+            <AntDesign name="plus" size={26} color={theme.textPrimary} />
           </TouchableOpacity>
         </View>
       );
     } else if (item.type === 'subjectsDropdown') {
       return (
-        <View style={{...globalStyles.headlineViewWithIcon, marginBottom: 40}}>
+        <View style={{...styles.headlineViewWithIcon, marginBottom: 40}}>
             <DropDownPicker
               placeholder={getTranslatedText('chooseSubjectDropdownPlaceholder')}
               open={openSubjects}
@@ -83,36 +84,36 @@ export default function NoteScreen() {
               setValue={setValueSubjects}
               setItems={setSubjects}
               ScrollView={false}
-              style={styles.style}
-              dropDownContainerStyle={styles.dropDownContainerStyle}
-              textStyle={styles.textStyle}
-              arrowIconContainerStyle={styles.arrowIconContainerStyle}
+              style={notesStyles.style}
+              dropDownContainerStyle={notesStyles.dropDownContainerStyle}
+              textStyle={notesStyles.textStyle}
+              arrowIconContainerStyle={notesStyles.arrowIconContainerStyle}
             />
         </View>
       );
     } else if (item.type === 'note' && data) {
       return data.map((element, index) => {
         return (
-          <TouchableOpacity key={index} onPress={() => navigation.navigate('ReadNoteScreen', { noteID: element.note_id })} style={styles.noteStyle}>
+          <TouchableOpacity key={index} onPress={() => navigation.navigate('ReadNoteScreen', { noteID: element.note_id })} style={notesStyles.noteStyle}>
 
             <View>
-              <Text style={globalStyles.headlineText}>{element.title}</Text>
+              <Text style={styles.headlineText}>{element.title}</Text>
             </View>
 
-            <View style={{flex: 1, backgroundColor: MyColors.appLightGray, height: 1, marginBottom: 10}} />
+            <View style={{flex: 1, backgroundColor: theme.textSecondary, height: 1, marginBottom: 10}} />
 
-            <View style={styles.infoView}>
+            <View style={notesStyles.infoView}>
               <FontAwesome5 name="book" size={18} color="#fff" style={{flex: 1}}/>
-              <Text style={styles.infoText}>{element.subject_name}</Text>
+              <Text style={notesStyles.infoText}>{element.subject_name}</Text>
             </View>
 
-            <View style={styles.infoView}>
+            <View style={notesStyles.infoView}>
               <FontAwesome5 name="info-circle" size={18} color="#fff" style={{flex: 1}} />
-              <Text style={styles.infoText}>{element.class_name}</Text>
+              <Text style={notesStyles.infoText}>{element.class_name}</Text>
             </View>
 
-            <View style={styles.noteDataView}>
-                <Text style={styles.noteDataText}>{element.create_day}</Text>
+            <View style={notesStyles.noteDataView}>
+                <Text style={notesStyles.noteDataText}>{element.create_day}</Text>
             </View>
 
           </TouchableOpacity>
@@ -121,28 +122,81 @@ export default function NoteScreen() {
     } else if (item.type === 'emptyNotes' && data.length <= 0) {
       return (
         <View style={{alignItems: 'center'}}>
-          <Text style={{color: MyColors.appLightGray, fontSize: 20, marginTop: '30%', marginBottom: '5%', textTransform: 'uppercase'}}>{getTranslatedText('emptyNotesText')}</Text>
-          <FontAwesome name="sticky-note" size={50} color={MyColors.appLightGray} />
+          <Text style={{color: theme.textSecondary, fontSize: 20, marginTop: '30%', marginBottom: '5%', textTransform: 'uppercase'}}>{getTranslatedText('emptyNotesText')}</Text>
+          <FontAwesome name="sticky-note" size={50} color={theme.textSecondary} />
         </View>
       )
     }
   };
 
 
+  const notesStyles = StyleSheet.create({
+    noteStyle: {
+      width: '100%',
+      backgroundColor: theme.secondary,
+      borderRadius: 20,
+      padding: 12,
+      marginBottom: 15, 
+      borderColor: theme.textSecondary, 
+      borderWidth: 1
+    },
+    infoView: {
+      flexDirection: 'row',
+      marginTop: 5,
+      alignItems: 'center',
+      width: '100%',
+      paddingHorizontal: 5
+    },
+    infoText: {
+      fontSize: 16,
+      color: '#fff',
+      flex: 10
+    },
+    noteDataView: {
+      alignItems: 'flex-end',
+      marginTop: 2,
+      paddingHorizontal: 5
+    },
+    noteDataText: {
+      fontSize: 12,
+      color: theme.textSecondary,
+      textTransform: 'uppercase',
+      flex: 15
+    },
+    style: {
+      backgroundColor: theme.secondary,
+      borderWidth: 1,
+      borderColor: theme.primary,
+      flex: 1
+    },
+    dropDownContainerStyle: {
+      backgroundColor: theme.secondary,
+      borderWidth: 1,
+      borderColor: theme.primary
+    },
+    textStyle: {
+      color: theme.textSecondary
+    },
+    arrowIconContainerStyle: {
+      backgroundColor: theme.primary,
+      borderRadius: 5
+    }
+  });
+
 
   return (
     <>
-      <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: '#000'}}/>
-      <SafeAreaView edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: MyColors.appBackground}}>
+      <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: theme.navigation}}/>
+      <SafeAreaView edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: theme.background}}>
 
         {/* HEADER */}
-        <View style={headerStyles.headerBackground}>
-            <Text style={headerStyles.headerText}>{getTranslatedText('notesScreentitle')}</Text>
+        <View style={styles.headerBackground}>
+            <Text style={styles.headerText}>{getTranslatedText('notesScreentitle')}</Text>
         </View>
         
 
         {/* CONTAINER */}
-        <View style={styles.container}>
+        <View style={styles.flatlistContainer}>
           <FlatList
             data={[
               { type: 'emptyNotes' },
@@ -162,63 +216,3 @@ export default function NoteScreen() {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: MyColors.appBackground,
-    alignItems: 'center',
-    paddingHorizontal: 20,
-    paddingBottom: 40
-  },
-  noteStyle: {
-    width: '100%',
-    backgroundColor: MyColors.appDark,
-    borderRadius: 20,
-    padding: 12,
-    marginBottom: 15, 
-    borderColor: MyColors.appLightGray, 
-    borderWidth: 1
-  },
-  infoView: {
-    flexDirection: 'row',
-    marginTop: 5,
-    alignItems: 'center',
-    width: '100%',
-    paddingHorizontal: 5
-  },
-  infoText: {
-    fontSize: 16,
-    color: '#fff',
-    flex: 10
-  },
-  noteDataView: {
-    alignItems: 'flex-end',
-    marginTop: 2,
-    paddingHorizontal: 5
-  },
-  noteDataText: {
-    fontSize: 12,
-    color: MyColors.appLightGray,
-    textTransform: 'uppercase',
-    flex: 15
-  },
-  style: {
-    backgroundColor: MyColors.appDark,
-    borderWidth: 1,
-    borderColor: MyColors.appBlue,
-    flex: 1
-  },
-  dropDownContainerStyle: {
-    backgroundColor: MyColors.appDark,
-    borderWidth: 1,
-    borderColor: MyColors.appBlue
-  },
-  textStyle: {
-    color: MyColors.appLightGray
-  },
-  arrowIconContainerStyle: {
-    backgroundColor: MyColors.appBlue,
-    borderRadius: 5
-  }
-});

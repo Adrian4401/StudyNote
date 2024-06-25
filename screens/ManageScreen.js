@@ -4,24 +4,18 @@ import { useNavigation } from '@react-navigation/native';
 
 import { MaterialIcons, AntDesign } from '@expo/vector-icons';
 
-import { MyColors } from '../utils/colors.js';
-
-import { headerStyles } from '../styles/headerStyles';
-import { globalStyles } from '../styles/globalStyles';
-
 import { loadSubjectsAndClasses } from '../databaseQueries/databaseQueries.js';
-
-import { DBConnect } from '../databaseQueries/DBConnect';
 
 import { useLanguage } from '../context/LanguageContext';
 import appLanguage from "../utils/languages";
+
+import { useDarkMode } from '../context/DarkModeContext';
+import { createStyles } from '../assets/styles/index';
 
 
 
 
 export default function ManageScreen() {
-
-  const db = DBConnect();
 
   const navigation = useNavigation();
 
@@ -30,12 +24,13 @@ export default function ManageScreen() {
 
   const { language } = useLanguage();
 
-
-
+  const { theme } = useDarkMode()
+  const styles = createStyles(theme)
 
   const getTranslatedText = (key) => {
     return appLanguage[language][key];
   }
+
 
   useEffect(() => {
 
@@ -46,11 +41,12 @@ export default function ManageScreen() {
     return loadData;
   }, [navigation])
 
+
   const showSubjects = () => {
     return subjects.map((subject, index) => {
         return(
-            <View key={index} style={styles.itemsView}>
-                <Text style={styles.itemsText}>{subject.subject_name}</Text>
+            <View key={index} style={manageStyles.itemsView}>
+                <Text style={manageStyles.itemsText}>{subject.subject_name}</Text>
                 <TouchableOpacity onPress={() => navigation.navigate('EditSubjectScreen', { subjectID: subject.subject_id, subjectName: subject.subject_name })} style={{flex: 1, alignItems: 'flex-end'}}>
                   <MaterialIcons name="edit" size={24} color="white"/>
                 </TouchableOpacity>
@@ -62,8 +58,8 @@ export default function ManageScreen() {
   const showClasses = () => {
     return classes.map((myclass, index) => {
         return(
-            <View key={index} style={styles.itemsView}>
-                <Text style={styles.itemsText}>{myclass.class_name}</Text>
+            <View key={index} style={manageStyles.itemsView}>
+                <Text style={manageStyles.itemsText}>{myclass.class_name}</Text>
                 <TouchableOpacity onPress={() => navigation.navigate('EditClassScreen', { classID: myclass.class_id, className: myclass.class_name })} style={{flex: 1, alignItems: 'flex-end'}}>
                   <MaterialIcons name="edit" size={24} color="white"/>
                 </TouchableOpacity>
@@ -72,30 +68,56 @@ export default function ManageScreen() {
     })
   }
 
+
+  const manageStyles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: theme.background,
+      alignItems: 'center',
+      padding: 20
+    },
+    itemsView: {
+      width: '100%',
+      backgroundColor: theme.secondary,
+      borderRadius: 20,
+      padding: 10,
+      marginVertical: 5,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center'
+    },
+    itemsText: {
+      fontSize: 20,
+      color: '#fff',
+      flex: 8
+    }
+  });
+
+
   return (
     <>
-      <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: '#000'}}/>
-      <SafeAreaView edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: MyColors.appBackground}}>
+      <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: theme.navigation}}/>
+      <SafeAreaView edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: theme.background}}>
 
         {/* HEADER */}
-        <View style={headerStyles.headerBackground}>
-          <Text style={headerStyles.headerText}>{getTranslatedText('manageScreenTitle')}</Text>
+        <View style={styles.headerBackground}>
+          <Text style={styles.headerText}>{getTranslatedText('manageScreenTitle')}</Text>
         </View>
 
 
         {/* CONTAINER */}
-        <View style={styles.container}>
+        <View style={manageStyles.container}>
           
           {/* HEADLINE */}
           <View style={{flex: 1, width: '100%'}}>
-            <View style={{...globalStyles.headlineViewWithIcon, marginBottom: 10}}>
-              <Text style={globalStyles.headlineText}>{getTranslatedText('subjectSectionHeadline')}</Text>
+            <View style={{...styles.headlineViewWithIcon, marginBottom: 10}}>
+              <Text style={styles.headlineText}>{getTranslatedText('subjectSectionHeadline')}</Text>
               <TouchableOpacity onPress={() => navigation.navigate('AddSubjectScreen')}>
-                <AntDesign name="plus" size={26} color="#fff" />
+                <AntDesign name="plus" size={26} color={theme.textPrimary} />
               </TouchableOpacity>
             </View>
 
-            <View style={{backgroundColor: MyColors.eventBlue, padding: 10, borderRadius: 20, flex: 1}}>
+            <View style={{backgroundColor: theme.eventBackground, padding: 10, borderRadius: 20, flex: 1}}>
               <ScrollView>  
                   {showSubjects()}
               </ScrollView>
@@ -104,14 +126,14 @@ export default function ManageScreen() {
             
           </View>
           <View style={{flex: 1, width: '100%', marginTop: 20}}>
-            <View style={{...globalStyles.headlineViewWithIcon, marginBottom: 10}}>
-              <Text style={globalStyles.headlineText}>{getTranslatedText('classesSectionHeadline')}</Text>
+            <View style={{...styles.headlineViewWithIcon, marginBottom: 10}}>
+              <Text style={styles.headlineText}>{getTranslatedText('classesSectionHeadline')}</Text>
               <TouchableOpacity onPress={() => navigation.navigate('AddClassScreen')}>
-                <AntDesign name="plus" size={26} color="#fff" />
+                <AntDesign name="plus" size={26} color={theme.textPrimary} />
               </TouchableOpacity>
             </View>
 
-            <View style={{backgroundColor: MyColors.eventBlue, padding: 10, borderRadius: 20, flex: 1}}>
+            <View style={{backgroundColor: theme.eventBackground, padding: 10, borderRadius: 20, flex: 1}}>
               <ScrollView>  
                   {showClasses()}
               </ScrollView>
@@ -127,27 +149,3 @@ export default function ManageScreen() {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: MyColors.appBackground,
-    alignItems: 'center',
-    padding: 20
-  },
-  itemsView: {
-    width: '100%',
-    backgroundColor: MyColors.appDark,
-    borderRadius: 20,
-    padding: 10,
-    marginVertical: 5,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  itemsText: {
-    fontSize: 20,
-    color: '#fff',
-    flex: 8
-  }
-});

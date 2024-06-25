@@ -12,9 +12,9 @@ export const lightTheme = {
     background: '#D3D3D3',
     navigation: '#3B393B',
     primary: '#0b84ff',
-    secondary: '#A9A9A9',
+    secondary: '#999898',
     textPrimary: '#000',
-    textSecondary: '#D1D0D0',
+    textSecondary: '#3B393B',
     inputBackground: '#26282A',
     eventBackground: '#2F3051'
 }

@@ -3,9 +3,7 @@ import { StyleSheet, Text, View, SafeAreaView, Image, Switch, Platform, FlatList
 
 import DropDownPicker from 'react-native-dropdown-picker';
 
-import { MyColors } from '../assets/styles/colors';
-
-import { headerStyles, globalStyles, createStyles } from '../assets/styles/index';
+import { createStyles } from '../assets/styles/index';
 
 import { SettingsScreenButton } from '../components/customButtons';
 
@@ -27,16 +25,16 @@ export default function SettingsScreen() {
   // const [valueLanguages, setValueLanguages] = useState('pl');
   const { language, changeLanguage } = useLanguage();
   const [languages, setLanguages] = useState([
-    {label: 'Polski', value: 'pl', icon: () => <Image source={require('../assets/pl_flag.png')} style={{borderRadius: 20}}/>},
-    {label: 'English', value: 'en', icon: () => <Image source={require('../assets/uk_flag.png')} style={{borderRadius: 20}}/>}
+    {label: 'Polski', value: 'pl', icon: () => <Image source={require('../assets/pl_flag.png')} style={{borderRadius: 20, marginHorizontal: 5}}/>},
+    {label: 'English', value: 'en', icon: () => <Image source={require('../assets/uk_flag.png')} style={{borderRadius: 20, marginHorizontal: 5}}/>}
   ]);
   const { darkMode, changeDarkMode, theme } = useDarkMode()
-  const tempStyles = createStyles(theme)
+  const styles = createStyles(theme)
+
 
   const getTranslatedText = (key) => {
     return appLanguage[language][key];
   }
-
 
   const handleLanguageChange = (value) => {
     console.log('Wybrany jezyk: ', value)
@@ -57,8 +55,8 @@ export default function SettingsScreen() {
     if (item.type === 'language') {
       return (
         <>
-          <View style={tempStyles.headlineView}>
-            <Text style={tempStyles.sectionText}>{getTranslatedText('languageText')}</Text>
+          <View style={styles.headlineView}>
+            <Text style={styles.sectionText}>{getTranslatedText('languageText')}</Text>
           </View>
           <DropDownPicker
             placeholder='Wybierz język'
@@ -72,10 +70,10 @@ export default function SettingsScreen() {
             }}
             setItems={setLanguages}
             ScrollView={false}
-            style={styles.dropDownStyle}
-            dropDownContainerStyle={styles.dropDownContainerStyle}
-            textStyle={styles.dropDownTextStyle}
-            arrowIconContainerStyle={styles.arrowIconContainerStyle}
+            style={settingsStyles.dropDownStyle}
+            dropDownContainerStyle={settingsStyles.dropDownContainerStyle}
+            textStyle={settingsStyles.dropDownTextStyle}
+            arrowIconContainerStyle={settingsStyles.arrowIconContainerStyle}
           />
         </>
       )
@@ -84,13 +82,13 @@ export default function SettingsScreen() {
       return (
         <>
           {/* DARK THEME section */}
-          <View style={tempStyles.headlineView}>
-            <Text style={tempStyles.sectionText}>{getTranslatedText('themeText')}</Text>
+          <View style={styles.headlineView}>
+            <Text style={styles.sectionText}>{getTranslatedText('themeText')}</Text>
           </View>
 
-          <View style={{...tempStyles.eventView, flexDirection: 'row', paddingHorizontal: 20, alignItems: 'center'}}>
+          <View style={{...styles.eventView, flexDirection: 'row', paddingHorizontal: 20, alignItems: 'center'}}>
             <MaterialCommunityIcons name="invert-colors" size={24} color={theme.primary} style={{paddingHorizontal: 5}}/>
-            <Text style={tempStyles.subjectText}>{darkMode ? getTranslatedText('dark') : getTranslatedText('light')}</Text>
+            <Text style={styles.subjectText}>{darkMode ? getTranslatedText('dark') : getTranslatedText('light')}</Text>
             <View style={{flex: 1, alignItems: 'flex-end'}}>
               <Switch
                 value={darkMode}
@@ -104,14 +102,14 @@ export default function SettingsScreen() {
 
 
           {/* DATA section */}
-          <View style={tempStyles.headlineView}>
-            <Text style={tempStyles.sectionText}>{getTranslatedText('dataText')}</Text>
+          <View style={styles.headlineView}>
+            <Text style={styles.sectionText}>{getTranslatedText('dataText')}</Text>
           </View>
           <SettingsScreenButton onPress={() => console.log("To do")} icon={"file-export"} text={getTranslatedText('dataExportButton')}/>
           <SettingsScreenButton onPress={() => console.log("To do")} icon={"file-import"} text={getTranslatedText('dataImportButton')}/>
 
-          <View style={tempStyles.headlineView}>
-            <Text style={tempStyles.sectionText}>{getTranslatedText('deleteDataText')}</Text>
+          <View style={styles.headlineView}>
+            <Text style={styles.sectionText}>{getTranslatedText('deleteDataText')}</Text>
           </View>
           <SettingsScreenButton onPress={handleDeleteAllData} icon={"delete"} text={getTranslatedText('deleteDataButton')}/>
         </>
@@ -120,15 +118,7 @@ export default function SettingsScreen() {
   }
 
 
-
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: theme.background,
-      alignItems: 'center',
-      paddingHorizontal: 20,
-      paddingBottom: 40
-    },
+  const settingsStyles = StyleSheet.create({
     dropDownStyle: {
       backgroundColor: theme.secondary,
       flex: 1,
@@ -146,11 +136,11 @@ export default function SettingsScreen() {
     },
     arrowIconContainerStyle: {
       backgroundColor: theme.primary,
-      borderRadius: 5
+      borderRadius: 5,
+      marginEnd: 5
     }
   });
 
-  
 
   return (
     <>
@@ -158,14 +148,14 @@ export default function SettingsScreen() {
       <SafeAreaView edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: theme.background}}>
 
         {/* HEADER */}
-        <View style={tempStyles.headerBackground}>
-            <Text style={headerStyles.headerText}>{getTranslatedText('settingsScreenTitle')}</Text>
+        <View style={styles.headerBackground}>
+            <Text style={styles.headerText}>{getTranslatedText('settingsScreenTitle')}</Text>
         </View>
 
 
         {/* CONTAINER */}
         {/* <ScrollView> */}
-          <View style={styles.container}>
+          <View style={styles.flatlistContainer}>
             <FlatList
               data={[
                 { type: 'rest' },

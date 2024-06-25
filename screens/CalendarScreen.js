@@ -4,11 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { FontAwesome5, FontAwesome } from '@expo/vector-icons';
 
-import { MyColors } from '../assets/styles/colors';
-import { headerStyles, globalStyles } from '../assets/styles/index';
-
-
-import { selectThisWeekEvents, selectNextWeekEvents, selectOlderEvents, loadEvents } from '../databaseQueries/databaseQueries';
+import { loadEvents } from '../databaseQueries/databaseQueries';
 
 import { CustomStatusBar } from '../components/StatusBar';
 
@@ -18,6 +14,7 @@ import { useLanguage } from '../context/LanguageContext';
 import appLanguage from "../utils/languages";
 
 import { useDarkMode } from '../context/DarkModeContext';
+import { createStyles } from '../assets/styles/index';
 
 
 
@@ -29,8 +26,11 @@ export default function CalendarScreen() {
   const [weeklyData, setWeeklyData] = useState([]);
   const [futureData, setFutureData] = useState([]);
   const [olderData, setOlderData] = useState([]);
-  const { darkMode, changeDarkMode, theme } = useDarkMode()
+  
   const { language } = useLanguage();
+
+  const { theme } = useDarkMode()
+  const styles = createStyles(theme)
 
   const getTranslatedText = (key) => {
     return appLanguage[language][key];
@@ -64,8 +64,8 @@ export default function CalendarScreen() {
     return (
       <>
         <View style={{width: '100%'}}>
-          <Text style={{...globalStyles.headlineText, marginBottom: 0, marginTop: 10}}>{getTranslatedText('thisWeekEventsText')}</Text>
-          <Text style={globalStyles.littleText}>{getTranslatedText('thisWeekEventsLittleText')}</Text>
+          <Text style={{...styles.headlineText, marginBottom: 0, marginTop: 10}}>{getTranslatedText('thisWeekEventsText')}</Text>
+          <Text style={styles.littleText}>{getTranslatedText('thisWeekEventsLittleText')}</Text>
         </View>
 
         {showEvents(weeklyData, navigation)}
@@ -77,8 +77,8 @@ export default function CalendarScreen() {
   const showFutureEvents = () => {
     return (
       <>
-        <View style={globalStyles.headlineView}>
-          <Text style={{...globalStyles.headlineText, marginBottom: 0, marginTop: 10}}>{getTranslatedText('futureEventsText')}</Text>
+        <View style={styles.headlineView}>
+          <Text style={{...styles.headlineText, marginBottom: 0, marginTop: 10}}>{getTranslatedText('futureEventsText')}</Text>
         </View>
 
         {showEvents(futureData, navigation)}
@@ -90,8 +90,8 @@ export default function CalendarScreen() {
   const showOlderEvents = () => {
     return (
       <>
-        <View style={globalStyles.headlineView}>
-          <Text style={{...globalStyles.headlineText, marginBottom: 0, marginTop: 10}}>{getTranslatedText('olderEventsText')}</Text>
+        <View style={styles.headlineView}>
+          <Text style={{...styles.headlineText, marginBottom: 0, marginTop: 10}}>{getTranslatedText('olderEventsText')}</Text>
         </View>
 
         {showEvents(olderData, navigation)}
@@ -106,8 +106,8 @@ export default function CalendarScreen() {
     if(weeklyData.length <= 0 && futureData.length <= 0 && olderData.length <= 0) {
       return (
         <View style={{alignItems: 'center'}}>
-          <Text style={{color: MyColors.appLightGray, fontSize: 20, marginTop: '30%', marginBottom: '5%', textTransform: 'uppercase'}}>{getTranslatedText('emptyEventsText')}</Text>
-          <FontAwesome name="folder-open" size={50} color={MyColors.appLightGray} />
+          <Text style={{color: theme.textSecondary, fontSize: 20, marginTop: '30%', marginBottom: '5%', textTransform: 'uppercase'}}>{getTranslatedText('emptyEventsText')}</Text>
+          <FontAwesome name="folder-open" size={50} color={theme.textSecondary} />
         </View>
       )
     }
@@ -124,19 +124,12 @@ export default function CalendarScreen() {
 
 
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: MyColors.background,
-      alignItems: 'center',
-      padding: 20,
-      paddingBottom: 120
-    },
+  const calendarStyles = StyleSheet.create({
     headlineUserView: {
       flexDirection: 'row',
       alignItems: 'center',
       marginBottom: 20,
-      backgroundColor: MyColors.inputBackground,
+      backgroundColor: theme.inputBackground,
       paddingVertical: 10,
       paddingHorizontal: 15,
       borderRadius: 20
@@ -150,7 +143,7 @@ export default function CalendarScreen() {
     eventNameView: {
       width: '100%',
       padding: 5,
-      backgroundColor: MyColors.eventBackground,
+      backgroundColor: theme.eventBackground,
       borderRadius: 15,
       alignItems: 'center'
     },
@@ -165,28 +158,28 @@ export default function CalendarScreen() {
 
   return (
     <>
-      <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: '#000'}}/>
-      <SafeAreaView edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: MyColors.appBackground}}>
+      <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: theme.navigation}}/>
+      <SafeAreaView edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: theme.background}}>
 
         {/* <StatusBar barStyle='light-content' /> */}
         <CustomStatusBar />
         
 
         {/* HEADER */}
-        <View style={headerStyles.headerBackground}>
-            <Text style={headerStyles.headerText}>{getTranslatedText('calendarScreenTitle')}</Text>
+        <View style={styles.headerBackground}>
+            <Text style={styles.headerText}>{getTranslatedText('calendarScreenTitle')}</Text>
         </View>
 
         {/* CONTAINER */}
         <ScrollView>
-          <View style={styles.container}>
+          <View style={styles.viewContainer}>
             
             {/* USER HEADLINE */}
-            <View style={globalStyles.headlineView}>
-              <View style={styles.headlineUserView}>
+            <View style={styles.headlineView}>
+              <View style={calendarStyles.headlineUserView}>
                 {/* <Ionicons name="calendar-clear" size={24} color='white' style={{flex: 1}}/> */}
                 <FontAwesome5 name="calendar-day" size={22} color="white" />
-                <Text style={{...styles.headlineUserText, fontSize: 20, textAlign: 'center'}}>{todayDate}</Text>
+                <Text style={{...calendarStyles.headlineUserText, fontSize: 20, textAlign: 'center'}}>{todayDate}</Text>
               </View>
             </View>
 
@@ -209,7 +202,3 @@ export default function CalendarScreen() {
     </>
   );
 }
-
-
-
-
