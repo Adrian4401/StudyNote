@@ -13,6 +13,8 @@ import appLanguage from "../utils/languages";
 import { useDarkMode } from '../context/DarkModeContext';
 import { createStyles } from '../assets/styles/index';
 
+import { Safearea } from '../components/SafeArea.js';
+
 
 
 export default function NoteScreen() {
@@ -185,34 +187,30 @@ export default function NoteScreen() {
 
 
   return (
-    <>
-      <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: theme.navigation}}/>
-      <SafeAreaView edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: theme.background}}>
+    <Safearea>
 
-        {/* HEADER */}
-        <View style={styles.headerBackground}>
-            <Text style={styles.headerText}>{getTranslatedText('notesScreentitle')}</Text>
-        </View>
+      {/* HEADER */}
+      <View style={styles.headerBackground}>
+          <Text style={styles.headerText}>{getTranslatedText('notesScreentitle')}</Text>
+      </View>
+      
+
+      {/* CONTAINER */}
+      <View style={styles.flatlistContainer}>
+        <FlatList
+          data={[
+            { type: 'emptyNotes' },
+            { type: 'note' },
+            { type: 'subjectsDropdown' },
+            { type: 'header' }
+          ]}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => index.toString()}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{flexDirection: 'column-reverse', paddingBottom: 100, width: '100%'}}
+        />
+      </View>
         
-
-        {/* CONTAINER */}
-        <View style={styles.flatlistContainer}>
-          <FlatList
-            data={[
-              { type: 'emptyNotes' },
-              { type: 'note' },
-              { type: 'subjectsDropdown' },
-              { type: 'header' }
-            ]}
-            renderItem={renderItem}
-            keyExtractor={(item, index) => index.toString()}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{flexDirection: 'column-reverse', paddingBottom: 100, width: '100%'}}
-          />
-        </View>
-        
-
-      </SafeAreaView>
-    </>
+    </Safearea>
   );
 }

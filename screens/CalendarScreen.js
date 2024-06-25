@@ -16,6 +16,8 @@ import appLanguage from "../utils/languages";
 import { useDarkMode } from '../context/DarkModeContext';
 import { createStyles } from '../assets/styles/index';
 
+import { Safearea } from '../components/SafeArea';
+
 
 
 
@@ -157,48 +159,42 @@ export default function CalendarScreen() {
 
 
   return (
-    <>
-      <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: theme.navigation}}/>
-      <SafeAreaView edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: theme.background}}>
+    <Safearea>
+      {/* <StatusBar barStyle='light-content' /> */}
+      <CustomStatusBar />
+      
+      {/* HEADER */}
+      <View style={styles.headerBackground}>
+          <Text style={styles.headerText}>{getTranslatedText('calendarScreenTitle')}</Text>
+      </View>
 
-        {/* <StatusBar barStyle='light-content' /> */}
-        <CustomStatusBar />
-        
-
-        {/* HEADER */}
-        <View style={styles.headerBackground}>
-            <Text style={styles.headerText}>{getTranslatedText('calendarScreenTitle')}</Text>
-        </View>
-
-        {/* CONTAINER */}
-        <ScrollView>
-          <View style={styles.viewContainer}>
-            
-            {/* USER HEADLINE */}
-            <View style={styles.headlineView}>
-              <View style={calendarStyles.headlineUserView}>
-                {/* <Ionicons name="calendar-clear" size={24} color='white' style={{flex: 1}}/> */}
-                <FontAwesome5 name="calendar-day" size={22} color="white" />
-                <Text style={{...calendarStyles.headlineUserText, fontSize: 20, textAlign: 'center'}}>{todayDate}</Text>
-              </View>
+      {/* CONTAINER */}
+      <ScrollView>
+        <View style={styles.viewContainer}>
+          
+          {/* USER HEADLINE */}
+          <View style={styles.headlineView}>
+            <View style={calendarStyles.headlineUserView}>
+              {/* <Ionicons name="calendar-clear" size={24} color='white' style={{flex: 1}}/> */}
+              <FontAwesome5 name="calendar-day" size={22} color="white" />
+              <Text style={{...calendarStyles.headlineUserText, fontSize: 20, textAlign: 'center'}}>{todayDate}</Text>
             </View>
-
-
-            {showAllEvents()}
-
-            {/* {showThisWeekEvents()}
-
-            {showFutureEvents()}
-
-            {showOlderEvents()} */}
-
-
           </View>
-        </ScrollView>
 
-        <View style={{width: '100%',height: 40}} />
 
-      </SafeAreaView>
-    </>
+          {showAllEvents()}
+
+          {/* {showThisWeekEvents()}
+
+          {showFutureEvents()}
+
+          {showOlderEvents()} */}
+
+        </View>
+      </ScrollView>
+
+      <View style={{width: '100%',height: 40}} />
+
+    </Safearea>
   );
 }

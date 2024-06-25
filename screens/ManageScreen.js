@@ -12,6 +12,8 @@ import appLanguage from "../utils/languages";
 import { useDarkMode } from '../context/DarkModeContext';
 import { createStyles } from '../assets/styles/index';
 
+import { Safearea } from '../components/SafeArea.js';
+
 
 
 
@@ -95,57 +97,54 @@ export default function ManageScreen() {
 
 
   return (
-    <>
-      <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: theme.navigation}}/>
-      <SafeAreaView edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: theme.background}}>
+    <Safearea>
 
-        {/* HEADER */}
-        <View style={styles.headerBackground}>
-          <Text style={styles.headerText}>{getTranslatedText('manageScreenTitle')}</Text>
-        </View>
+      {/* HEADER */}
+      <View style={styles.headerBackground}>
+        <Text style={styles.headerText}>{getTranslatedText('manageScreenTitle')}</Text>
+      </View>
 
 
-        {/* CONTAINER */}
-        <View style={manageStyles.container}>
-          
-          {/* HEADLINE */}
-          <View style={{flex: 1, width: '100%'}}>
-            <View style={{...styles.headlineViewWithIcon, marginBottom: 10}}>
-              <Text style={styles.headlineText}>{getTranslatedText('subjectSectionHeadline')}</Text>
-              <TouchableOpacity onPress={() => navigation.navigate('AddSubjectScreen')}>
-                <AntDesign name="plus" size={26} color={theme.textPrimary} />
-              </TouchableOpacity>
-            </View>
-
-            <View style={{backgroundColor: theme.eventBackground, padding: 10, borderRadius: 20, flex: 1}}>
-              <ScrollView>  
-                  {showSubjects()}
-              </ScrollView>
-            </View>
-            
-            
+      {/* CONTAINER */}
+      <View style={manageStyles.container}>
+        
+        {/* HEADLINE */}
+        <View style={{flex: 1, width: '100%'}}>
+          <View style={{...styles.headlineViewWithIcon, marginBottom: 10}}>
+            <Text style={styles.headlineText}>{getTranslatedText('subjectSectionHeadline')}</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('AddSubjectScreen')}>
+              <AntDesign name="plus" size={26} color={theme.textPrimary} />
+            </TouchableOpacity>
           </View>
-          <View style={{flex: 1, width: '100%', marginTop: 20}}>
-            <View style={{...styles.headlineViewWithIcon, marginBottom: 10}}>
-              <Text style={styles.headlineText}>{getTranslatedText('classesSectionHeadline')}</Text>
-              <TouchableOpacity onPress={() => navigation.navigate('AddClassScreen')}>
-                <AntDesign name="plus" size={26} color={theme.textPrimary} />
-              </TouchableOpacity>
-            </View>
 
-            <View style={{backgroundColor: theme.eventBackground, padding: 10, borderRadius: 20, flex: 1}}>
-              <ScrollView>  
-                  {showClasses()}
-              </ScrollView>
-            </View>
+          <View style={{backgroundColor: theme.eventBackground, padding: 10, borderRadius: 20, flex: 1}}>
+            <ScrollView>  
+                {showSubjects()}
+            </ScrollView>
           </View>
           
           
         </View>
+        <View style={{flex: 1, width: '100%', marginTop: 20}}>
+          <View style={{...styles.headlineViewWithIcon, marginBottom: 10}}>
+            <Text style={styles.headlineText}>{getTranslatedText('classesSectionHeadline')}</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('AddClassScreen')}>
+              <AntDesign name="plus" size={26} color={theme.textPrimary} />
+            </TouchableOpacity>
+          </View>
 
-        <View style={{width: '100%',height: 40}} />
+          <View style={{backgroundColor: theme.eventBackground, padding: 10, borderRadius: 20, flex: 1}}>
+            <ScrollView>  
+                {showClasses()}
+            </ScrollView>
+          </View>
+        </View>
+        
+        
+      </View>
 
-      </SafeAreaView>
-    </>
+      <View style={{width: '100%',height: 40}} />
+
+    </Safearea>
   );
 }

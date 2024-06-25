@@ -15,6 +15,8 @@ import { useDarkMode } from '../context/DarkModeContext';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
+import { Safearea } from '../components/SafeArea';
+
 
 
 
@@ -143,32 +145,29 @@ export default function SettingsScreen() {
 
 
   return (
-    <>
-      <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: theme.navigation}}/>
-      <SafeAreaView edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: theme.background}}>
+    <Safearea>
 
-        {/* HEADER */}
-        <View style={styles.headerBackground}>
-            <Text style={styles.headerText}>{getTranslatedText('settingsScreenTitle')}</Text>
+      {/* HEADER */}
+      <View style={styles.headerBackground}>
+          <Text style={styles.headerText}>{getTranslatedText('settingsScreenTitle')}</Text>
+      </View>
+
+
+      {/* CONTAINER */}
+      {/* <ScrollView> */}
+        <View style={styles.flatlistContainer}>
+          <FlatList
+            data={[
+              { type: 'rest' },
+              { type: 'language' }
+            ]}
+            renderItem={renderItem}
+            keyExtractor={(item, index) => index.toString()}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{flexDirection: 'column-reverse', paddingBottom: 100, width: '100%'}}
+          />
         </View>
 
-
-        {/* CONTAINER */}
-        {/* <ScrollView> */}
-          <View style={styles.flatlistContainer}>
-            <FlatList
-              data={[
-                { type: 'rest' },
-                { type: 'language' }
-              ]}
-              renderItem={renderItem}
-              keyExtractor={(item, index) => index.toString()}
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{flexDirection: 'column-reverse', paddingBottom: 100, width: '100%'}}
-            />
-          </View>
-
-      </SafeAreaView>
-    </>
+    </Safearea>
   );
 }
