@@ -1,19 +1,20 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, ScrollView, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { Text, View, ScrollView, TextInput, TouchableOpacity } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { MaterialIcons } from '@expo/vector-icons';
-import { editSubject, deleteSubject } from '../../databaseQueries/databaseQueries.js';
-
-import { MyColors } from '../../utils/colors.js';
-
-import { headerStyles } from '../../styles/headerStyles';
+import { editSubject } from '../../databaseQueries/databaseQueries.js';
 
 import { EditButton, GoBackButton } from '../../components/customButtons.js';
 
 import appLanguage from "../../utils/languages";
 import { useLanguage } from '../../context/LanguageContext';
 import { alertDeleteSubject } from '../../components/AppAlerts.js';
+
+import { useDarkMode } from '../../context/DarkModeContext.js';
+import { createStyles } from '../../assets/styles/index.js';
+
+import { SafeareaNoNav } from '../../components/SafeArea.js';
 
 
 
@@ -27,6 +28,9 @@ export default function EditSubjectScreen() {
     const [subjects, setSubjects] = useState([]);
     const [currentSubject, setCurrentSubject] = useState('');
     const [subjectID, setSubjectID] = useState('');
+
+    const { theme } = useDarkMode()
+    const styles = createStyles(theme)
 
     const { language } = useLanguage();
 
@@ -58,63 +62,49 @@ export default function EditSubjectScreen() {
 
 
     return (
-        <>
-            <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: '#000'}}/>
-            <SafeAreaView edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: MyColors.appBackground}}>
+        <SafeareaNoNav>
 
-                {/* HEADER */}
-                <View style={headerStyles.headerBackground}>
-                    <Text style={headerStyles.headerText}>{getTranslatedText('edit')} {getTranslatedText('subject')}</Text>
-                </View>
+            {/* HEADER */}
+            <View style={styles.headerBackground}>
+                <Text style={styles.headerText}>{getTranslatedText('edit')} {getTranslatedText('subject')}</Text>
+            </View>
 
-                {/* CONTAINER */}
-                <ScrollView>
-                    <View style={styles.container}>
+            {/* CONTAINER */}
+            <ScrollView>
+                <View style={styles.viewContainer}>
 
-                        <View style={{alignItems: 'center', width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
-                            <GoBackButton />
-                            <TouchableOpacity onPress={handleDeleteSubject}>
-                                <MaterialIcons name="delete" size={30} color='white'/>
-                            </TouchableOpacity>
-                        </View>
-                        
-
-                        <TextInput 
-                            value={currentSubject}
-                            onChangeText={setCurrentSubject}
-                            placeholder='Dodaj przedmiot...'
-                            placeholderTextColor={MyColors.appLightGray}
-                            maxLength={50}
-                            style={{
-                                color: 'white',
-                                width: '100%',
-                                fontSize: 25,
-                                borderWidth: 2,
-                                borderColor: MyColors.appBlue,
-                                borderRadius: 10,
-                                padding: 10,
-                                marginVertical: 10,
-                                marginTop: 30
-                            }}
-                        />
-                        
-                        <EditButton onPress={handleEditSubject}/>
-
+                    <View style={{alignItems: 'center', width: '100%', flexDirection: 'row', justifyContent: 'space-between'}}>
+                        <GoBackButton />
+                        <TouchableOpacity onPress={handleDeleteSubject}>
+                            <MaterialIcons name="delete" size={30} color={theme.textPrimary}/>
+                        </TouchableOpacity>
                     </View>
-                </ScrollView>
+                    
 
+                    <TextInput 
+                        value={currentSubject}
+                        onChangeText={setCurrentSubject}
+                        placeholder='Dodaj przedmiot...'
+                        placeholderTextColor={theme.textSecondary}
+                        maxLength={50}
+                        style={{
+                            color: theme.textSecondary,
+                            width: '100%',
+                            fontSize: 25,
+                            borderWidth: 2,
+                            borderColor: theme.primary,
+                            borderRadius: 10,
+                            padding: 10,
+                            marginVertical: 10,
+                            marginTop: 30
+                        }}
+                    />
+                    
+                    <EditButton onPress={handleEditSubject}/>
 
-            </SafeAreaView>
-        </>
+                </View>
+            </ScrollView>
+
+        </SafeareaNoNav>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: MyColors.appBackground,
-        alignItems: 'center',
-        padding: 20,
-        paddingBottom: 120
-    }
-})
