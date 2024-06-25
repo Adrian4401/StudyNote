@@ -4,9 +4,9 @@ import { useNavigation } from '@react-navigation/native';
 
 import { FontAwesome5, FontAwesome } from '@expo/vector-icons';
 
-import { MyColors } from '../utils/colors';
-import { headerStyles } from '../styles/headerStyles';
-import { globalStyles } from '../styles/globalStyles';
+import { MyColors } from '../assets/styles/colors';
+import { headerStyles, globalStyles } from '../assets/styles/index';
+
 
 import { selectThisWeekEvents, selectNextWeekEvents, selectOlderEvents, loadEvents } from '../databaseQueries/databaseQueries';
 
@@ -16,6 +16,8 @@ import { showEvents } from '../utils/functions';
 
 import { useLanguage } from '../context/LanguageContext';
 import appLanguage from "../utils/languages";
+
+import { useDarkMode } from '../context/DarkModeContext';
 
 
 
@@ -27,7 +29,7 @@ export default function CalendarScreen() {
   const [weeklyData, setWeeklyData] = useState([]);
   const [futureData, setFutureData] = useState([]);
   const [olderData, setOlderData] = useState([]);
-
+  const { darkMode, changeDarkMode, theme } = useDarkMode()
   const { language } = useLanguage();
 
   const getTranslatedText = (key) => {
@@ -122,6 +124,44 @@ export default function CalendarScreen() {
 
 
 
+  const styles = StyleSheet.create({
+    container: {
+      flex: 1,
+      backgroundColor: MyColors.background,
+      alignItems: 'center',
+      padding: 20,
+      paddingBottom: 120
+    },
+    headlineUserView: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 20,
+      backgroundColor: MyColors.inputBackground,
+      paddingVertical: 10,
+      paddingHorizontal: 15,
+      borderRadius: 20
+    },
+    headlineUserText: {
+      fontSize: 25, 
+      textTransform: 'uppercase', 
+      color: 'white',
+      flex: 2
+    },
+    eventNameView: {
+      width: '100%',
+      padding: 5,
+      backgroundColor: MyColors.eventBackground,
+      borderRadius: 15,
+      alignItems: 'center'
+    },
+    eventNameText: {
+      fontSize: 25,
+      textTransform: 'uppercase',
+      color: '#fff'
+    }
+  });
+
+
 
   return (
     <>
@@ -172,39 +212,4 @@ export default function CalendarScreen() {
 
 
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: MyColors.appBackground,
-    alignItems: 'center',
-    padding: 20,
-    paddingBottom: 120
-  },
-  headlineUserView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 20,
-    backgroundColor: MyColors.appGray,
-    paddingVertical: 10,
-    paddingHorizontal: 15,
-    borderRadius: 20
-  },
-  headlineUserText: {
-    fontSize: 25, 
-    textTransform: 'uppercase', 
-    color: 'white',
-    flex: 2
-  },
-  eventNameView: {
-    width: '100%',
-    padding: 5,
-    backgroundColor: MyColors.eventBlue,
-    borderRadius: 15,
-    alignItems: 'center'
-  },
-  eventNameText: {
-    fontSize: 25,
-    textTransform: 'uppercase',
-    color: '#fff'
-  }
-});
+

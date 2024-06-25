@@ -1,9 +1,10 @@
-import { Platform, TouchableOpacity, View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { Platform, TouchableOpacity, View } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { Ionicons, FontAwesome } from '@expo/vector-icons';
+import { Ionicons, FontAwesome } from '@expo/vector-icons'
 
-import { MyColors } from '../utils/colors';
+import { MyColors } from '../assets/styles/colors'
+import { useDarkMode } from '../context/DarkModeContext'
 import { 
     CalendarScreen, 
     NotesScreen, 
@@ -12,50 +13,52 @@ import {
     AddEventScreen, 
 } from '../screens';
 
+
 const Tab = createBottomTabNavigator();
-
-const CustomTabBarButton = ({children, onPress}) => (
-  <TouchableOpacity
-    style={{
-      justifyContent: 'center',
-      alignItems: 'center'
-    }}
-    onPress={onPress}
-  >
-    <View
-      style={{
-        width: 60,
-        height: 60,
-        top: Platform.OS === 'ios' ? 15 : 0,
-        borderRadius: 30,
-        backgroundColor: MyColors.appBlue
-      }}
-    >
-      {children}
-    </View>
-  </TouchableOpacity>
-);
-
-const screenOptions = {
-    tabBarShowLabel: false,
-    headerShown: false,
-    tabBarStyle: {
-      position: 'absolute',
-      bottom: 25,
-      right: 10,
-      left: 10,
-      height: 60,
-      backgroundColor: '#000',
-      borderRadius: 20,
-      borderTopColor: 'transparent'
-    }
-}
-
 
 
 export function MainTabNavigator() {
   
     const navigation = useNavigation();
+    const { theme } = useDarkMode()
+
+    const CustomTabBarButton = ({children, onPress}) => (
+      <TouchableOpacity
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+        onPress={onPress}
+      >
+        <View
+          style={{
+            width: 60,
+            height: 60,
+            top: Platform.OS === 'ios' ? 15 : 0,
+            borderRadius: 30,
+            backgroundColor: theme.primary
+          }}
+        >
+          {children}
+        </View>
+      </TouchableOpacity>
+    );
+    
+    const screenOptions = {
+        tabBarShowLabel: false,
+        headerShown: false,
+        tabBarStyle: {
+          position: 'absolute',
+          bottom: 25,
+          right: 10,
+          left: 10,
+          height: 60,
+          backgroundColor: theme.navigation,
+          borderRadius: 20,
+          borderTopColor: 'transparent'
+        }
+    }
+
   
     return (
       <Tab.Navigator screenOptions={screenOptions} initialRouteName='Calendar'>

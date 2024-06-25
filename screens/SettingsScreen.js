@@ -3,10 +3,9 @@ import { StyleSheet, Text, View, SafeAreaView, Image, Switch, Platform, FlatList
 
 import DropDownPicker from 'react-native-dropdown-picker';
 
-import { MyColors } from '../utils/colors';
+import { MyColors } from '../assets/styles/colors';
 
-import { headerStyles, createHeaderStyles } from '../styles/headerStyles';
-import { globalStyles } from '../styles/globalStyles';
+import { headerStyles, globalStyles, createStyles } from '../assets/styles/index';
 
 import { SettingsScreenButton } from '../components/customButtons';
 
@@ -32,6 +31,7 @@ export default function SettingsScreen() {
     {label: 'English', value: 'en', icon: () => <Image source={require('../assets/uk_flag.png')} style={{borderRadius: 20}}/>}
   ]);
   const { darkMode, changeDarkMode, theme } = useDarkMode()
+  const tempStyles = createStyles(theme)
 
   const getTranslatedText = (key) => {
     return appLanguage[language][key];
@@ -52,15 +52,13 @@ export default function SettingsScreen() {
     alertDeleteAllData(getTranslatedText)
   }
 
-  // const headerStyles = createHeaderStyles(theme)
-
 
   const renderItem = ({ item }) => {
     if (item.type === 'language') {
       return (
         <>
-          <View style={globalStyles.headlineView}>
-            <Text style={globalStyles.sectionText}>{getTranslatedText('languageText')}</Text>
+          <View style={tempStyles.headlineView}>
+            <Text style={tempStyles.sectionText}>{getTranslatedText('languageText')}</Text>
           </View>
           <DropDownPicker
             placeholder='Wybierz język'
@@ -86,13 +84,13 @@ export default function SettingsScreen() {
       return (
         <>
           {/* DARK THEME section */}
-          <View style={globalStyles.headlineView}>
-            <Text style={globalStyles.sectionText}>{getTranslatedText('themeText')}</Text>
+          <View style={tempStyles.headlineView}>
+            <Text style={tempStyles.sectionText}>{getTranslatedText('themeText')}</Text>
           </View>
 
-          <View style={{...globalStyles.eventView, flexDirection: 'row', paddingHorizontal: 20, alignItems: 'center'}}>
-            <MaterialCommunityIcons name="invert-colors" size={24} color={MyColors.appBlue} style={{paddingHorizontal: 5}}/>
-            <Text style={globalStyles.subjectText}>{getTranslatedText('themeText')}</Text>
+          <View style={{...tempStyles.eventView, flexDirection: 'row', paddingHorizontal: 20, alignItems: 'center'}}>
+            <MaterialCommunityIcons name="invert-colors" size={24} color={theme.primary} style={{paddingHorizontal: 5}}/>
+            <Text style={tempStyles.subjectText}>{getTranslatedText('themeText')}</Text>
             <View
               style={{
                 flex: 1,
@@ -103,7 +101,7 @@ export default function SettingsScreen() {
               <Switch
                 value={darkMode}
                 onValueChange={handleDarkModeChange}
-                trackColor={{false: MyColors.appLightGray, true: MyColors.appBlue}}
+                trackColor={{false: theme.textSecondary, true: theme.primary}}
                 thumbColor={darkMode ? '#0066CD' : '#BDBBBB'}
                 style={{height: Platform.OS === 'android' ? 20 : 30}}
               />
@@ -112,14 +110,14 @@ export default function SettingsScreen() {
 
 
           {/* DATA section */}
-          <View style={globalStyles.headlineView}>
-            <Text style={globalStyles.sectionText}>{getTranslatedText('dataText')}</Text>
+          <View style={tempStyles.headlineView}>
+            <Text style={tempStyles.sectionText}>{getTranslatedText('dataText')}</Text>
           </View>
           <SettingsScreenButton onPress={() => console.log("To do")} icon={"file-export"} text={getTranslatedText('dataExportButton')}/>
           <SettingsScreenButton onPress={() => console.log("To do")} icon={"file-import"} text={getTranslatedText('dataImportButton')}/>
 
-          <View style={globalStyles.headlineView}>
-            <Text style={globalStyles.sectionText}>{getTranslatedText('deleteDataText')}</Text>
+          <View style={tempStyles.headlineView}>
+            <Text style={tempStyles.sectionText}>{getTranslatedText('deleteDataText')}</Text>
           </View>
           <SettingsScreenButton onPress={handleDeleteAllData} icon={"delete"} text={getTranslatedText('deleteDataButton')}/>
         </>
@@ -132,26 +130,28 @@ export default function SettingsScreen() {
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: theme.appBackground,
+      backgroundColor: theme.background,
       alignItems: 'center',
       paddingHorizontal: 20,
       paddingBottom: 40
     },
     style: {
-      backgroundColor: theme.appDark,
+      backgroundColor: theme.secondary,
       flex: 1,
-      borderRadius: 20
+      borderRadius: 20,
+      borderWidth: 0
     },
     dropDownContainerStyle: {
-      backgroundColor: theme.appDark,
-      paddingVertical: 5
+      backgroundColor: theme.secondary,
+      paddingVertical: 5,
+      borderWidth: 0
     },
     textStyle: {
       color: 'white',
       fontSize: 20
     },
     arrowIconContainerStyle: {
-      backgroundColor: MyColors.appBlue,
+      backgroundColor: theme.primary,
       borderRadius: 5
     }
   });
@@ -160,11 +160,11 @@ export default function SettingsScreen() {
 
   return (
     <>
-      <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: '#000'}}/>
-      <SafeAreaView edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: theme.appBackground}}>
+      <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: theme.navigation}}/>
+      <SafeAreaView edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: theme.background}}>
 
         {/* HEADER */}
-        <View style={headerStyles.headerBackground}>
+        <View style={tempStyles.headerBackground}>
             <Text style={headerStyles.headerText}>{getTranslatedText('settingsScreenTitle')}</Text>
         </View>
 

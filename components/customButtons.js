@@ -1,13 +1,13 @@
-import { Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { Text, TouchableOpacity, StyleSheet } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 
-import { MaterialIcons, MaterialCommunityIcons, FontAwesome5, AntDesign } from '@expo/vector-icons';
+import { MaterialIcons, MaterialCommunityIcons, FontAwesome5, AntDesign } from '@expo/vector-icons'
 
-import { MyColors } from '../utils/colors';
-import { globalStyles } from '../styles/globalStyles';
+import { MyColors } from '../utils/colors'
+import { globalStyles } from '../styles/globalStyles'
 
-import appLanguage from '../utils/languages';
-import { useLanguage } from '../context/LanguageContext';
+import appLanguage from '../utils/languages'
+import { useLanguage } from '../context/LanguageContext'
 
 
 
