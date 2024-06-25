@@ -105,12 +105,12 @@ export default function NoteScreen() {
             <View style={{flex: 1, backgroundColor: theme.textSecondary, height: 1, marginBottom: 10}} />
 
             <View style={notesStyles.infoView}>
-              <FontAwesome5 name="book" size={18} color="#fff" style={{flex: 1}}/>
+              <FontAwesome5 name="book" size={18} color={theme.textSecondary} style={{flex: 1}}/>
               <Text style={notesStyles.infoText}>{element.subject_name}</Text>
             </View>
 
             <View style={notesStyles.infoView}>
-              <FontAwesome5 name="info-circle" size={18} color="#fff" style={{flex: 1}} />
+              <FontAwesome5 name="info-circle" size={18} color={theme.textSecondary} style={{flex: 1}} />
               <Text style={notesStyles.infoText}>{element.class_name}</Text>
             </View>
 
@@ -151,7 +151,7 @@ export default function NoteScreen() {
     },
     infoText: {
       fontSize: 16,
-      color: '#fff',
+      color: theme.textSecondary,
       flex: 10
     },
     noteDataView: {
