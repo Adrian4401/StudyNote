@@ -3,16 +3,17 @@ import { StyleSheet, Text, View, SafeAreaView, TextInput, FlatList } from 'react
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useNavigation } from '@react-navigation/native';
 
-import { MyColors } from '../../utils/colors.js';
-
-import { headerStyles } from '../../styles/headerStyles';
-
 import { GoBackButton, MakeButton } from '../../components/customButtons.js';
 
 import { loadClasses, loadSubjects, addNote } from '../../databaseQueries/databaseQueries.js';
 
 import appLanguage from "../../utils/languages";
 import { useLanguage } from '../../context/LanguageContext';
+
+import { useDarkMode } from '../../context/DarkModeContext.js';
+import { createStyles } from '../../assets/styles/index.js';
+
+import { SafeareaNoNav } from '../../components/SafeArea.js';
 
 
 
@@ -31,6 +32,9 @@ export default function AddNoteScreen() {
 
     const [subjects, setSubjects] = useState([]);
     const [classes, setClasses] = useState([]);
+
+    const { theme } = useDarkMode()
+    const styles = createStyles(theme)
 
     const { language } = useLanguage();
 
@@ -88,19 +92,19 @@ export default function AddNoteScreen() {
                     value={currentTitle}
                     onChangeText={setCurrentTitle}
                     placeholder={getTranslatedText('noteTitlePlaceholder')}
-                    placeholderTextColor={MyColors.appLightGray}
+                    placeholderTextColor={theme.textSecondary}
                     maxLength={100}
                     multiline
                     style={{
                         color: 'white',
                         fontSize: 25,
                         borderWidth: 2,
-                        borderColor: MyColors.appBlue,
+                        borderColor: theme.primary,
                         borderRadius: 10,
                         padding: 10,
                         marginVertical: 10,
                         marginTop: 30,
-                        backgroundColor: MyColors.appDark
+                        backgroundColor: theme.secondary
                     }}
                 />
             )
@@ -115,10 +119,10 @@ export default function AddNoteScreen() {
                     setValue={setCurrentSubject}
                     setItems={setSubjects}
                     ScrollView={false}
-                    style={{...styles.style, marginBottom: 10}}
-                    dropDownContainerStyle={styles.dropDownContainerStyle}
-                    textStyle={styles.textStyle}
-                    arrowIconContainerStyle={styles.arrowIconContainerStyle}
+                    style={{...noteStyles.style, marginBottom: 10}}
+                    dropDownContainerStyle={noteStyles.dropDownContainerStyle}
+                    textStyle={noteStyles.textStyle}
+                    arrowIconContainerStyle={noteStyles.arrowIconContainerStyle}
                 />
             )
         } else if(item.type === 'classesDropDownPicker') {
@@ -132,10 +136,10 @@ export default function AddNoteScreen() {
                     setValue={setCurrentClass}
                     setItems={setClasses}
                     ScrollView={false}
-                    style={styles.style}
-                    dropDownContainerStyle={styles.dropDownContainerStyle}
-                    textStyle={styles.textStyle}
-                    arrowIconContainerStyle={styles.arrowIconContainerStyle}
+                    style={noteStyles.style}
+                    dropDownContainerStyle={noteStyles.dropDownContainerStyle}
+                    textStyle={noteStyles.textStyle}
+                    arrowIconContainerStyle={noteStyles.arrowIconContainerStyle}
                 />
             )
         } else if(item.type === 'noteTextInput') {
@@ -144,19 +148,19 @@ export default function AddNoteScreen() {
                     value={currentNote}
                     onChangeText={setCurrentNote}
                     placeholder={getTranslatedText('addNotePlaceholder')}
-                    placeholderTextColor={MyColors.appLightGray}
+                    placeholderTextColor={theme.textSecondary}
                     multiline={true}
                     style={{
                         color: 'white',
                         flex: 1,
                         fontSize: 18,
                         borderWidth: 2,
-                        borderColor: MyColors.appBlue,
+                        borderColor: theme.primary,
                         borderRadius: 10,
                         padding: 10,
                         marginVertical: 50,
                         height: 400,
-                        backgroundColor: MyColors.appGray,
+                        backgroundColor: theme.secondary,
                         flexWrap: 'wrap'
                     }}
                 />
@@ -170,62 +174,52 @@ export default function AddNoteScreen() {
 
 
 
+    const noteStyles = StyleSheet.create({
+        style: {
+            backgroundColor: theme.secondary,
+            borderWidth: 2,
+            borderColor: theme.primary
+        },
+        dropDownContainerStyle: {
+            backgroundColor: theme.secondary,
+            borderWidth: 2,
+            borderColor: theme.primary
+        },
+        textStyle: {
+            color: theme.textSecondary
+        },
+        arrowIconContainerStyle: {
+            backgroundColor: theme.primary,
+            borderRadius: 5
+        }
+    });
 
 
     return (
-        <>
-            <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: '#000'}}/>
-            <View edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: MyColors.appBackground}}>
+        <SafeareaNoNav>
 
-                {/* HEADER */}
-                <View style={headerStyles.headerBackground}>
-                    <Text style={headerStyles.headerText}>{getTranslatedText('add')} {getTranslatedText('notes')}</Text>
-                </View>
-
-                <View style={styles.container}>
-                    <FlatList 
-                        data={[
-                            { type: 'addButton' },
-                            { type: 'noteTextInput' },
-                            { type: 'classesDropDownPicker' },
-                            { type: 'subjectsDropDownPicker' },
-                            { type: 'titleTextInput' },
-                            { type: 'goBackButton' }
-                        ]}
-                        renderItem={renderItem}
-                        keyExtractor={(item, index) => index.toString()}
-                        showsVerticalScrollIndicator={false}
-                        contentContainerStyle={{flexDirection: 'column-reverse', paddingBottom: 50}}
-                    />
-                </View>
-
+            {/* HEADER */}
+            <View style={styles.headerBackground}>
+                <Text style={styles.headerText}>{getTranslatedText('add')} {getTranslatedText('notes')}</Text>
             </View>
-        </>
+
+            <View style={styles.flatlistContainer}>
+                <FlatList 
+                    data={[
+                        { type: 'addButton' },
+                        { type: 'noteTextInput' },
+                        { type: 'classesDropDownPicker' },
+                        { type: 'subjectsDropDownPicker' },
+                        { type: 'titleTextInput' },
+                        { type: 'goBackButton' }
+                    ]}
+                    renderItem={renderItem}
+                    keyExtractor={(item, index) => index.toString()}
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{flexDirection: 'column-reverse', paddingBottom: 50}}
+                />
+            </View>
+
+        </SafeareaNoNav>
     )
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: MyColors.appBackground,
-        alignItems: 'center',
-        paddingHorizontal: 20
-    },
-    style: {
-        backgroundColor: MyColors.appDark,
-        borderWidth: 1,
-        borderColor: MyColors.appBlue
-    },
-    dropDownContainerStyle: {
-        backgroundColor: MyColors.appDark,
-        borderWidth: 1,
-        borderColor: MyColors.appBlue
-    },
-    textStyle: {
-        color: MyColors.appLightGray
-    },
-    arrowIconContainerStyle: {
-        backgroundColor: MyColors.appBlue,
-        borderRadius: 5
-    }
-});

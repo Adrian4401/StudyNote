@@ -4,8 +4,6 @@ import { useNavigation } from '@react-navigation/native';
 
 import DropDownPicker from 'react-native-dropdown-picker';
 
-import { MyColors } from '../../assets/styles/colors.js';
-
 import { FontAwesome5 } from '@expo/vector-icons';
 
 import { GoBackButton, MakeButton } from '../../components/customButtons.js';
@@ -20,9 +18,9 @@ import appLanguage from "../../utils/languages";
 import { useLanguage } from '../../context/LanguageContext';
 
 import { useDarkMode } from '../../context/DarkModeContext.js';
-import { createStyles, headerStyles, globalStyles } from '../../assets/styles/index.js';
+import { createStyles } from '../../assets/styles/index.js';
 
-import { Safearea } from '../../components/SafeArea.js';
+import { SafeareaNoNav } from '../../components/SafeArea.js';
 
 
 
@@ -51,6 +49,9 @@ export default function AddEventScreen() {
     const [checkedNotes, setCheckedNotes] = useState([]);
 
     const [checkedNoteIDs, setCheckedNoteIDs] = useState([]);
+
+    const { theme } = useDarkMode()
+    const styles = createStyles(theme)
 
     const { language } = useLanguage();
 
@@ -151,19 +152,19 @@ export default function AddEventScreen() {
                     value={currentTitle}
                     onChangeText={setCurrentTitle}
                     placeholder={getTranslatedText('eventTitlePlaceholder')}
-                    placeholderTextColor={MyColors.appLightGray}
+                    placeholderTextColor={theme.textSecondary}
                     maxLength={100}
                     multiline
                     style={{
                         color: 'white',
                         fontSize: 25,
                         borderWidth: 2,
-                        borderColor: MyColors.appBlue,
+                        borderColor: theme.primary,
                         borderRadius: 10,
                         paddingVertical: 5,
                         paddingHorizontal: 10,
                         marginTop: 30,
-                        backgroundColor: MyColors.appDark
+                        backgroundColor: theme.secondary
                     }}
                 />
             )
@@ -178,10 +179,10 @@ export default function AddEventScreen() {
                     setValue={setValueSubjects}
                     setItems={setSubjects}
                     ScrollView={false}
-                    style={{...styles.style, marginBottom: 10, marginTop: 10}}
-                    dropDownContainerStyle={styles.dropDownContainerStyle}
-                    textStyle={styles.textStyle}
-                    arrowIconContainerStyle={styles.arrowIconContainerStyle}
+                    style={{...eventStyles.style, marginBottom: 10, marginTop: 10}}
+                    dropDownContainerStyle={eventStyles.dropDownContainerStyle}
+                    textStyle={eventStyles.textStyle}
+                    arrowIconContainerStyle={eventStyles.arrowIconContainerStyle}
                 />
             )
         } else if(item.type === 'classesPicker') {
@@ -195,10 +196,10 @@ export default function AddEventScreen() {
                     setValue={setCurrentClass}
                     setItems={setClasses}
                     ScrollView={false}
-                    style={{...styles.style, marginTop: 10}}
-                    dropDownContainerStyle={styles.dropDownContainerStyle}
-                    textStyle={styles.textStyle}
-                    arrowIconContainerStyle={styles.arrowIconContainerStyle}
+                    style={{...eventStyles.style, marginTop: 10}}
+                    dropDownContainerStyle={eventStyles.dropDownContainerStyle}
+                    textStyle={eventStyles.textStyle}
+                    arrowIconContainerStyle={eventStyles.arrowIconContainerStyle}
                 />
             )
         } else if(item.type === 'descriptionTextInput') {
@@ -207,19 +208,19 @@ export default function AddEventScreen() {
                     value={currentDescription}
                     onChangeText={setCurrentDescription}
                     placeholder={getTranslatedText('addDescriptionPlaceholder')}
-                    placeholderTextColor={MyColors.appLightGray}
+                    placeholderTextColor={theme.textSecondary}
                     multiline={true}
                     style={{
                         color: 'white',
                         flex: 1,
                         fontSize: 18,
                         borderWidth: 2,
-                        borderColor: MyColors.appBlue,
+                        borderColor: theme.primary,
                         borderRadius: 10,
                         padding: 10,
                         marginVertical: 20,
                         height: 100,
-                        backgroundColor: MyColors.appGray,
+                        backgroundColor: theme.secondary,
                         flexWrap: 'wrap'
                     }}
                 />
@@ -229,13 +230,13 @@ export default function AddEventScreen() {
                 return(
                     <View style={{marginBottom: 20, alignItems: 'center'}}>
 
-                        <Text style={{...globalStyles.littleText, marginBottom: 5}}>{getTranslatedText('chooseDeadline')}</Text>
+                        <Text style={{...styles.littleText, marginBottom: 5}}>{getTranslatedText('chooseDeadline')}</Text>
 
-                        <TouchableOpacity onPress={() => showMode('date')} style={styles.dateTimeButtons}>
+                        <TouchableOpacity onPress={() => showMode('date')} style={eventStyles.dateTimeButtons}>
                             <Text style={{fontSize: 20, color: 'white'}}>{getTranslatedText('day')}</Text>
                         </TouchableOpacity>
 
-                        <TouchableOpacity onPress={() => showMode('time')} style={styles.dateTimeButtons}>
+                        <TouchableOpacity onPress={() => showMode('time')} style={eventStyles.dateTimeButtons}>
                             <Text style={{fontSize: 20, color: 'white'}}>{getTranslatedText('hour')}</Text>
                         </TouchableOpacity>
 
@@ -266,7 +267,7 @@ export default function AddEventScreen() {
                         <Text 
                             style={{
                                 fontSize: 20,
-                                color: MyColors.appLightGray,
+                                color: theme.textSecondary,
                                 textTransform: 'uppercase',
                                 marginVertical: 10
                             }}>
@@ -294,35 +295,35 @@ export default function AddEventScreen() {
         } else if(item.type === 'notes') {
             return data.map((element, index) => {
                 return (
-                  <TouchableOpacity key={index} onPress={() => navigation.navigate('ReadNoteScreen', { noteID: element.note_id })} style={styles.noteStyle}>
+                  <TouchableOpacity key={index} onPress={() => navigation.navigate('ReadNoteScreen', { noteID: element.note_id })} style={eventStyles.noteStyle}>
         
                     <View style={{flex: 1, justifyContent: 'center'}}>
                         <Checkbox
                             value={checkedNotes[index]}
                             onValueChange={() => handleNoteCheckboxChange(index)}
-                            color={checkedNotes[index] ? MyColors.appBlue : undefined }
+                            color={checkedNotes[index] ? theme.primary : undefined }
                         />
                     </View>
 
                     <View style={{flex: 8}}>
                         <View>
-                        <Text style={globalStyles.headlineText}>{element.title}</Text>
+                        <Text style={styles.headlineText}>{element.title}</Text>
                         </View>
             
-                        <View style={{flex: 1, backgroundColor: MyColors.appLightGray, height: 1, marginBottom: 10}} />
+                        <View style={{flex: 1, backgroundColor: theme.textSecondary, height: 1, marginBottom: 10}} />
             
-                        <View style={styles.infoView}>
+                        <View style={eventStyles.infoView}>
                         <FontAwesome5 name="book" size={18} color="#fff" style={{flex: 1}}/>
-                        <Text style={styles.infoText}>{element.subject_name}</Text>
+                        <Text style={eventStyles.infoText}>{element.subject_name}</Text>
                         </View>
             
-                        <View style={styles.infoView}>
+                        <View style={eventStyles.infoView}>
                         <FontAwesome5 name="info-circle" size={18} color="#fff" style={{flex: 1}} />
-                        <Text style={styles.infoText}>{element.class_name}</Text>
+                        <Text style={eventStyles.infoText}>{element.class_name}</Text>
                         </View>
             
-                        <View style={styles.noteDataView}>
-                            <Text style={styles.noteDataText}>{element.create_day}</Text>
+                        <View style={eventStyles.noteDataView}>
+                            <Text style={eventStyles.noteDataText}>{element.create_day}</Text>
                         </View>
                     </View>
 
@@ -339,110 +340,97 @@ export default function AddEventScreen() {
 
 
     
-
+    const eventStyles = StyleSheet.create({
+        style: {
+            backgroundColor: theme.secondary,
+            borderWidth: 2,
+            borderColor: theme.primary
+        },
+        dropDownContainerStyle: {
+            backgroundColor: theme.secondary,
+            borderWidth: 2,
+            borderColor: theme.primary
+        },
+        textStyle: {
+            color: theme.textSecondary
+        },
+        dateTimeButtons: {
+            height: 50,
+            backgroundColor: theme.primary,
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginVertical: 5,
+            borderRadius: 20,
+            width: '100%'
+        },
+        arrowIconContainerStyle: {
+            backgroundColor: theme.primary,
+            borderRadius: 5
+        },
+        noteStyle: {
+            width: '100%',
+            backgroundColor: theme.secondary,
+            borderRadius: 20,
+            padding: 12,
+            marginBottom: 20, 
+            borderColor: theme.textSecondary, 
+            borderWidth: 1,
+            flexDirection: 'row'
+        },
+        infoView: {
+            flexDirection: 'row',
+            marginTop: 5,
+            alignItems: 'center',
+            width: '100%',
+            paddingHorizontal: 5
+        },
+        infoText: {
+            fontSize: 16,
+            color: '#fff',
+            flex: 10
+        },
+        noteDataView: {
+            alignItems: 'flex-end',
+            marginTop: 2,
+            paddingHorizontal: 5
+        },
+        noteDataText: {
+            fontSize: 12,
+            color: theme.textSecondary,
+            textTransform: 'uppercase',
+            flex: 15
+        },
+    });
 
 
 
     return (
-        <>
-            <SafeAreaView edges={['top']} style={{flex: 0, backgroundColor: '#000'}}/>
-            <View edges={['left', 'right', 'bottom']} style={{flex: 1, backgroundColor: MyColors.appBackground}}>
+        <SafeareaNoNav>
 
-                {/* HEADER */}
-                <View style={headerStyles.headerBackground}>
-                    <Text style={headerStyles.headerText}>{getTranslatedText('add')} {getTranslatedText('events')}</Text>
-                </View>
-
-                <View style={styles.container}>
-                    <FlatList 
-                        data={[
-                            { type: 'addButton' },
-                            { type: 'notes' },
-                            { type: 'dateTimePickers' },
-                            { type: 'descriptionTextInput' },
-                            { type: 'subjectsPicker' },
-                            { type: 'classesPicker' },
-                            { type: 'titleTextInput' },
-                            { type: 'goBackButton' }
-                        ]}
-                        renderItem={renderItem}
-                        keyExtractor={(item, index) => index.toString()}
-                        showsVerticalScrollIndicator={false}
-                        contentContainerStyle={{flexDirection: 'column-reverse', paddingBottom: 50}}
-                    />
-                </View>
-
+            {/* HEADER */}
+            <View style={styles.headerBackground}>
+                <Text style={styles.headerText}>{getTranslatedText('add')} {getTranslatedText('events')}</Text>
             </View>
-        </>
+
+            <View style={styles.flatlistContainer}>
+                <FlatList 
+                    data={[
+                        { type: 'addButton' },
+                        { type: 'notes' },
+                        { type: 'dateTimePickers' },
+                        { type: 'descriptionTextInput' },
+                        { type: 'subjectsPicker' },
+                        { type: 'classesPicker' },
+                        { type: 'titleTextInput' },
+                        { type: 'goBackButton' }
+                    ]}
+                    renderItem={renderItem}
+                    keyExtractor={(item, index) => index.toString()}
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={{flexDirection: 'column-reverse', paddingBottom: 50}}
+                />
+            </View>
+
+        </SafeareaNoNav>
     )
 }
-
-
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: MyColors.appBackground,
-        alignItems: 'center',
-        paddingHorizontal: '5%'
-    },
-    style: {
-        backgroundColor: MyColors.appDark,
-        borderWidth: 1,
-        borderColor: MyColors.appBlue
-    },
-    dropDownContainerStyle: {
-        backgroundColor: MyColors.appDark,
-        borderWidth: 1,
-        borderColor: MyColors.appBlue
-    },
-    textStyle: {
-        color: MyColors.appLightGray
-    },
-    dateTimeButtons: {
-        height: 50,
-        backgroundColor: MyColors.appBlue,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginVertical: 5,
-        borderRadius: 20,
-        width: '100%'
-    },
-    arrowIconContainerStyle: {
-        backgroundColor: MyColors.appBlue,
-        borderRadius: 5
-    },
-    noteStyle: {
-        width: '100%',
-        backgroundColor: MyColors.appDark,
-        borderRadius: 20,
-        padding: 12,
-        marginBottom: 20, 
-        borderColor: MyColors.appLightGray, 
-        borderWidth: 1,
-        flexDirection: 'row'
-    },
-    infoView: {
-        flexDirection: 'row',
-        marginTop: 5,
-        alignItems: 'center',
-        width: '100%',
-        paddingHorizontal: 5
-    },
-    infoText: {
-        fontSize: 16,
-        color: '#fff',
-        flex: 10
-    },
-    noteDataView: {
-        alignItems: 'flex-end',
-        marginTop: 2,
-        paddingHorizontal: 5
-    },
-    noteDataText: {
-        fontSize: 12,
-        color: MyColors.appLightGray,
-        textTransform: 'uppercase',
-        flex: 15
-    },
-});

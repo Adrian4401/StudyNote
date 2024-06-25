@@ -5,17 +5,15 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { loadSubjects, addSubject } from '../../databaseQueries/databaseQueries.js';
 
-import { MyColors } from '../../assets/styles/colors.js';
-
 import { GoBackButton, MakeButton } from '../../components/customButtons.js';
 
 import appLanguage from '../../utils/languages';
 import { useLanguage } from '../../context/LanguageContext';
 
 import { useDarkMode } from '../../context/DarkModeContext.js';
-import { createStyles, headerStyles, globalStyles } from '../../assets/styles/index.js';
+import { createStyles } from '../../assets/styles/index.js';
 
-import { Safearea } from '../../components/SafeArea.js';
+import { SafeareaNoNav } from '../../components/SafeArea.js';
 
 
 
@@ -77,7 +75,7 @@ export default function AddSubjectScreen() {
  
 
     return (
-        <Safearea>
+        <SafeareaNoNav>
 
             {/* HEADER */}
             <View style={styles.headerBackground}>
@@ -121,6 +119,6 @@ export default function AddSubjectScreen() {
                 </View>
             </ScrollView>
 
-        </Safearea>
+        </SafeareaNoNav>
     )
 }

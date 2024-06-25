@@ -18,8 +18,7 @@ export const createStyles = (theme) => {
         },
         flatlistContainer: {
             ...container,
-            paddingHorizontal: 20,
-            paddingBottom: 40
+            paddingHorizontal: 20
         },
 
         // HEADER

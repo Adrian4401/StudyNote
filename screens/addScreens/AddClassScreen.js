@@ -13,7 +13,7 @@ import { useLanguage } from '../../context/LanguageContext';
 import { useDarkMode } from '../../context/DarkModeContext.js';
 import { createStyles } from '../../assets/styles/index.js';
 
-import { Safearea } from '../../components/SafeArea.js';
+import { SafeareaNoNav } from '../../components/SafeArea.js';
 
 
 
@@ -73,7 +73,7 @@ export default function AddClassScreen() {
     
 
     return (
-        <Safearea>
+        <SafeareaNoNav>
 
             {/* HEADER */}
             <View style={styles.headerBackground}>
@@ -122,6 +122,6 @@ export default function AddClassScreen() {
                 <Button title='Usun tabele' onPress={deleteSubjects} />
             </View> */}
 
-        </Safearea>
+        </SafeareaNoNav>
     )
 }

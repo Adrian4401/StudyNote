@@ -85,26 +85,7 @@ export default function EditEventScreen() {
         const newCheckedNotes = data.map(element => checkedNoteIDs.includes(element.note_id));
         setCheckedNotes(newCheckedNotes);
     }, [checkedNoteIDs, data]);
-
-
-
-
-    // const changeCheckedNotes = (noteID) => {
-    //     console.log('ID notatek z wydarzenia: ', checkedNoteIDs);
-    //     console.log('Status notatek: ', checkedNotes);
-
-    //     const noteIndex = data.findIndex(element => element.note_id === noteID);
-    //     if (noteIndex !== -1) {
-    //         const newCheckedNotes = [...checkedNotes];
-    //         newCheckedNotes[noteIndex] = true;
-    //         setCheckedNotes(newCheckedNotes);
-    //     }
-
-    //     console.log('Status notatek: ', checkedNotes);
-    // };
-
-
-
+    
 
     const subjectItems = subjects.map(subject => {
         return { 
