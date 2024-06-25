@@ -2,7 +2,7 @@ import { TouchableOpacity, View, Text, StyleSheet } from "react-native"
 
 import { FontAwesome5, Ionicons, AntDesign } from '@expo/vector-icons';
 
-import { globalStyles } from "../styles/globalStyles";
+import { globalStyles } from "../assets/styles/index";
 
 import { MyColors } from "./colors";
 

@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native'
 import { MaterialIcons, MaterialCommunityIcons, FontAwesome5, AntDesign } from '@expo/vector-icons'
 
 import { MyColors } from '../utils/colors'
-import { globalStyles } from '../styles/globalStyles'
+import { globalStyles } from '../assets/styles/index'
 
 import appLanguage from '../utils/languages'
 import { useLanguage } from '../context/LanguageContext'
