@@ -10,6 +10,8 @@ import { CustomStatusBar } from '../components/StatusBar';
 
 import { showEvents } from '../components/ShowEvents';
 
+import { createDate } from '../utils/date';
+
 import { useLanguage } from '../context/LanguageContext';
 import appLanguage from "../utils/languages";
 
@@ -28,6 +30,8 @@ export default function CalendarScreen() {
   const [weeklyData, setWeeklyData] = useState([]);
   const [futureData, setFutureData] = useState([]);
   const [olderData, setOlderData] = useState([]);
+
+  const todayDate = createDate()
   
   const { theme } = useDarkMode()
   const styles = createStyles(theme)
@@ -44,7 +48,6 @@ export default function CalendarScreen() {
       // selectThisWeekEvents(setWeeklyData)
       // selectNextWeekEvents(setFutureData)
       // selectOlderEvents(setOlderData)
-
       loadEvents(setWeeklyData, setFutureData, setOlderData)
     });
     
@@ -53,11 +56,7 @@ export default function CalendarScreen() {
 
 
 
-  var day = (new Date().getDate()).toString().padStart(2, '0');
-  var month = (new Date().getMonth() + 1).toString().padStart(2, '0');
-  var year = new Date().getFullYear();
-
-  var todayDate = day + '.' + month + '.' + year;
+  
 
 
 
@@ -159,7 +158,6 @@ export default function CalendarScreen() {
 
   return (
     <Safearea>
-      {/* <StatusBar barStyle='light-content' /> */}
       <CustomStatusBar />
       
       {/* HEADER */}
@@ -174,7 +172,6 @@ export default function CalendarScreen() {
           {/* USER HEADLINE */}
           <View style={styles.headlineView}>
             <View style={calendarStyles.headlineUserView}>
-              {/* <Ionicons name="calendar-clear" size={24} color='white' style={{flex: 1}}/> */}
               <FontAwesome5 name="calendar-day" size={22} color={theme.textPrimary} />
               <Text style={{...calendarStyles.headlineUserText, fontSize: 20, textAlign: 'center'}}>{todayDate}</Text>
             </View>

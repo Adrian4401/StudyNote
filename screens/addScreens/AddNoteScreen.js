@@ -7,6 +7,8 @@ import { GoBackButton, MakeButton } from '../../components/Buttons.js';
 
 import { loadClasses, loadSubjects, addNote } from '../../database/queries.js';
 
+import { createDate } from '../../utils/date.js';
+
 import appLanguage from "../../utils/languages";
 import { useLanguage } from '../../context/LanguageContext';
 
@@ -32,6 +34,8 @@ export default function AddNoteScreen() {
 
     const [subjects, setSubjects] = useState([]);
     const [classes, setClasses] = useState([]);
+
+    const todayDate = createDate()
 
     const { theme } = useDarkMode()
     const styles = createStyles(theme)
@@ -63,18 +67,8 @@ export default function AddNoteScreen() {
         return { label: myclass.class_name, value: myclass.class_id.toString() };
     })
 
-
-
-    var day = (new Date().getDate()).toString().padStart(2, '0');
-    var month = (new Date().getMonth() + 1).toString().padStart(2, '0');
-    var year = new Date().getFullYear();
-
-    var noteDate = day + '.' + month + '.' + year;
-    
-    
-
     const handleAddNote = () => {
-        addNote(currentTitle, currentNote, currentSubject, currentClass, noteDate, navigation)
+        addNote(currentTitle, currentNote, currentSubject, currentClass, todayDate, navigation)
     }
 
 
