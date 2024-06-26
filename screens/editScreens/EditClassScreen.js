@@ -9,7 +9,7 @@ import { EditButton, GoBackButton } from '../../components/Buttons.js';
 
 import appLanguage from "../../utils/languages";
 import { useLanguage } from '../../context/LanguageContext';
-import { alertDeleteClass } from '../../components/AppAlerts.js';
+import { alertDeleteClass } from '../../components/Alerts.js';
 
 import { useDarkMode } from '../../context/DarkModeContext.js';
 import { createStyles } from '../../assets/styles/index.js';

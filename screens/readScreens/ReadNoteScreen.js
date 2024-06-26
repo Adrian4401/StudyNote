@@ -10,7 +10,7 @@ import { selectNoteToRead } from '../../databaseQueries/databaseQueries.js';
 
 import appLanguage from "../../utils/languages";
 import { useLanguage } from '../../context/LanguageContext';
-import { alertDeleteNote } from '../../components/AppAlerts.js';
+import { alertDeleteNote } from '../../components/Alerts.js';
 
 import { useDarkMode } from '../../context/DarkModeContext.js';
 import { createStyles } from '../../assets/styles/index.js';

@@ -7,7 +7,7 @@ import { createStyles } from '../assets/styles/index';
 
 import { SettingsScreenButton } from '../components/Buttons';
 
-import { alertDeleteAllData } from '../components/AppAlerts';
+import { alertDeleteAllData } from '../components/Alerts';
 
 import appLanguage from "../utils/languages";
 import { useLanguage } from '../context/LanguageContext';

@@ -2,8 +2,6 @@ import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, FlatList } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
-import { MyColors } from '../../assets/styles/colors.js';
-
 import { GoBackButton } from '../../components/Buttons.js';
 
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
@@ -12,7 +10,7 @@ import { selectEventToRead, selectNotesToEvent } from '../../databaseQueries/dat
 
 import appLanguage from "../../utils/languages";
 import { useLanguage } from '../../context/LanguageContext';
-import { alertDeleteEvent } from '../../components/AppAlerts.js';
+import { alertDeleteEvent } from '../../components/Alerts.js';
 
 import { useDarkMode } from '../../context/DarkModeContext.js';
 import { createStyles } from '../../assets/styles/index.js';
