@@ -56,7 +56,7 @@ export const createStyles = (theme) => {
             fontSize: 22,
             textTransform: 'uppercase',
             color: theme.textPrimary,
-            marginBottom: 10
+            marginBottom: 7
         },
         sectionText: {
             fontSize: 20,

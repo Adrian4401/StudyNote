@@ -156,7 +156,7 @@ export default function AddEventScreen() {
                     maxLength={100}
                     multiline
                     style={{
-                        color: 'white',
+                        color: theme.textPrimary,
                         fontSize: 25,
                         borderWidth: 2,
                         borderColor: theme.primary,
@@ -211,7 +211,7 @@ export default function AddEventScreen() {
                     placeholderTextColor={theme.textSecondary}
                     multiline={true}
                     style={{
-                        color: 'white',
+                        color: theme.textPrimary,
                         flex: 1,
                         fontSize: 18,
                         borderWidth: 2,
@@ -260,20 +260,8 @@ export default function AddEventScreen() {
                 )
             } else if(Platform.OS === 'ios') {
                 return (
-                    <View style={{
-                        alignItems: 'center'
-                    }}>
-
-                        <Text 
-                            style={{
-                                fontSize: 20,
-                                color: theme.textSecondary,
-                                textTransform: 'uppercase',
-                                marginVertical: 10
-                            }}>
-                            {getTranslatedText('chooseDeadline')}
-                        </Text>
-
+                    <View style={{alignItems: 'center'}}>
+                        <Text style={{fontSize: 20, color: theme.textSecondary, textTransform: 'uppercase',marginVertical: 10}}>{getTranslatedText('chooseDeadline')}</Text>
                         <DateTimePicker
                             mode='datetime'
                             value={date}
@@ -282,11 +270,11 @@ export default function AddEventScreen() {
                             minuteInterval={5}
                             locale='pl-PL'
                             themeVariant='dark'
-                            display='inline'
+                            display='spinner'
                             timeZoneName={'Europe/Warsaw'}
-                            style={{marginBottom: 40}}
+                            style={{marginBottom: 40, borderRadius: 20,  borderColor: theme.primary}}
+                            textColor={theme.textPrimary}
                         />
-
                     </View>
                 )
             }
@@ -310,15 +298,15 @@ export default function AddEventScreen() {
                         <Text style={styles.headlineText}>{element.title}</Text>
                         </View>
             
-                        <View style={{flex: 1, backgroundColor: theme.textSecondary, height: 1, marginBottom: 10}} />
+                        <View style={{flex: 1, backgroundColor: theme.textSecondary, height: 1, marginBottom: 7}} />
             
                         <View style={eventStyles.infoView}>
-                        <FontAwesome5 name="book" size={18} color="#fff" style={{flex: 1}}/>
+                        <FontAwesome5 name="book" size={18} color={theme.textSecondary} style={{flex: 1}}/>
                         <Text style={eventStyles.infoText}>{element.subject_name}</Text>
                         </View>
             
                         <View style={eventStyles.infoView}>
-                        <FontAwesome5 name="info-circle" size={18} color="#fff" style={{flex: 1}} />
+                        <FontAwesome5 name="info-circle" size={18} color={theme.textSecondary} style={{flex: 1}} />
                         <Text style={eventStyles.infoText}>{element.class_name}</Text>
                         </View>
             
@@ -386,7 +374,7 @@ export default function AddEventScreen() {
         },
         infoText: {
             fontSize: 16,
-            color: '#fff',
+            color: theme.textSecondary,
             flex: 10
         },
         noteDataView: {

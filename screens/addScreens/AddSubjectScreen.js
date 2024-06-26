@@ -98,7 +98,7 @@ export default function AddSubjectScreen() {
                         placeholderTextColor={theme.textSecondary}
                         maxLength={50}
                         style={{
-                            color: 'white',
+                            color: theme.textPrimary,
                             width: '100%',
                             fontSize: 25,
                             borderWidth: 2,

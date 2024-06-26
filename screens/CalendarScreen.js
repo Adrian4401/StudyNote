@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { FontAwesome5, FontAwesome } from '@expo/vector-icons';
 
-import { loadEvents } from '../databaseQueries/databaseQueries';
+import { loadEvents, selectThisWeekEvents, selectNextWeekEvents, selectOlderEvents } from '../databaseQueries/databaseQueries';
 
 import { CustomStatusBar } from '../components/StatusBar';
 
@@ -29,11 +29,10 @@ export default function CalendarScreen() {
   const [futureData, setFutureData] = useState([]);
   const [olderData, setOlderData] = useState([]);
   
-  const { language } = useLanguage();
-
   const { theme } = useDarkMode()
   const styles = createStyles(theme)
 
+  const { language } = useLanguage();
   const getTranslatedText = (key) => {
     return appLanguage[language][key];
   }
@@ -50,7 +49,7 @@ export default function CalendarScreen() {
     });
     
     return loadData;
-  }, [setWeeklyData, setFutureData, setOlderData])
+  }, [navigation, setWeeklyData, setFutureData, setOlderData])
 
 
 

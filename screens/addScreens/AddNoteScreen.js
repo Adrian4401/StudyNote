@@ -96,7 +96,7 @@ export default function AddNoteScreen() {
                     maxLength={100}
                     multiline
                     style={{
-                        color: 'white',
+                        color: theme.textPrimary,
                         fontSize: 25,
                         borderWidth: 2,
                         borderColor: theme.primary,
@@ -151,7 +151,7 @@ export default function AddNoteScreen() {
                     placeholderTextColor={theme.textSecondary}
                     multiline={true}
                     style={{
-                        color: 'white',
+                        color: theme.textPrimary,
                         flex: 1,
                         fontSize: 18,
                         borderWidth: 2,

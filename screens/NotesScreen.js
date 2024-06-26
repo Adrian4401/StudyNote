@@ -102,7 +102,7 @@ export default function NoteScreen() {
               <Text style={styles.headlineText}>{element.title}</Text>
             </View>
 
-            <View style={{flex: 1, backgroundColor: theme.textSecondary, height: 1, marginBottom: 10}} />
+            <View style={{flex: 1, backgroundColor: theme.textSecondary, height: 1, marginBottom: 7}} />
 
             <View style={notesStyles.infoView}>
               <FontAwesome5 name="book" size={18} color={theme.textSecondary} style={{flex: 1}}/>

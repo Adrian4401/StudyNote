@@ -137,7 +137,7 @@ export default function ReadEventScreen() {
                         <Text style={styles.headlineText}>{element.title}</Text>
                     </View>
         
-                    <View style={{flex: 1, backgroundColor: theme.textSecondary, height: 1, marginBottom: 10}} />
+                    <View style={{flex: 1, backgroundColor: theme.textSecondary, height: 1, marginBottom: 7}} />
         
                     <View style={eventStyles.infoView}>
                         <FontAwesome5 name="book" size={18} color={theme.textPrimary} style={{flex: 1}}/>
@@ -194,7 +194,7 @@ export default function ReadEventScreen() {
         },
         infoView: {
             flexDirection: 'row',
-            marginTop: 10,
+            marginTop: 2,
             alignItems: 'center',
             width: '100%',
             paddingHorizontal: 5
@@ -205,7 +205,8 @@ export default function ReadEventScreen() {
             flex: 10
         },
         noteDataView: {
-            marginTop: 5,
+            alignItems: 'flex-end',
+            marginTop: 2,
             paddingHorizontal: 5
         },
         noteDataText: {
