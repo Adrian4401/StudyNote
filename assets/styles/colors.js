@@ -19,8 +19,8 @@ export const lightTheme = {
     secondary: '#999898',
     textPrimary: '#000',
     textSecondary: '#3B393B',
-    inputBackground: '#26282A',
-    eventBackground: '#2F3051'
+    inputBackground: '#868C90',
+    eventBackground: '#9BC3D8'
 }
 export const darkTheme = {
     background: '#3F3D4C',

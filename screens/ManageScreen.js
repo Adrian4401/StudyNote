@@ -50,7 +50,7 @@ export default function ManageScreen() {
             <View key={index} style={manageStyles.itemsView}>
                 <Text style={manageStyles.itemsText}>{subject.subject_name}</Text>
                 <TouchableOpacity onPress={() => navigation.navigate('EditSubjectScreen', { subjectID: subject.subject_id, subjectName: subject.subject_name })} style={{flex: 1, alignItems: 'flex-end'}}>
-                  <MaterialIcons name="edit" size={24} color="white"/>
+                  <MaterialIcons name="edit" size={24} color={theme.textPrimary}/>
                 </TouchableOpacity>
             </View>
         )
@@ -63,7 +63,7 @@ export default function ManageScreen() {
             <View key={index} style={manageStyles.itemsView}>
                 <Text style={manageStyles.itemsText}>{myclass.class_name}</Text>
                 <TouchableOpacity onPress={() => navigation.navigate('EditClassScreen', { classID: myclass.class_id, className: myclass.class_name })} style={{flex: 1, alignItems: 'flex-end'}}>
-                  <MaterialIcons name="edit" size={24} color="white"/>
+                  <MaterialIcons name="edit" size={24} color={theme.textPrimary}/>
                 </TouchableOpacity>
             </View>
         )
@@ -90,7 +90,7 @@ export default function ManageScreen() {
     },
     itemsText: {
       fontSize: 20,
-      color: '#fff',
+      color: theme.textPrimary,
       flex: 8
     }
   });

@@ -139,7 +139,7 @@ export default function CalendarScreen() {
     headlineUserText: {
       fontSize: 25, 
       textTransform: 'uppercase', 
-      color: 'white',
+      color: theme.textPrimary,
       flex: 2
     },
     eventNameView: {
@@ -176,7 +176,7 @@ export default function CalendarScreen() {
           <View style={styles.headlineView}>
             <View style={calendarStyles.headlineUserView}>
               {/* <Ionicons name="calendar-clear" size={24} color='white' style={{flex: 1}}/> */}
-              <FontAwesome5 name="calendar-day" size={22} color="white" />
+              <FontAwesome5 name="calendar-day" size={22} color={theme.textPrimary} />
               <Text style={{...calendarStyles.headlineUserText, fontSize: 20, textAlign: 'center'}}>{todayDate}</Text>
             </View>
           </View>

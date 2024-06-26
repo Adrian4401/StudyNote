@@ -130,7 +130,7 @@ export default function SettingsScreen() {
     dropDownContainerStyle: {
       backgroundColor: theme.secondary,
       paddingVertical: 5,
-      borderWidth: 0
+      borderWidth: 1
     },
     dropDownTextStyle: {
       color: theme.textPrimary,

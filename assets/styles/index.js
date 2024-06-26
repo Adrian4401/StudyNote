@@ -42,6 +42,11 @@ export const createStyles = (theme) => {
         },
 
         // TEXT
+        eventNameText: {
+            fontSize: 25,
+            textTransform: 'uppercase',
+            color: theme.textPrimary
+        },
         subjectText: {
             fontSize: 20,
             color: theme.textPrimary,
@@ -74,9 +79,16 @@ export const createStyles = (theme) => {
             padding: 10,
             marginVertical: 5
         },
+        eventNameView: {
+            width: '100%',
+            padding: 2,
+            backgroundColor: theme.eventBackground,
+            borderRadius: 15,
+            alignItems: 'center'
+        },
         eventSubjectView: {
             flexDirection: 'row',
-            marginVertical: 15,
+            marginVertical: 12,
             paddingHorizontal: 5,
             alignItems: 'center'
         },
@@ -101,6 +113,32 @@ export const createStyles = (theme) => {
             paddingHorizontal: 30,
             flexDirection: 'row',
             justifyContent: 'space-between'
+        },
+
+        // 'GO BACK' BUTTON 
+        goBackButton: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            paddingVertical: 10
+        },
+        goBackText: {
+            color: theme.textPrimary,
+            fontSize: 25,
+            paddingRight: 5
+        },
+        makeButton: {
+            width: '100%',
+            flexDirection: 'row',
+            backgroundColor: theme.primary,
+            paddingVertical: 5,
+            borderRadius: 20,
+            justifyContent: 'center',
+            marginTop: 20
+        },
+        makeText: {
+            color: '#fff',
+            fontSize: 25,
+            paddingRight: 5
         }
     })
 }

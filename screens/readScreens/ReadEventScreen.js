@@ -78,10 +78,10 @@ export default function ReadEventScreen() {
                     <GoBackButton />
                     <View style={eventStyles.topPanelIcons}>
                         <TouchableOpacity onPress={handleDeleteEvent}>
-                            <MaterialIcons name="delete" size={30} color='white'/>
+                            <MaterialIcons name="delete" size={30} color={theme.textPrimary}/>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => navigation.navigate('EditEventScreen', { eventID: eventID })}>
-                            <MaterialIcons name="edit" size={30} color="white"/>
+                            <MaterialIcons name="edit" size={30} color={theme.textPrimary}/>
                         </TouchableOpacity>
                     </View>
                 </View>

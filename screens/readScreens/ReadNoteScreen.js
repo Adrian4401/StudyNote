@@ -125,10 +125,10 @@ export default function ReadNoteScreen() {
                         <GoBackButton />
                         <View style={noteStyles.topPanelIcons}>
                             <TouchableOpacity onPress={handleDeleteNote}>
-                                <MaterialIcons name="delete" size={30} color='white'/>
+                                <MaterialIcons name="delete" size={30} color={theme.textPrimary}/>
                             </TouchableOpacity>
                             <TouchableOpacity onPress={() => navigation.navigate('EditNoteScreen', { noteID: noteID })}>
-                                <MaterialIcons name="edit" size={30} color="white"/>
+                                <MaterialIcons name="edit" size={30} color={theme.textPrimary}/>
                             </TouchableOpacity>
                         </View>
                     </View>
