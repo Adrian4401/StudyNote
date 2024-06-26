@@ -5,7 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { GoBackButton, MakeButton } from '../../components/Buttons.js';
 
-import { loadClasses, loadSubjects, addNote } from '../../databaseQueries/databaseQueries.js';
+import { loadClasses, loadSubjects, addNote } from '../../database/queries.js';
 
 import appLanguage from "../../utils/languages";
 import { useLanguage } from '../../context/LanguageContext';

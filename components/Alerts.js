@@ -1,6 +1,6 @@
 import { Alert } from "react-native";
 
-import { deleteAllData, deleteSubject, deleteClass, deleteEvent, deleteNote } from '../databaseQueries/databaseQueries.js'
+import { deleteAllData, deleteSubject, deleteClass, deleteEvent, deleteNote } from '../database/queries.js'
 
 
 

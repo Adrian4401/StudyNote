@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { MaterialIcons, AntDesign } from '@expo/vector-icons';
 
-import { loadSubjectsAndClasses } from '../databaseQueries/databaseQueries.js';
+import { loadSubjectsAndClasses } from '../database/queries.js';
 
 import { useLanguage } from '../context/LanguageContext';
 import appLanguage from "../utils/languages";

@@ -6,7 +6,7 @@ import { GoBackButton } from '../../components/Buttons.js';
 
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
-import { selectNoteToRead } from '../../databaseQueries/databaseQueries.js';
+import { selectNoteToRead } from '../../database/queries.js';
 
 import appLanguage from "../../utils/languages";
 import { useLanguage } from '../../context/LanguageContext';

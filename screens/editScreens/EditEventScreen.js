@@ -8,7 +8,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 
 import { EditButton, GoBackButton } from '../../components/Buttons.js';
 
-import { selectChosenNotes, selectEditedEvent, editEvent } from '../../databaseQueries/databaseQueries.js';
+import { selectChosenNotes, selectEditedEvent, editEvent } from '../../database/queries.js';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 

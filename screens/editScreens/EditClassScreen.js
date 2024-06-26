@@ -3,7 +3,7 @@ import { Text, View, ScrollView, TextInput, TouchableOpacity } from 'react-nativ
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { MaterialIcons } from '@expo/vector-icons';
-import { editClass } from '../../databaseQueries/databaseQueries.js';
+import { editClass } from '../../database/queries.js';
 
 import { EditButton, GoBackButton } from '../../components/Buttons.js';
 

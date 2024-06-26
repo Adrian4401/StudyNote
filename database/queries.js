@@ -1,4 +1,4 @@
-import { DBConnect } from "./DBConnect";
+import { DBConnect } from "../services/dbConnection";
 import * as Updates from 'expo-updates';
 
 const db = DBConnect();

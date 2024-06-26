@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, SafeAreaView, ScrollView, TextInput } from 'rea
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { loadSubjects, addSubject } from '../../databaseQueries/databaseQueries.js';
+import { loadSubjects, addSubject } from '../../database/queries.js';
 
 import { GoBackButton, MakeButton } from '../../components/Buttons.js';
 

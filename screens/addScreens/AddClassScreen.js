@@ -5,7 +5,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { GoBackButton, MakeButton } from '../../components/Buttons.js';
 
-import { addClass, loadClasses } from '../../databaseQueries/databaseQueries.js';
+import { addClass, loadClasses } from '../../database/queries.js';
 
 import appLanguage from "../../utils/languages";
 import { useLanguage } from '../../context/LanguageContext';

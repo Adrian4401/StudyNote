@@ -5,7 +5,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 
 import { FontAwesome5, AntDesign, FontAwesome } from '@expo/vector-icons';
 
-import { selectAllNotesWithSubjects, selectChosenNotes } from '../databaseQueries/databaseQueries.js';
+import { selectAllNotesWithSubjects, selectChosenNotes } from '../database/queries.js';
 
 import { useLanguage } from '../context/LanguageContext';
 import appLanguage from "../utils/languages";

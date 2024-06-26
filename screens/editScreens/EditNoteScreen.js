@@ -6,7 +6,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 
 import { EditButton, GoBackButton } from '../../components/Buttons.js';
 
-import { selectEditedNote, editNote } from '../../databaseQueries/databaseQueries.js';
+import { selectEditedNote, editNote } from '../../database/queries.js';
 
 import Moment from 'moment';
 
