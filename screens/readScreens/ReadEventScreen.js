@@ -4,7 +4,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 
 import { MyColors } from '../../assets/styles/colors.js';
 
-import { GoBackButton } from '../../components/customButtons.js';
+import { GoBackButton } from '../../components/Buttons.js';
 
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 

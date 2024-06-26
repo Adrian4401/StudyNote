@@ -4,7 +4,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 
 import DropDownPicker from 'react-native-dropdown-picker';
 
-import { EditButton, GoBackButton } from '../../components/customButtons.js';
+import { EditButton, GoBackButton } from '../../components/Buttons.js';
 
 import { selectEditedNote, editNote } from '../../databaseQueries/databaseQueries.js';
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
-import { GoBackButton } from '../../components/customButtons.js';
+import { GoBackButton } from '../../components/Buttons.js';
 
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 

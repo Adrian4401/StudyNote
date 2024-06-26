@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-import { GoBackButton, MakeButton } from '../../components/customButtons.js';
+import { GoBackButton, MakeButton } from '../../components/Buttons.js';
 
 import { addClass, loadClasses } from '../../databaseQueries/databaseQueries.js';
 

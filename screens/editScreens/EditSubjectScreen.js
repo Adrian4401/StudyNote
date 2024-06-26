@@ -5,7 +5,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { editSubject } from '../../databaseQueries/databaseQueries.js';
 
-import { EditButton, GoBackButton } from '../../components/customButtons.js';
+import { EditButton, GoBackButton } from '../../components/Buttons.js';
 
 import appLanguage from "../../utils/languages";
 import { useLanguage } from '../../context/LanguageContext';

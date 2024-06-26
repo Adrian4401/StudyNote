@@ -5,7 +5,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 
 import { createStyles } from '../assets/styles/index';
 
-import { SettingsScreenButton } from '../components/customButtons';
+import { SettingsScreenButton } from '../components/Buttons';
 
 import { alertDeleteAllData } from '../components/AppAlerts';
 

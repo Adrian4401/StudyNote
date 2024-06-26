@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { FontAwesome5, FontAwesome } from '@expo/vector-icons';
@@ -8,7 +8,7 @@ import { loadEvents } from '../databaseQueries/databaseQueries';
 
 import { CustomStatusBar } from '../components/StatusBar';
 
-import { showEvents } from '../utils/functions';
+import { showEvents } from '../components/ShowEvents';
 
 import { useLanguage } from '../context/LanguageContext';
 import appLanguage from "../utils/languages";

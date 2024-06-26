@@ -6,7 +6,7 @@ import DropDownPicker from 'react-native-dropdown-picker';
 
 import { FontAwesome5 } from '@expo/vector-icons';
 
-import { GoBackButton, MakeButton } from '../../components/customButtons.js';
+import { GoBackButton, MakeButton } from '../../components/Buttons.js';
 
 import { loadClasses, loadSubjects, selectChosenNotes, addEvent } from '../../databaseQueries/databaseQueries.js';
 

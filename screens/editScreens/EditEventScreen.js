@@ -1,16 +1,14 @@
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, TextInput, FlatList, TouchableOpacity, Platform } from 'react-native';
+import { StyleSheet, Text, View, TextInput, FlatList, TouchableOpacity, Platform } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import DropDownPicker from 'react-native-dropdown-picker';
 
-import { MyColors } from '../../assets/styles/colors.js';
-
 import { FontAwesome5 } from '@expo/vector-icons';
 
-import { EditButton, GoBackButton } from '../../components/customButtons.js';
+import { EditButton, GoBackButton } from '../../components/Buttons.js';
 
-import { selectChosenNotes, addEvent, selectEditedEvent, editEvent } from '../../databaseQueries/databaseQueries.js';
+import { selectChosenNotes, selectEditedEvent, editEvent } from '../../databaseQueries/databaseQueries.js';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 

@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, SafeAreaView, TextInput, FlatList } from 'react
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useNavigation } from '@react-navigation/native';
 
-import { GoBackButton, MakeButton } from '../../components/customButtons.js';
+import { GoBackButton, MakeButton } from '../../components/Buttons.js';
 
 import { loadClasses, loadSubjects, addNote } from '../../databaseQueries/databaseQueries.js';
 

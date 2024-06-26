@@ -2,7 +2,7 @@ import { TouchableOpacity, View, Text } from "react-native"
 
 import { FontAwesome5, Ionicons, AntDesign } from '@expo/vector-icons';
 
-import appLanguage from "./languages";
+import appLanguage from "../utils/languages";
 import valueLanguages from "../screens/SettingsScreen";
 
 import { useDarkMode } from '../context/DarkModeContext';
