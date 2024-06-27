@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { FontAwesome5, FontAwesome } from '@expo/vector-icons';
 
-import { loadEvents, selectThisWeekEvents, selectNextWeekEvents, selectOlderEvents } from '../databaseQueries/databaseQueries';
+import { loadEvents, selectThisWeekEvents, selectNextWeekEvents, selectOlderEvents } from '../database/queries';
 
 import { CustomStatusBar } from '../components/StatusBar';
 
@@ -48,11 +48,12 @@ export default function CalendarScreen() {
       // selectThisWeekEvents(setWeeklyData)
       // selectNextWeekEvents(setFutureData)
       // selectOlderEvents(setOlderData)
+
       loadEvents(setWeeklyData, setFutureData, setOlderData)
     });
     
     return loadData;
-  }, [navigation, setWeeklyData, setFutureData, setOlderData])
+  }, [navigation])
 
 
 

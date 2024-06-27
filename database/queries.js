@@ -379,9 +379,8 @@ export const selectThisWeekEvents = (setWeeklyData) => {
             [],
             (_, {rows}) => {
                 const data = rows._array;
-                console.log(data);
-                setWeeklyData(data);
-                console.log('DATA -- Events loaded')
+                console.log('DATA -- This week events loaded: \n', data);
+                setWeeklyData(data)
             },
             (error) => console.log('ERROR -- Events loading failed' + error)
         )  
@@ -413,9 +412,8 @@ export const selectNextWeekEvents = (setFutureData) => {
             [],
             (_, {rows}) => {
                 const data = rows._array;
-                console.log(data);
+                console.log('DATA -- Next week events loaded: \n', data);
                 setFutureData(data);
-                console.log('DATA -- Events loaded')
             },
             (error) => console.log('ERROR -- Events loading failed' + error)
         )  
@@ -447,9 +445,8 @@ export const selectOlderEvents = (setOlderData) => {
             [],
             (_, {rows}) => {
                 const data = rows._array;
-                console.log(data);
+                console.log('DATA -- Older events loaded: \n', data);
                 setOlderData(data);
-                console.log('DATA -- Events loaded')
             },
             (error) => console.log('ERROR -- Events loading failed' + error)
         )  
@@ -500,6 +497,8 @@ export const selectEvent = (eventID, setCurrentTitle, setCurrentDescription, set
                 setCurrentSubject(row.subject_id);
                 setCurrentClass(row.class_id);
                 setDate(date);
+
+                console.log('Edytowane wydarzenie: ', row)
             },
             (error) => console.log('ERROR -- Event loading failed' + error)
         )  

@@ -2,7 +2,7 @@ import { React } from 'react';
 
 import { StackNavigation } from './navigation/StackNavigation';
 
-import { Create } from './databaseQueries/databaseQueries';
+import { Create } from './database/queries';
 
 import { LanguageProvider } from './context/LanguageContext';
 import { DarkModeProvider } from './context/DarkModeContext';
