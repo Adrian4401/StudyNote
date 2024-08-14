@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 import { FontAwesome5, FontAwesome } from '@expo/vector-icons';
 
-import { loadEvents, selectThisWeekEvents, selectNextWeekEvents, selectOlderEvents } from '../database/queries';
+import { loadEvents, selectThisWeekEvents } from '../database/queries';
 
 import { CustomStatusBar } from '../components/StatusBar';
 
@@ -25,11 +25,11 @@ import { Safearea } from '../components/SafeArea';
 
 export default function CalendarScreen() {
 
-  const navigation = useNavigation();
-
   const [weeklyData, setWeeklyData] = useState([]);
   const [futureData, setFutureData] = useState([]);
   const [olderData, setOlderData] = useState([]);
+
+  const navigation = useNavigation();
 
   const todayDate = createDate()
   
@@ -41,23 +41,16 @@ export default function CalendarScreen() {
     return appLanguage[language][key];
   }
 
+
   
   useEffect(() => {
-
     const loadData = navigation.addListener('focus', () => {
-      // selectThisWeekEvents(setWeeklyData)
-      // selectNextWeekEvents(setFutureData)
-      // selectOlderEvents(setOlderData)
-
-      loadEvents(setWeeklyData, setFutureData, setOlderData)
+      selectThisWeekEvents(setWeeklyData)
     });
-    
-    return loadData;
-  }, [navigation])
-
-
-
-  
+    // const unsubscribe = navigation.addListener('focus', loadData)
+    // return unsubscribe
+    return loadData
+  }, [navigation, setWeeklyData])
 
 
 

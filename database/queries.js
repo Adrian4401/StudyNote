@@ -365,9 +365,9 @@ export const selectThisWeekEvents = (setWeeklyData) => {
                 'events.description,'+
                 'events.subject_id,'+
                 'events.class_id,'+
+                'events.deadline,'+
                 'substr(events.deadline, 9, 2) || "." || substr(events.deadline, 6, 2) || "." || substr(events.deadline, 1, 4) AS deadlineDate,'+
                 'substr(events.deadline, 12, 5) AS deadlineTime,'+
-                'events.deadline,'+
                 'subjects.subject_name, '+
                 'classes.class_name '+
             'FROM events '+
