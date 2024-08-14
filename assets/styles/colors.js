@@ -13,14 +13,14 @@ export const MyColors = {
     eventBackground: '#2F3051'
 }
 export const lightTheme = {
-    background: '#D3D3D3',
+    background: '#E0E0E0',
     navigation: '#3B393B',
     primary: '#0b84ff',
-    secondary: '#999898',
-    textPrimary: '#000',
-    textSecondary: '#3B393B',
-    inputBackground: '#868C90',
-    eventBackground: '#9BC3D8'
+    secondary: '#A9A9A9',
+    textPrimary: '#2C2C2C', 
+    textSecondary: '#4B4B4B', 
+    inputBackground: '#B0B0B0', 
+    eventBackground: '#C4D3DF' 
 }
 export const darkTheme = {
     background: '#3F3D4C',
