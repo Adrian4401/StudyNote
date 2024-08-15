@@ -9,6 +9,7 @@ import { EditButton, GoBackButton } from '../../components/Buttons.js';
 import { selectEditedNote, editNote } from '../../database/queries.js';
 
 import Moment from 'moment';
+import 'moment/locale/pl'
 
 import appLanguage from "../../utils/languages";
 import { useLanguage } from '../../context/LanguageContext';

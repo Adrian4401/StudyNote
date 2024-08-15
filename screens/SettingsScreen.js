@@ -104,11 +104,12 @@ export default function SettingsScreen() {
 
 
           {/* DATA section */}
-          <View style={styles.headlineView}>
+          
+          {/* <View style={styles.headlineView}>
             <Text style={styles.sectionText}>{getTranslatedText('dataText')}</Text>
-          </View>
-          <SettingsScreenButton onPress={() => console.log("To do")} icon={"file-export"} text={getTranslatedText('dataExportButton')}/>
-          <SettingsScreenButton onPress={() => console.log("To do")} icon={"file-import"} text={getTranslatedText('dataImportButton')}/>
+          </View> */}
+          {/* <SettingsScreenButton onPress={() => console.log("To do")} icon={"file-export"} text={getTranslatedText('dataExportButton')}/> */}
+          {/* <SettingsScreenButton onPress={() => console.log("To do")} icon={"file-import"} text={getTranslatedText('dataImportButton')}/> */}
 
           <View style={styles.headlineView}>
             <Text style={styles.sectionText}>{getTranslatedText('deleteDataText')}</Text>

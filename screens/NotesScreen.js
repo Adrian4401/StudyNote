@@ -40,9 +40,9 @@ export default function NoteScreen() {
 
   useEffect(() => {
 
-    const getTranslatedText = (key) => {
-      return appLanguage[language][key];
-    }
+    // const getTranslatedText = (key) => {
+    //   return appLanguage[language][key];
+    // }
 
     const loadData = navigation.addListener('focus', () => {
       selectAllNotesWithSubjects(setSubjects, setData);

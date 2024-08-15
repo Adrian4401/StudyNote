@@ -24,19 +24,18 @@ import { Safearea } from '../components/SafeArea';
 
 
 export default function CalendarScreen() {
+  const { language } = useLanguage();
+  const { theme } = useDarkMode();
+
+  const navigation = useNavigation();
 
   const [weeklyData, setWeeklyData] = useState([]);
   const [futureData, setFutureData] = useState([]);
   const [olderData, setOlderData] = useState([]);
 
-  const navigation = useNavigation();
-
   const todayDate = createDate()
   
-  const { theme } = useDarkMode()
   const styles = createStyles(theme)
-
-  const { language } = useLanguage();
   const getTranslatedText = (key) => {
     return appLanguage[language][key];
   }
@@ -45,12 +44,16 @@ export default function CalendarScreen() {
   
   useEffect(() => {
     const loadData = navigation.addListener('focus', () => {
-      selectThisWeekEvents(setWeeklyData)
+      loadEvents(setWeeklyData, setFutureData, setOlderData)
+      console.log("Weekly: ", weeklyData)
+      console.log("Future: ", futureData)
+      console.log("Older: ", olderData)
     });
-    // const unsubscribe = navigation.addListener('focus', loadData)
-    // return unsubscribe
-    return loadData
-  }, [navigation, setWeeklyData])
+
+    return () => {
+      loadData()
+    } 
+  }, [navigation, loadEvents, setWeeklyData, setFutureData, setOlderData])
 
 
 
@@ -171,14 +174,7 @@ export default function CalendarScreen() {
             </View>
           </View>
 
-
           {showAllEvents()}
-
-          {/* {showThisWeekEvents()}
-
-          {showFutureEvents()}
-
-          {showOlderEvents()} */}
 
         </View>
       </ScrollView>
