@@ -487,16 +487,16 @@ export const selectEvent = (eventID, setCurrentTitle, setCurrentDescription, set
             (_, {rows}) => {
                 const row = rows.item(0);
 
-                const parts = row.deadline.split(' ');
-                const dateParts = parts[0].split('.');
-                const timeParts = parts[1].split(':');
-                const date = new Date(dateParts[2], dateParts[1] - 1, dateParts[0], timeParts[0], timeParts[1]);
+                // const parts = row.deadline.split(' ');
+                // const dateParts = parts[0].split('.');
+                // const timeParts = parts[1].split(':');
+                // const date = new Date(dateParts[2], dateParts[1] - 1, dateParts[0], timeParts[0], timeParts[1]);
 
                 setCurrentTitle(row.title);
                 setCurrentDescription(row.description);
                 setCurrentSubject(row.subject_id);
                 setCurrentClass(row.class_id);
-                setDate(date);
+                setDate(new Date(row.deadline));
 
                 console.log('Edytowane wydarzenie: ', row)
             },
@@ -758,7 +758,7 @@ export const editEvent = (navigation, currentTitle, currentDescription, date, va
     db.transaction(tx =>
         tx.executeSql(
             'UPDATE events SET title = ?, description = ?, deadline = ?, subject_id = ?, class_id = ? WHERE event_id = ?',
-            [currentTitle, currentDescription, formattedDate, valueSubjects, currentClass, eventID],
+            [currentTitle, currentDescription, date, valueSubjects, currentClass, eventID],
             (_, result) => {
                 addNotesToEvent(eventID, checkedNoteIDs);
 

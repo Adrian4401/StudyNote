@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { FontAwesome5, FontAwesome } from '@expo/vector-icons';
 
-import { loadEvents, selectThisWeekEvents } from '../database/queries';
+import { loadEvents } from '../database/queries';
 
 import { CustomStatusBar } from '../components/StatusBar';
 
@@ -45,9 +45,6 @@ export default function CalendarScreen() {
   useEffect(() => {
     const loadData = navigation.addListener('focus', () => {
       loadEvents(setWeeklyData, setFutureData, setOlderData)
-      console.log("Weekly: ", weeklyData)
-      console.log("Future: ", futureData)
-      console.log("Older: ", olderData)
     });
 
     return () => {
@@ -99,7 +96,7 @@ export default function CalendarScreen() {
 
 
 
-  const showAllEvents = () => {
+  const ShowAllEvents = () => {
     if(weeklyData.length <= 0 && futureData.length <= 0 && olderData.length <= 0) {
       return (
         <View style={{alignItems: 'center'}}>
@@ -174,7 +171,7 @@ export default function CalendarScreen() {
             </View>
           </View>
 
-          {showAllEvents()}
+          <ShowAllEvents />
 
         </View>
       </ScrollView>

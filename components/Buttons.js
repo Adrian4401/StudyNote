@@ -26,7 +26,7 @@ export const GoBackButton = () => {
         <TouchableOpacity style={styles.goBackButton} onPress={() => navigation.goBack()} >
             <AntDesign name="left" size={25} color={theme.textPrimary} style={{marginRight: 5}} />
             <Text style={styles.goBackText}>{getTranslatedText('goBack')}</Text>
-         </TouchableOpacity>
+        </TouchableOpacity>
     )
 }
 
