@@ -213,7 +213,8 @@ export default function AddEventScreen() {
                         marginVertical: 20,
                         height: 100,
                         backgroundColor: theme.secondary,
-                        flexWrap: 'wrap'
+                        flexWrap: 'wrap',
+                        textAlignVertical: 'top'
                     }}
                 />
             )

@@ -227,7 +227,8 @@ export default function EditEventScreen() {
                         marginVertical: 20,
                         height: 100,
                         backgroundColor: theme.secondary,
-                        flexWrap: 'wrap'
+                        flexWrap: 'wrap',
+                        textAlignVertical: 'top'
                     }}
                 />
             )

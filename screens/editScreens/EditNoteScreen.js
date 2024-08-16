@@ -163,7 +163,8 @@ export default function EditNoteScreen() {
                         marginBottom: 20,
                         height: 400,
                         backgroundColor: theme.secondary,
-                        flexWrap: 'wrap'
+                        flexWrap: 'wrap',
+                        textAlignVertical: 'top'
                     }}
                 />
             )
