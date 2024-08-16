@@ -752,17 +752,17 @@ export const editNote = (currentTitle, currentNote, currentSubject, currentClass
 
 export const editEvent = (navigation, currentTitle, currentDescription, date, valueSubjects, currentClass, checkedNoteIDs, eventID) => {
 
-    const formattedDate = formatDate(date);
+    const formattedDate = date.toISOString()
     console.log('Sformatowana data: ', formattedDate)
 
     db.transaction(tx =>
         tx.executeSql(
             'UPDATE events SET title = ?, description = ?, deadline = ?, subject_id = ?, class_id = ? WHERE event_id = ?',
-            [currentTitle, currentDescription, date, valueSubjects, currentClass, eventID],
+            [currentTitle, currentDescription, formattedDate, valueSubjects, currentClass, eventID],
             (_, result) => {
                 addNotesToEvent(eventID, checkedNoteIDs);
 
-                console.log('Udalo sie dodac wydarzenie');
+                console.log('Udalo sie edytowac wydarzenie');
                 navigation.goBack();
                 console.log(result)
             },

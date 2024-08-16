@@ -22,6 +22,8 @@ import { createStyles } from '../../assets/styles/index.js';
 
 import { SafeareaNoNav } from '../../components/SafeArea.js';
 
+import { formatDate } from '../../utils/date.js'
+
 
 
 
@@ -91,17 +93,6 @@ export default function AddEventScreen() {
         setMode(currentMode);
     }
 
-
-    const formatDate = (date) => {
-        const day = date.getDate().toString().padStart(2, '0');
-        const month = (date.getMonth() + 1).toString().padStart(2, '0');
-        const year = date.getFullYear().toString();
-        const hours = date.getHours().toString().padStart(2, '0');
-        const minutes = date.getMinutes().toString().padStart(2, '0');
-    
-        return `${day}.${month}.${year} ${hours}:${minutes}`;
-    }
-
     
 
     const onChange = (event, selectedDate) => {
@@ -134,6 +125,7 @@ export default function AddEventScreen() {
         setCheckedNoteIDs(newCheckedNoteIDs);
     }
     
+
 
     const selectedDate = formatDate(date);
 
@@ -278,8 +270,6 @@ export default function AddEventScreen() {
                     </View>
                 )
             }
-            
-            
         } else if(item.type === 'notes') {
             return data.map((element, index) => {
                 return (
@@ -321,7 +311,6 @@ export default function AddEventScreen() {
         } else if(item.type === 'addButton') {
             return(
                 <MakeButton onPress={() => addEvent(navigation, currentTitle, currentDescription, date, valueSubjects, currentClass, checkedNoteIDs)}/>
-                // <MakeButton onPress={() => console.log('Zaznaczone notatki: ', checkedNoteIDs)} />
             )
         }
     }
