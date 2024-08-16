@@ -104,7 +104,8 @@ export default function AddClassScreen() {
                             borderRadius: 10,
                             padding: 10,
                             marginVertical: 10,
-                            marginTop: 30
+                            marginTop: 30,
+                            backgroundColor: theme.secondary
                         }}
                     />
                     

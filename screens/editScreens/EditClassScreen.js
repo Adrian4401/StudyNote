@@ -93,7 +93,8 @@ export default function EditClassScreen() {
                             borderRadius: 10,
                             padding: 10,
                             marginVertical: 10,
-                            marginTop: 30
+                            marginTop: 30,
+                            backgroundColor: theme.secondary
                         }}
                     />
                     
