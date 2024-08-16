@@ -1,6 +1,8 @@
 import { DBConnect } from "../services/dbConnection";
 import * as Updates from 'expo-updates';
 
+import moment from 'moment'
+
 const db = DBConnect();
 
 
@@ -645,10 +647,9 @@ const formatDate = (date) => {
 
 export const addEvent = (navigation, currentTitle, currentDescription, date, valueSubjects, currentClass, checkedNoteIDs) => {
 
-    // const formattedDate = formatDate(date)
-    const formattedDate = date.toISOString();
-    console.log('Sformatowana data: ', formattedDate)
+    const formattedDate = moment(date).format('YYYY-MM-DDTHH:mm:ss');
     console.log('Niesformatowana data: ', date)
+    console.log('Sformatowana data: ', formattedDate)
 
     db.transaction(tx =>
         tx.executeSql(
@@ -752,8 +753,10 @@ export const editNote = (currentTitle, currentNote, currentSubject, currentClass
 
 export const editEvent = (navigation, currentTitle, currentDescription, date, valueSubjects, currentClass, checkedNoteIDs, eventID) => {
 
-    const formattedDate = date.toISOString()
+    const formattedDate = moment(date).format('YYYY-MM-DDTHH:mm:ss');
+    // const formattedDate = date.toISOString()
     console.log('Sformatowana data: ', formattedDate)
+    console.log('Niesformatowana data: ', date)
 
     db.transaction(tx =>
         tx.executeSql(
