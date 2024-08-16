@@ -19,13 +19,13 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "foregroundImage": "./assets/newicon.png",
+        "backgroundColor": "#000000"
       },
       "package": "com.adrian4401.StudyNote"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/newicon.png"
     },
     "extra": {
       "eas": {
