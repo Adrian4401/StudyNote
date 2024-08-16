@@ -34,9 +34,15 @@ export const MakeButton = ({onPress}) => {
     const { theme } = useDarkMode()
     const styles = createStyles(theme)
 
+    const { language } = useLanguage();
+    const getTranslatedText = (key) => {
+        return appLanguage[language][key];
+    }
+
     return (
         <TouchableOpacity style={styles.makeButton} onPress={onPress} >
-            <FontAwesome5 name="plus" size={40} color="#fff" />
+            {/* <FontAwesome5 name="plus" size={40} color="#fff" /> */}
+            <Text style={{fontSize: 22, paddingVertical: 2, color: theme.textPrimary, textTransform: 'uppercase', fontWeight: '500'}}>{getTranslatedText('add')}</Text>
         </TouchableOpacity>
     )
 }
@@ -45,9 +51,15 @@ export const EditButton = ({onPress}) => {
     const { theme } = useDarkMode()
     const styles = createStyles(theme)
 
+    const { language } = useLanguage();
+    const getTranslatedText = (key) => {
+        return appLanguage[language][key];
+    }
+
     return (
         <TouchableOpacity style={styles.makeButton} onPress={onPress} >
-            <MaterialIcons name="edit" size={40} color='white'/>
+            {/* <MaterialIcons name="edit" size={40} color='white'/> */}
+            <Text style={{fontSize: 22, paddingVertical: 2, color: theme.textPrimary, textTransform: 'uppercase', fontWeight: '500'}}>{getTranslatedText('edit')}</Text>
         </TouchableOpacity>
     )
 }

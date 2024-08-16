@@ -117,7 +117,7 @@ export default function ManageScreen() {
             </TouchableOpacity>
           </View>
 
-          <View style={{backgroundColor: theme.eventBackground, padding: 10, borderRadius: 20, flex: 1}}>
+          <View style={{backgroundColor: theme.eventBackground, padding: 10, borderRadius: 20, flex: 0.8}}>
             <ScrollView>  
                 {showSubjects()}
             </ScrollView>
@@ -133,7 +133,7 @@ export default function ManageScreen() {
             </TouchableOpacity>
           </View>
 
-          <View style={{backgroundColor: theme.eventBackground, padding: 10, borderRadius: 20, flex: 1}}>
+          <View style={{backgroundColor: theme.eventBackground, padding: 10, borderRadius: 20, flex: 0.8}}>
             <ScrollView>  
                 {showClasses()}
             </ScrollView>

@@ -92,7 +92,7 @@ export default function AddNoteScreen() {
                     style={{
                         color: theme.textPrimary,
                         fontSize: 25,
-                        borderWidth: 2,
+                        borderWidth: 1,
                         borderColor: theme.primary,
                         borderRadius: 10,
                         padding: 10,
@@ -148,11 +148,12 @@ export default function AddNoteScreen() {
                         color: theme.textPrimary,
                         flex: 1,
                         fontSize: 18,
-                        borderWidth: 2,
+                        borderWidth: 1,
                         borderColor: theme.primary,
                         borderRadius: 10,
                         padding: 10,
-                        marginVertical: 50,
+                        marginTop: 30,
+                        marginBottom: 20,
                         height: 400,
                         backgroundColor: theme.secondary,
                         flexWrap: 'wrap'
@@ -171,13 +172,13 @@ export default function AddNoteScreen() {
     const noteStyles = StyleSheet.create({
         style: {
             backgroundColor: theme.secondary,
-            borderWidth: 2,
-            borderColor: theme.primary
+            borderWidth: 1,
+            borderColor: theme.secondary
         },
         dropDownContainerStyle: {
             backgroundColor: theme.secondary,
-            borderWidth: 2,
-            borderColor: theme.primary
+            borderWidth: 1,
+            // borderColor: theme.primary
         },
         textStyle: {
             color: theme.textSecondary

@@ -150,7 +150,7 @@ export default function AddEventScreen() {
                     style={{
                         color: theme.textPrimary,
                         fontSize: 25,
-                        borderWidth: 2,
+                        borderWidth: 1,
                         borderColor: theme.primary,
                         borderRadius: 10,
                         paddingVertical: 5,
@@ -206,7 +206,7 @@ export default function AddEventScreen() {
                         color: theme.textPrimary,
                         flex: 1,
                         fontSize: 18,
-                        borderWidth: 2,
+                        borderWidth: 1,
                         borderColor: theme.primary,
                         borderRadius: 10,
                         padding: 10,
@@ -320,13 +320,13 @@ export default function AddEventScreen() {
     const eventStyles = StyleSheet.create({
         style: {
             backgroundColor: theme.secondary,
-            borderWidth: 2,
-            borderColor: theme.primary
+            borderWidth: 1,
+            borderColor: theme.secondary
         },
         dropDownContainerStyle: {
             backgroundColor: theme.secondary,
-            borderWidth: 2,
-            borderColor: theme.primary
+            borderWidth: 1,
+            // borderColor: theme.primary
         },
         textStyle: {
             color: theme.textSecondary

@@ -101,12 +101,13 @@ export default function AddSubjectScreen() {
                             color: theme.textPrimary,
                             width: '100%',
                             fontSize: 25,
-                            borderWidth: 2,
+                            borderWidth: 1,
                             borderColor: theme.primary,
                             borderRadius: 10,
                             padding: 10,
                             marginVertical: 10,
-                            marginTop: 30
+                            marginTop: 30,
+                            backgroundColor: theme.secondary
                         }}
                     />
                     

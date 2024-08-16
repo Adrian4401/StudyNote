@@ -168,7 +168,7 @@ export default function EditEventScreen() {
                     style={{
                         color: theme.textPrimary,
                         fontSize: 25,
-                        borderWidth: 2,
+                        borderWidth: 1,
                         borderColor: theme.primary,
                         borderRadius: 10,
                         padding: 10,
@@ -220,7 +220,7 @@ export default function EditEventScreen() {
                         color: theme.textPrimary,
                         flex: 1,
                         fontSize: 18,
-                        borderWidth: 2,
+                        borderWidth: 1,
                         borderColor: theme.primary,
                         borderRadius: 10,
                         padding: 10,
@@ -353,12 +353,12 @@ export default function EditEventScreen() {
         style: {
             backgroundColor: theme.secondary,
             borderWidth: 1,
-            borderColor: theme.primary
+            borderColor: theme.secondary
         },
         dropDownContainerStyle: {
             backgroundColor: theme.secondary,
             borderWidth: 1,
-            borderColor: theme.primary
+            // borderColor: theme.primary
         },
         textStyle: {
             color: theme.textSecondary
