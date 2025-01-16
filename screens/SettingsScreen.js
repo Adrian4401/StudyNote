@@ -156,18 +156,18 @@ export default function SettingsScreen() {
 
       {/* CONTAINER */}
       {/* <ScrollView> */}
-        <View style={styles.flatlistContainer}>
-          <FlatList
-            data={[
-              { type: 'rest' },
-              { type: 'language' }
-            ]}
-            renderItem={renderItem}
-            keyExtractor={(item, index) => index.toString()}
-            showsVerticalScrollIndicator={false}
-            contentContainerStyle={{flexDirection: 'column-reverse', paddingBottom: 100, width: '100%'}}
-          />
-        </View>
+      <View style={styles.flatlistContainer}>
+        <FlatList
+          data={[
+            { type: 'rest' },
+            { type: 'language' }
+          ]}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => index.toString()}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{flexDirection: 'column-reverse', paddingBottom: 100, width: '100%'}}
+        />
+      </View>
 
     </Safearea>
   );

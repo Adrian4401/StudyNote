@@ -61,6 +61,8 @@ export default function AddEventScreen() {
         return appLanguage[language][key];
     }
 
+    const [completeFieldsInfo, setCompleteFieldsInfo] = useState(false)
+
 
 
     useEffect(() => {
@@ -76,8 +78,6 @@ export default function AddEventScreen() {
         return loadData;
     }, [navigation, valueSubjects, setData, data.length])
 
-
-
     const subjectItems = subjects.map(subject => {
         return { label: subject.subject_name, value: subject.subject_id.toString() };
     });
@@ -86,14 +86,10 @@ export default function AddEventScreen() {
         return { label: myclass.class_name, value: myclass.class_id.toString() };
     })
 
-
-
     const showMode = (currentMode) => {
         setShow(true);
         setMode(currentMode);
     }
-
-    
 
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate || date;
@@ -105,8 +101,6 @@ export default function AddEventScreen() {
 
         console.log(tempDate.toLocaleString());
     }
-
-
 
     const handleNoteCheckboxChange = (index) => {
         const newCheckedNotes = [...checkedNotes];
@@ -125,9 +119,15 @@ export default function AddEventScreen() {
         setCheckedNoteIDs(newCheckedNoteIDs);
     }
     
-
-
     const selectedDate = formatDate(date);
+
+    const handleAddEvent = () => {
+        if(currentTitle.length > 0 && currentDescription.length > 0 && date !== null && currentClass !== null && valueSubjects !== null) {
+            addEvent(navigation, currentTitle, currentDescription, date, valueSubjects, currentClass, checkedNoteIDs)
+        } else {
+            setCompleteFieldsInfo(true)
+        }
+    }
 
 
 
@@ -311,7 +311,12 @@ export default function AddEventScreen() {
               })
         } else if(item.type === 'addButton') {
             return(
-                <MakeButton onPress={() => addEvent(navigation, currentTitle, currentDescription, date, valueSubjects, currentClass, checkedNoteIDs)}/>
+                <>
+                    {completeFieldsInfo && (
+                        <Text style={{color: 'red', textAlign: 'center'}}>Wszystkie pola muszą być uzupełnione!</Text>
+                    )}
+                    <MakeButton onPress={handleAddEvent}/>
+                </>
             )
         }
     }

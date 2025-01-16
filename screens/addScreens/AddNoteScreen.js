@@ -46,6 +46,8 @@ export default function AddNoteScreen() {
       return appLanguage[language][key];
     }
 
+    const [completeFieldsInfo, setCompleteFieldsInfo] = useState(false)
+
 
     
     useEffect(() => {
@@ -68,7 +70,11 @@ export default function AddNoteScreen() {
     })
 
     const handleAddNote = () => {
-        addNote(currentTitle, currentNote, currentSubject, currentClass, todayDate, navigation)
+        if(currentTitle.length > 0 && currentNote.length > 0 && currentSubject !== null && currentClass !== null) {
+            addNote(currentTitle, currentNote, currentSubject, currentClass, todayDate, navigation)
+        } else {
+            setCompleteFieldsInfo(true)
+        }
     }
 
 
@@ -163,7 +169,12 @@ export default function AddNoteScreen() {
             )
         } else if(item.type === 'addButton') {
             return(
-                <MakeButton onPress={handleAddNote}/>
+                <>
+                    {completeFieldsInfo && (
+                        <Text style={{color: 'red', textAlign: 'center'}}>Wszystkie pola muszą być uzupełnione!</Text>
+                    )}
+                    <MakeButton onPress={handleAddNote}/>
+                </>
             )
         }
     }
