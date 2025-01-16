@@ -234,7 +234,7 @@ export default function AddEventScreen() {
                         </TouchableOpacity>
 
                         <View style={{width: '100%', flexDirection: 'row', justifyContent: 'space-between', marginVertical: 10}}>
-                            <Text style={{fontSize: 20, color: 'white'}}>{getTranslatedText('choosenDeadline')}:</Text>
+                            <Text style={{flex: 1, flexWrap: 'wrap', fontSize: 20, color: 'white'}}>{getTranslatedText('choosenDeadline')}:</Text>
                             <Text style={{fontSize: 20, color: 'white'}}>{selectedDate}</Text>
                         </View>
     
