@@ -18,10 +18,7 @@ import { SafeareaNoNav } from '../../components/SafeArea.js';
 
 
 
-
-
 export default function AddSubjectScreen() {
-
     const [subjects, setSubjects] = useState([]);
     const [currentSubject, setCurrentSubject] = useState(undefined);
 
@@ -35,12 +32,10 @@ export default function AddSubjectScreen() {
     }
 
 
-
     useEffect(() => {
         console.log('DATA -- Subjects loaded')
         loadSubjects(setSubjects);
     }, []);
-
 
 
     const showBottomSubjectsInfo = () => {
@@ -70,9 +65,6 @@ export default function AddSubjectScreen() {
         })
     }
 
-    
-
- 
 
     return (
         <SafeareaNoNav>
@@ -90,7 +82,6 @@ export default function AddSubjectScreen() {
                         <GoBackButton />
                     </View>
                     
-
                     <TextInput 
                         value={currentSubject}
                         onChangeText={setCurrentSubject}
