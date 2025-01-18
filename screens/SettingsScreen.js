@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, Image, Switch, Platform, FlatList } from 'react-native';
+import { StyleSheet, Text, View, Image, Switch, Platform, FlatList } from 'react-native';
 
 import DropDownPicker from 'react-native-dropdown-picker';
 
@@ -19,10 +19,7 @@ import { Safearea } from '../components/SafeArea';
 
 
 
-
-
 export default function SettingsScreen() {
-
   const [openLanguages, setOpenLanguages] = useState(false);
   // const [valueLanguages, setValueLanguages] = useState('pl');
   const { language, changeLanguage } = useLanguage();
@@ -51,7 +48,6 @@ export default function SettingsScreen() {
   const handleDeleteAllData = () => {
     alertDeleteAllData(getTranslatedText)
   }
-
 
   const renderItem = ({ item }) => {
     if (item.type === 'language') {
@@ -102,7 +98,6 @@ export default function SettingsScreen() {
             </View>
           </View>
 
-
           {/* DATA section */}
           
           {/* <View style={styles.headlineView}>
@@ -119,7 +114,6 @@ export default function SettingsScreen() {
       )
     }
   }
-
 
   const settingsStyles = StyleSheet.create({
     dropDownStyle: {
@@ -148,14 +142,10 @@ export default function SettingsScreen() {
   return (
     <Safearea>
 
-      {/* HEADER */}
       <View style={styles.headerBackground}>
           <Text style={styles.headerText}>{getTranslatedText('settingsScreenTitle')}</Text>
       </View>
 
-
-      {/* CONTAINER */}
-      {/* <ScrollView> */}
       <View style={styles.flatlistContainer}>
         <FlatList
           data={[

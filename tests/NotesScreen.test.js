@@ -44,13 +44,11 @@ describe('NotesScreen', () => {
   it('wypisywanie wszystkich notatek', async () => {
     const { findByText } = render(<NotesScreen />);
 
-    // Symuluj zdarzenie 'focus'
     const focusCallback = mockNavigation.addListener.mock.calls.find(
       (call) => call[0] === 'focus'
     )?.[1];
     if (focusCallback) focusCallback();
 
-    // Oczekiwanie na pojawienie się notatki
     const noteTitle = await findByText('Note 1');
     expect(noteTitle).toBeTruthy();
   });
